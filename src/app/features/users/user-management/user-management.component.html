@@ -1,0 +1,802 @@
+<section class="management-shell" aria-labelledby="users-heading">
+  <div class="page-ambient" aria-hidden="true">
+    <span class="ambient-glow ambient-glow--a"></span>
+    <span class="ambient-glow ambient-glow--b"></span>
+  </div>
+  <div class="management-container">
+    <header class="management-hero">
+      <div class="hero-grid" aria-hidden="true"></div>
+      <span class="hero-ring hero-ring--a" aria-hidden="true"></span>
+      <span class="hero-ring hero-ring--b" aria-hidden="true"></span>
+      <div class="hero-content">
+        <span class="hero-eyebrow"
+          ><span class="hero-eyebrow__line" aria-hidden="true"></span> KHÔNG
+          GIAN QUẢN TRỊ / NGƯỜI DÙNG</span
+        >
+        <h1 id="users-heading">Quản lý <em>tài khoản.</em></h1>
+        <p>
+          Theo dõi người dùng, quản lý nhân viên và phân quyền an toàn trên một
+          không gian thống nhất.
+        </p>
+      </div>
+      <div class="hero-actions">
+        <button
+          type="button"
+          class="btn btn--light"
+          (click)="load()"
+          [disabled]="loading()"
+        >
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path
+              d="M20 7v5h-5M4 17v-5h5M5.9 9A7 7 0 0 1 18.5 7L20 12M4 12l1.5 5A7 7 0 0 0 18 15"
+              stroke="currentColor"
+              stroke-width="1.7"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          {{ loading() ? "Đang tải..." : "Làm mới" }}
+        </button>
+        <button type="button" class="btn btn--primary" (click)="openCreate()">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path
+              d="M12 5v14M5 12h14"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </svg>
+          Thêm nhân viên
+        </button>
+      </div>
+      <svg
+        class="hero-house"
+        viewBox="0 0 320 230"
+        fill="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M39 117 164 24l125 93v95H39v-95Z"
+          stroke="currentColor"
+          stroke-width="1.3"
+        />
+        <path
+          d="M69 107 164 40l96 67v105H69V107Z"
+          stroke="currentColor"
+          stroke-width="1.2"
+        />
+        <path
+          d="M95 121h41v41H95zM154 121h42v41h-42zM216 121h25v91h-25zM95 179h41v33H95zM154 179h42v33h-42z"
+          stroke="currentColor"
+          stroke-width="1"
+        />
+      </svg>
+    </header>
+
+    <div class="overview" aria-label="Thống kê tài khoản">
+      <article class="metric-card">
+        <div class="metric-card__copy">
+          <span>Tổng tài khoản</span><strong>{{ users().length }}</strong
+          ><small>Tất cả vai trò hệ thống</small>
+        </div>
+        <span class="metric-icon metric-icon--blue" aria-hidden="true"
+          ><svg viewBox="0 0 24 24" fill="none">
+            <path
+              d="M16 20v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 10a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM22 20v-2a4 4 0 0 0-3-3.87M16 2.13a4 4 0 0 1 0 7.75"
+              transform="translate(0 1) scale(.9)"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            /></svg
+        ></span>
+      </article>
+      <article class="metric-card">
+        <div class="metric-card__copy">
+          <span>Đang hoạt động</span><strong>{{ activeCount() }}</strong
+          ><small>Tài khoản có thể đăng nhập</small>
+        </div>
+        <span class="metric-icon metric-icon--mint" aria-hidden="true"
+          ><svg viewBox="0 0 24 24" fill="none">
+            <circle
+              cx="12"
+              cy="12"
+              r="9"
+              stroke="currentColor"
+              stroke-width="1.8"
+            />
+            <path
+              d="m7.5 12 3 3 6-6"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            /></svg
+        ></span>
+      </article>
+      <article class="metric-card">
+        <div class="metric-card__copy">
+          <span>Nhân viên</span><strong>{{ staffCount() }}</strong
+          ><small>Vai trò STAFF hiện tại</small>
+        </div>
+        <span class="metric-icon metric-icon--violet" aria-hidden="true"
+          ><svg viewBox="0 0 24 24" fill="none">
+            <rect
+              x="3"
+              y="6"
+              width="18"
+              height="15"
+              rx="3"
+              stroke="currentColor"
+              stroke-width="1.8"
+            />
+            <path
+              d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12c5.6 3.3 12.4 3.3 18 0M11 14h2"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+            /></svg
+        ></span>
+      </article>
+    </div>
+
+    @if (success()) {
+      <div class="notice notice--success" role="status">
+        <span aria-hidden="true">✓</span>
+        <p>{{ success() }}</p>
+        <button
+          type="button"
+          (click)="success.set('')"
+          aria-label="Đóng thông báo"
+        >
+          ×
+        </button>
+      </div>
+    }
+    @if (listError()) {
+      <div class="notice notice--danger" role="alert">
+        <span aria-hidden="true">!</span>
+        <p>{{ listError() }}</p>
+        <button type="button" (click)="load()">Thử lại</button>
+      </div>
+    }
+
+    <section class="workspace" aria-labelledby="workspace-heading">
+      <div class="workspace-header">
+        <div>
+          <span class="section-eyebrow">DANH SÁCH NGƯỜI DÙNG</span>
+          <h2 id="workspace-heading">Tài khoản hệ thống</h2>
+          <p>Tra cứu và thực hiện các thao tác quản lý theo quyền OWNER.</p>
+        </div>
+        <span class="workspace-count"
+          >{{ filteredUsers().length }} tài khoản</span
+        >
+      </div>
+
+      <div class="filters">
+        <label class="filter-field filter-field--search" for="user-search">
+          <span>Tìm kiếm tài khoản</span>
+          <span class="field-control field-control--search">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle
+                cx="10.7"
+                cy="10.7"
+                r="6.7"
+                stroke="currentColor"
+                stroke-width="1.8"
+              />
+              <path
+                d="m16 16 5 5"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+              />
+            </svg>
+            <input
+              id="user-search"
+              type="search"
+              placeholder="Tên, username, email hoặc SĐT"
+              [ngModel]="search()"
+              (ngModelChange)="search.set($event); onFilterChange()"
+            />
+          </span>
+        </label>
+        <label class="filter-field" for="user-role-filter">
+          <span>Vai trò</span>
+          <select
+            id="user-role-filter"
+            [ngModel]="roleFilter()"
+            (ngModelChange)="roleFilter.set($event); onFilterChange()"
+          >
+            <option value="">Tất cả vai trò</option>
+            <option value="OWNER">Chủ trọ</option>
+            <option value="STAFF">Nhân viên</option>
+            <option value="TENANT">Người thuê</option>
+            <option value="CUSTOMER">Khách hàng</option>
+          </select>
+        </label>
+        <label class="filter-field" for="user-status-filter">
+          <span>Trạng thái</span>
+          <select
+            id="user-status-filter"
+            [ngModel]="statusFilter()"
+            (ngModelChange)="statusFilter.set($event); onFilterChange()"
+          >
+            <option value="">Tất cả trạng thái</option>
+            <option value="ACTIVE">Hoạt động</option>
+            <option value="LOCKED">Đã khóa</option>
+          </select>
+        </label>
+        @if (hasFilters()) {
+          <button type="button" class="filter-reset" (click)="clearFilters()">
+            Xóa lọc
+          </button>
+        }
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Người dùng</th>
+              <th scope="col">Thông tin liên hệ</th>
+              <th scope="col">Vai trò</th>
+              <th scope="col">Trạng thái</th>
+              <th scope="col">Ngày tạo</th>
+              <th scope="col">Thao tác</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (user of pageUsers(); track user.id) {
+              <tr>
+                <td>
+                  <div class="user-cell">
+                    <span class="user-avatar" aria-hidden="true">{{
+                      user.fullName.charAt(0).toUpperCase()
+                    }}</span>
+                    <span class="user-cell__copy"
+                      ><strong>{{ user.fullName }}</strong
+                      ><small>&#64;{{ user.username }}</small></span
+                    >
+                  </div>
+                </td>
+                <td>
+                  <span class="contact-value">{{
+                    user.email || "Chưa cập nhật"
+                  }}</span
+                  ><small class="contact-muted">{{
+                    user.phone || "Chưa có SĐT"
+                  }}</small>
+                </td>
+                <td>
+                  <span
+                    class="role-badge"
+                    [class.role-badge--owner]="user.role === 'OWNER'"
+                    [class.role-badge--staff]="user.role === 'STAFF'"
+                    [class.role-badge--tenant]="user.role === 'TENANT'"
+                    >{{ roleLabel(user.role) }}</span
+                  >
+                </td>
+                <td>
+                  <span
+                    class="status-badge"
+                    [class.status-badge--locked]="user.status === 'LOCKED'"
+                    ><span class="status-dot" aria-hidden="true"></span
+                    >{{ statusLabel(user.status) }}</span
+                  >
+                </td>
+                <td class="date-cell">
+                  {{ user.createdAt | date: "dd/MM/yyyy" }}
+                </td>
+                <td>
+                  <div class="table-actions">
+                    @if (user.role !== "OWNER") {
+                      <button
+                        type="button"
+                        class="table-action"
+                        (click)="openEdit(user)"
+                        [attr.aria-label]="'Chỉnh sửa ' + user.username"
+                      >
+                        Sửa
+                      </button>
+                      <button
+                        type="button"
+                        class="table-action"
+                        [class.table-action--danger]="user.status === 'ACTIVE'"
+                        (click)="openStatus(user)"
+                        [attr.aria-label]="
+                          (user.status === 'ACTIVE' ? 'Khóa ' : 'Mở khóa ') +
+                          user.username
+                        "
+                      >
+                        {{ user.status === "ACTIVE" ? "Khóa" : "Mở khóa" }}
+                      </button>
+                      @if (user.role === "STAFF" || user.role === "CUSTOMER") {
+                        <button
+                          type="button"
+                          class="table-action"
+                          (click)="openRole(user)"
+                          [attr.aria-label]="'Đổi vai trò của ' + user.username"
+                        >
+                          Đổi vai trò
+                        </button>
+                      }
+                    }
+                    <button
+                      type="button"
+                      class="table-action table-action--history"
+                      (click)="openHistory(user)"
+                      [attr.aria-label]="'Lịch sử vai trò của ' + user.username"
+                    >
+                      Lịch sử
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td class="empty-state" colspan="6">
+                  <span class="empty-state__symbol" aria-hidden="true">◎</span>
+                  <strong>{{
+                    loading()
+                      ? "Đang tải tài khoản..."
+                      : "Không có tài khoản phù hợp"
+                  }}</strong>
+                  <small>{{
+                    loading()
+                      ? "Dữ liệu đang được cập nhật."
+                      : "Thử thay đổi từ khóa hoặc bộ lọc để tìm kết quả."
+                  }}</small>
+                  @if (hasFilters() && !loading()) {
+                    <button
+                      type="button"
+                      class="btn btn--subtle"
+                      (click)="clearFilters()"
+                    >
+                      Xóa bộ lọc
+                    </button>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <div class="pagination">
+        <span
+          >Hiển thị <strong>{{ pageUsers().length }}</strong> /
+          <strong>{{ filteredUsers().length }}</strong> tài khoản</span
+        >
+        <div class="pagination-controls">
+          <button
+            type="button"
+            class="pagination-button"
+            (click)="setPage(page() - 1)"
+            [disabled]="page() === 1"
+            aria-label="Trang trước"
+          >
+            ‹
+          </button>
+          <span
+            >Trang <strong>{{ page() }}</strong> / {{ totalPages() }}</span
+          >
+          <button
+            type="button"
+            class="pagination-button"
+            (click)="setPage(page() + 1)"
+            [disabled]="page() >= totalPages()"
+            aria-label="Trang sau"
+          >
+            ›
+          </button>
+        </div>
+      </div>
+    </section>
+    <p class="workspace-footer">
+      RENTAL PROPERTY <span aria-hidden="true">·</span> SECURE ACCOUNT
+      MANAGEMENT
+    </p>
+  </div>
+
+  @if (panel()) {
+    <div class="dialog-backdrop">
+      <section
+        class="editor-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="editor-heading"
+      >
+        <div class="editor-heading">
+          <span class="editor-heading__mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <circle
+                cx="9"
+                cy="8"
+                r="3"
+                stroke="currentColor"
+                stroke-width="1.8"
+              />
+              <path
+                d="M3.5 19v-1.4a5.5 5.5 0 0 1 11 0V19M18 7v8m-4-4h8"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </span>
+          <div class="editor-heading__copy">
+            <span class="section-eyebrow">QUẢN LÝ NGƯỜI DÙNG</span>
+            <h2 id="editor-heading">
+              @switch (panel()) {
+                @case ("create") {
+                  Thêm nhân viên mới
+                }
+                @case ("edit") {
+                  Chỉnh sửa tài khoản
+                }
+                @case ("status") {
+                  Xác nhận trạng thái
+                }
+                @case ("role") {
+                  Thay đổi vai trò
+                }
+                @case ("history") {
+                  Lịch sử phân quyền
+                }
+              }
+            </h2>
+            @if (selected()) {
+              <p>
+                {{ selected()!.fullName }}
+                <span>· &#64;{{ selected()!.username }}</span>
+              </p>
+            } @else {
+              <p>Tạo tài khoản STAFF cho hệ thống của bạn.</p>
+            }
+          </div>
+          <button
+            type="button"
+            class="editor-close"
+            (click)="closePanel()"
+            [disabled]="saving()"
+            aria-label="Đóng hộp thoại"
+            title="Đóng"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M6 6l12 12M18 6 6 18"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+            </svg>
+          </button>
+        </div>
+        <div class="editor-content">
+          @if (actionError()) {
+            <div class="notice notice--danger" role="alert">
+              <span aria-hidden="true">!</span>
+              <p>{{ actionError() }}</p>
+            </div>
+          }
+          @switch (panel()) {
+            @case ("create") {
+              <form novalidate (ngSubmit)="createStaff()">
+                <div class="form-grid">
+                  <label class="form-field" for="staff-username"
+                    ><span>Tên đăng nhập <i>*</i></span>
+                    <input
+                      id="staff-username"
+                      name="staffUsername"
+                      autocomplete="off"
+                      maxlength="60"
+                      [(ngModel)]="staffForm.username"
+                      placeholder="vd: nhanvien01"
+                      [disabled]="saving()"
+                  /></label>
+                  <label class="form-field" for="staff-fullname"
+                    ><span>Họ và tên <i>*</i></span>
+                    <input
+                      id="staff-fullname"
+                      name="staffFullName"
+                      autocomplete="name"
+                      maxlength="120"
+                      [(ngModel)]="staffForm.fullName"
+                      placeholder="Nguyễn Văn A"
+                      [disabled]="saving()"
+                  /></label>
+                  <label class="form-field" for="staff-email"
+                    ><span>Email</span>
+                    <input
+                      id="staff-email"
+                      name="staffEmail"
+                      type="email"
+                      autocomplete="email"
+                      maxlength="160"
+                      [(ngModel)]="staffForm.email"
+                      placeholder="email@example.com"
+                      [disabled]="saving()"
+                  /></label>
+                  <label class="form-field" for="staff-phone"
+                    ><span>Số điện thoại</span>
+                    <input
+                      id="staff-phone"
+                      name="staffPhone"
+                      type="tel"
+                      autocomplete="tel"
+                      maxlength="25"
+                      [(ngModel)]="staffForm.phone"
+                      placeholder="09xxxxxxxx"
+                      [disabled]="saving()"
+                  /></label>
+                  <label
+                    class="form-field form-field--full"
+                    for="staff-password"
+                    ><span>Mật khẩu <i>*</i></span>
+                    <div class="password-control">
+                      <input
+                        id="staff-password"
+                        name="staffPassword"
+                        [type]="showStaffPassword() ? 'text' : 'password'"
+                        autocomplete="new-password"
+                        [(ngModel)]="staffForm.password"
+                        placeholder="Nhập mật khẩu cho nhân viên"
+                        [disabled]="saving()"
+                      />
+                      <button
+                        type="button"
+                        class="password-toggle"
+                        (click)="toggleStaffPassword()"
+                        [attr.aria-pressed]="showStaffPassword()"
+                        [attr.aria-label]="
+                          showStaffPassword() ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'
+                        "
+                      >
+                        {{ showStaffPassword() ? "Ẩn" : "Hiện" }}
+                      </button>
+                    </div>
+                    <small
+                      >Tối thiểu 10 ký tự, có chữ và số; tối đa 72 byte
+                      UTF-8.</small
+                    ></label
+                  >
+                </div>
+                <div class="hint-panel" role="note">
+                  <span aria-hidden="true">i</span>
+                  <p>
+                    Tài khoản mới chỉ có vai trò <strong>STAFF</strong>. Không
+                    tạo OWNER hoặc TENANT tại đây.
+                  </p>
+                </div>
+                <div class="editor-actions">
+                  <button
+                    class="btn btn--subtle"
+                    type="button"
+                    (click)="closePanel()"
+                    [disabled]="saving()"
+                  >
+                    Hủy bỏ</button
+                  ><button
+                    class="btn btn--primary"
+                    type="submit"
+                    [disabled]="saving()"
+                  >
+                    {{ saving() ? "Đang tạo..." : "Tạo nhân viên" }}
+                  </button>
+                </div>
+              </form>
+            }
+            @case ("edit") {
+              <form novalidate (ngSubmit)="saveEdit()">
+                <div class="form-grid">
+                  <label class="form-field form-field--full" for="edit-name"
+                    ><span>Họ và tên <i>*</i></span
+                    ><input
+                      id="edit-name"
+                      name="editName"
+                      maxlength="120"
+                      [(ngModel)]="editForm.fullName"
+                      [disabled]="saving()"
+                  /></label>
+                  <label class="form-field" for="edit-email"
+                    ><span>Email</span
+                    ><input
+                      id="edit-email"
+                      name="editEmail"
+                      type="email"
+                      maxlength="160"
+                      [(ngModel)]="editForm.email"
+                      [disabled]="saving()"
+                  /></label>
+                  <label class="form-field" for="edit-phone"
+                    ><span>Số điện thoại</span
+                    ><input
+                      id="edit-phone"
+                      name="editPhone"
+                      type="tel"
+                      maxlength="25"
+                      [(ngModel)]="editForm.phone"
+                      [disabled]="saving()"
+                  /></label>
+                </div>
+                <p class="form-caption">
+                  Tên đăng nhập và mật khẩu không được chỉnh sửa ở màn hình này.
+                </p>
+                <div class="editor-actions">
+                  <button
+                    class="btn btn--subtle"
+                    type="button"
+                    (click)="closePanel()"
+                    [disabled]="saving()"
+                  >
+                    Hủy bỏ</button
+                  ><button
+                    class="btn btn--primary"
+                    type="submit"
+                    [disabled]="saving()"
+                  >
+                    {{ saving() ? "Đang lưu..." : "Lưu thay đổi" }}
+                  </button>
+                </div>
+              </form>
+            }
+            @case ("status") {
+              @if (selected(); as account) {
+                <div
+                  class="confirmation-panel"
+                  [class.confirmation-panel--danger]="
+                    account.status === 'ACTIVE'
+                  "
+                >
+                  <span class="confirmation-symbol" aria-hidden="true">{{
+                    account.status === "ACTIVE" ? "!" : "✓"
+                  }}</span>
+                  <h3>
+                    {{
+                      account.status === "ACTIVE"
+                        ? "Khóa tài khoản này?"
+                        : "Mở khóa tài khoản này?"
+                    }}
+                  </h3>
+                  <p>
+                    Bạn sắp
+                    <strong>{{
+                      account.status === "ACTIVE" ? "khóa" : "mở khóa"
+                    }}</strong>
+                    tài khoản <strong>{{ account.username }}</strong>.
+                  </p>
+                  <p class="subdued">
+                    {{
+                      account.status === "ACTIVE"
+                        ? "Người dùng sẽ bị thu hồi JWT hiện tại và không thể đăng nhập khi bị khóa."
+                        : "Người dùng sẽ có thể đăng nhập trở lại bằng thông tin hợp lệ."
+                    }}
+                  </p>
+                </div>
+                <div class="editor-actions">
+                  <button
+                    class="btn btn--subtle"
+                    type="button"
+                    (click)="closePanel()"
+                    [disabled]="saving()"
+                  >
+                    Hủy bỏ</button
+                  ><button
+                    class="btn"
+                    [class.btn--danger]="account.status === 'ACTIVE'"
+                    [class.btn--primary]="account.status !== 'ACTIVE'"
+                    type="button"
+                    (click)="confirmStatus()"
+                    [disabled]="saving()"
+                  >
+                    {{
+                      saving()
+                        ? "Đang xử lý..."
+                        : account.status === "ACTIVE"
+                          ? "Xác nhận khóa"
+                          : "Xác nhận mở khóa"
+                    }}
+                  </button>
+                </div>
+              }
+            }
+            @case ("role") {
+              @if (selected(); as account) {
+                <div class="role-transition">
+                  <span>{{ roleLabel(account.role) }}</span
+                  ><span class="role-transition__arrow" aria-hidden="true"
+                    >→</span
+                  ><strong>{{
+                    account.role === "CUSTOMER" ? "Nhân viên" : "Khách hàng"
+                  }}</strong>
+                </div>
+                <label class="form-field" for="role-reason"
+                  ><span>Lý do thay đổi <i>*</i></span
+                  ><textarea
+                    id="role-reason"
+                    name="roleReason"
+                    rows="4"
+                    maxlength="500"
+                    [(ngModel)]="roleReason"
+                    placeholder="Nhập lý do phân quyền rõ ràng..."
+                    [disabled]="saving()"
+                  ></textarea>
+                </label>
+                <div class="hint-panel" role="note">
+                  <span aria-hidden="true">i</span>
+                  <p>
+                    Chỉ hỗ trợ CUSTOMER ↔ STAFF. Khi thay đổi vai trò, phiên
+                    đăng nhập trước đó bị thu hồi.
+                  </p>
+                </div>
+                <div class="editor-actions">
+                  <button
+                    class="btn btn--subtle"
+                    type="button"
+                    (click)="closePanel()"
+                    [disabled]="saving()"
+                  >
+                    Hủy bỏ</button
+                  ><button
+                    class="btn btn--primary"
+                    type="button"
+                    (click)="confirmRole()"
+                    [disabled]="saving()"
+                  >
+                    {{ saving() ? "Đang cập nhật..." : "Xác nhận phân quyền" }}
+                  </button>
+                </div>
+              }
+            }
+            @case ("history") {
+              @if (historyLoading()) {
+                <p class="history-empty">Đang tải lịch sử...</p>
+              } @else if (roleHistory().length === 0 && !actionError()) {
+                <p class="history-empty">Chưa có lịch sử thay đổi vai trò.</p>
+              } @else {
+                <div class="history-list">
+                  @for (entry of roleHistory(); track entry.id) {
+                    <div class="history-entry">
+                      <span
+                        class="history-entry__dot"
+                        aria-hidden="true"
+                      ></span>
+                      <div class="history-entry__top">
+                        <strong
+                          >{{ roleLabel(entry.previousRole) }} →
+                          {{ roleLabel(entry.newRole) }}</strong
+                        ><time>{{
+                          entry.changedAt | date: "dd/MM/yyyy HH:mm"
+                        }}</time>
+                      </div>
+                      <p>{{ entry.reason }}</p>
+                      <small>Thực hiện bởi: {{ entry.actorUserId }}</small>
+                      @if (entry.contractReference) {
+                        <small>Hợp đồng: {{ entry.contractReference }}</small>
+                      }
+                    </div>
+                  }
+                </div>
+              }
+              <div class="editor-actions">
+                <button
+                  class="btn btn--subtle"
+                  type="button"
+                  (click)="closePanel()"
+                >
+                  Đóng
+                </button>
+              </div>
+            }
+          }
+        </div>
+      </section>
+    </div>
+  }
+</section>
