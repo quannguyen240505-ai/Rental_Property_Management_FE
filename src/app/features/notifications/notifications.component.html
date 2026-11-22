@@ -1,0 +1,214 @@
+<div class="notice-page">
+  <div class="ambient" aria-hidden="true">
+    <div class="ambient__glow ambient__glow--one"></div>
+    <div class="ambient__glow ambient__glow--two"></div>
+  </div>
+
+  <div class="notice-container">
+    <section class="notice-hero" aria-labelledby="notice-title">
+      <div class="notice-hero__grid" aria-hidden="true"></div>
+      <div
+        class="notice-hero__ring notice-hero__ring--one"
+        aria-hidden="true"
+      ></div>
+      <div
+        class="notice-hero__ring notice-hero__ring--two"
+        aria-hidden="true"
+      ></div>
+      <div class="notice-hero__content">
+        <span class="eyebrow"
+          ><span class="eyebrow__line"></span> TRUNG TÂM THÔNG BÁO</span
+        >
+        <h1 id="notice-title">
+          Cập nhật quan trọng.<br /><em>Luôn trong tầm tay.</em>
+        </h1>
+        <p>
+          Tập trung những thông tin dành riêng cho tài khoản của bạn trong hệ
+          thống Rental Property.
+        </p>
+      </div>
+      <div class="notice-hero__symbol" aria-hidden="true">
+        <svg viewBox="0 0 120 120" fill="none">
+          <path
+            d="M44 92h32M37 83h46l-9-12V47a14 14 0 0 0-28 0v24L37 83Z"
+            stroke="currentColor"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M60 32v-9M85 35l8-8M35 35l-8-8"
+            stroke="currentColor"
+            stroke-width="3"
+            stroke-linecap="round"
+          />
+        </svg>
+      </div>
+    </section>
+
+    <div class="stats-grid" aria-label="Tổng quan thông báo">
+      <article class="stat-card">
+        <div class="stat-card__text">
+          <span>Tổng thông báo</span
+          ><strong>{{ notifications().length }}</strong>
+        </div>
+        <span class="stat-card__icon" aria-hidden="true">▣</span>
+      </article>
+      <article class="stat-card">
+        <div class="stat-card__text">
+          <span>Chưa đọc</span><strong>{{ unreadCount() }}</strong>
+        </div>
+        <span class="stat-card__icon stat-card__icon--unread" aria-hidden="true"
+          >●</span
+        >
+      </article>
+    </div>
+
+    <section class="inbox" aria-labelledby="inbox-title">
+      <div class="inbox__heading">
+        <div>
+          <span class="section-label">DANH SÁCH THÔNG BÁO</span>
+          <h2 id="inbox-title">Hộp thư của bạn</h2>
+          <p>Chỉ hiển thị những thông báo thuộc tài khoản đang đăng nhập.</p>
+        </div>
+        <button
+          class="refresh-btn"
+          type="button"
+          (click)="reload()"
+          [disabled]="loading() || !!busyId()"
+        >
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path
+              d="M20 11a8 8 0 0 0-14-5L3 9m0-5v5h5M4 13a8 8 0 0 0 14 5l3-3m0 5v-5h-5"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          Làm mới
+        </button>
+      </div>
+
+      <div class="filter-tabs" aria-label="Lọc thông báo">
+        <button
+          type="button"
+          [class.filter-tabs__active]="filter() === 'all'"
+          [attr.aria-pressed]="filter() === 'all'"
+          (click)="setFilter('all')"
+        >
+          Tất cả <span>{{ notifications().length }}</span>
+        </button>
+        <button
+          type="button"
+          [class.filter-tabs__active]="filter() === 'unread'"
+          [attr.aria-pressed]="filter() === 'unread'"
+          (click)="setFilter('unread')"
+        >
+          Chưa đọc <span>{{ unreadCount() }}</span>
+        </button>
+      </div>
+
+      @if (error()) {
+        <p class="feedback feedback--error" role="alert">{{ error() }}</p>
+      }
+      @if (actionError()) {
+        <p class="feedback feedback--error" role="alert">{{ actionError() }}</p>
+      }
+
+      @if (loading()) {
+        <div class="empty-state" role="status">
+          <div class="empty-state__symbol" aria-hidden="true">◌</div>
+          <strong>Đang tải thông báo...</strong>
+          <p>Hệ thống đang lấy thông tin của tài khoản.</p>
+        </div>
+      } @else if (!error()) {
+        <div class="items" aria-live="polite">
+          @for (item of visible(); track item.id) {
+            <article class="message" [class.message--unread]="!item.read">
+              <div class="message__marker" aria-hidden="true">
+                @if (!item.read) {
+                  <span></span>
+                }
+              </div>
+              <div class="message__body">
+                <div class="message__meta">
+                  <span class="category">{{
+                    categoryLabel(item.category)
+                  }}</span>
+                  <span class="timestamp">{{
+                    item.createdAt | date: "dd/MM/yyyy, HH:mm"
+                  }}</span>
+                </div>
+                <h3>{{ item.title }}</h3>
+                <p>{{ item.message }}</p>
+                <span class="read-status">{{
+                  item.read ? "Đã đọc" : "Chưa đọc"
+                }}</span>
+              </div>
+              <div class="message__actions">
+                @if (!item.read) {
+                  <button
+                    type="button"
+                    class="mark-read"
+                    [disabled]="!!busyId()"
+                    (click)="markRead(item)"
+                  >
+                    {{
+                      busyId() === item.id ? "Đang lưu..." : "Đánh dấu đã đọc"
+                    }}
+                  </button>
+                }
+              </div>
+            </article>
+          } @empty {
+            <div class="empty-state" role="status">
+              <span class="empty-state__symbol" aria-hidden="true">
+                <svg viewBox="0 0 80 80" fill="none">
+                  <rect
+                    x="16"
+                    y="25"
+                    width="48"
+                    height="36"
+                    rx="8"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                  <path
+                    d="m17 32 23 17 23-17"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linejoin="round"
+                  />
+                  <circle
+                    cx="59"
+                    cy="23"
+                    r="9"
+                    fill="#deefff"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                </svg>
+              </span>
+              <strong>{{
+                filter() === "unread"
+                  ? "Bạn đã đọc hết thông báo"
+                  : "Chưa có thông báo nào"
+              }}</strong>
+              <p>
+                {{
+                  filter() === "unread"
+                    ? "Các thông báo mới sẽ hiển thị tại đây."
+                    : "Khi hệ thống gửi thông báo, bạn sẽ nhìn thấy tại đây."
+                }}
+              </p>
+            </div>
+          }
+        </div>
+      }
+    </section>
+    <p class="notice-footer">
+      Rental Property Management · Thông báo dành riêng cho tài khoản của bạn
+    </p>
+  </div>
+</div>

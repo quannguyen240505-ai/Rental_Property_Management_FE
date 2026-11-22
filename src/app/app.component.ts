@@ -1,14 +1,15 @@
-import { Component, inject } from "@angular/core";
+import { Component, DestroyRef, inject } from "@angular/core";
 import {
   Router,
   RouterLink,
   RouterOutlet,
   NavigationEnd,
 } from "@angular/router";
-import { toSignal } from "@angular/core/rxjs-interop";
-import { filter, map } from "rxjs";
+import { takeUntilDestroyed, toSignal } from "@angular/core/rxjs-interop";
+import { EMPTY, catchError, filter, map, merge, switchMap, timer } from "rxjs";
 
 import { AuthService } from "./core/auth/auth.service";
+import { NotificationService } from "./features/notifications/notification.service";
 
 @Component({
   selector: "app-root",
@@ -61,6 +62,46 @@ import { AuthService } from "./core/auth/auth.service";
                 >Hồ sơ</a
               >
               <a
+                routerLink="/notifications"
+                class="app-navigation__link app-navigation__notification"
+                [class.is-active]="currentUrl().startsWith('/notifications')"
+                [attr.aria-current]="
+                  currentUrl().startsWith('/notifications') ? 'page' : null
+                "
+                [attr.aria-label]="
+                  notifications.unreadCount() > 0
+                    ? 'Thông báo: ' + notifications.unreadCount() + ' chưa đọc'
+                    : 'Thông báo, không có thông báo chưa đọc'
+                "
+                [attr.title]="
+                  notifications.unreadCount() > 0
+                    ? notifications.unreadCount() + ' thông báo chưa đọc'
+                    : 'Thông báo'
+                "
+              >
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path
+                    d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9ZM10 21h4"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                @if (notifications.unreadCount() > 0) {
+                  <span
+                    class="app-navigation__notification-count"
+                    aria-hidden="true"
+                  >
+                    {{
+                      notifications.unreadCount() > 99
+                        ? "99+"
+                        : notifications.unreadCount()
+                    }}
+                  </span>
+                }
+              </a>
+              <a
                 routerLink="/change-password"
                 class="app-navigation__link"
                 [class.is-active]="currentUrl().startsWith('/change-password')"
@@ -94,15 +135,65 @@ import { AuthService } from "./core/auth/auth.service";
       </header>
     }
 
-    <main [class.auth-main]="isLoginPage()" [class.owner-main]="isOwnerPage()">
+    <main
+      [class.auth-main]="isLoginPage()"
+      [class.owner-main]="
+        isOwnerPage() || currentUrl().startsWith('/notifications')
+      "
+    >
       <router-outlet />
     </main>
   `,
   styleUrl: "./app.component.css",
+  styles: [
+    `
+      .app-navigation__notification {
+        position: relative;
+        min-width: 44px;
+        padding: 9px;
+        overflow: visible;
+      }
+      .app-navigation__notification svg {
+        display: block;
+        width: 22px;
+        height: 22px;
+        flex: none;
+      }
+      .app-navigation__notification-count {
+        position: absolute;
+        z-index: 1;
+        top: -2px;
+        right: -5px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 20px;
+        height: 20px;
+        padding: 0 4px;
+        border: 2px solid #103568;
+        border-radius: 999px;
+        background: #e44859;
+        color: #fff;
+        font-size: 10px;
+        font-weight: 800;
+        line-height: 1;
+        font-variant-numeric: tabular-nums;
+        box-sizing: border-box;
+        pointer-events: none;
+      }
+      @media (max-width: 850px) {
+        .app-navigation__notification {
+          min-width: 40px;
+        }
+      }
+    `,
+  ],
 })
 export class AppComponent {
   readonly auth = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
+  readonly notifications = inject(NotificationService);
 
   readonly currentUrl = toSignal(
     this.router.events.pipe(
@@ -111,6 +202,31 @@ export class AppComponent {
     ),
     { initialValue: this.router.url },
   );
+
+  constructor() {
+    // Poll every 30 seconds and refresh after navigation.
+    // Notification page also uses this service, so read actions update the badge immediately.
+    merge(
+      timer(0, 30_000),
+      this.router.events.pipe(
+        filter(
+          (event): event is NavigationEnd => event instanceof NavigationEnd,
+        ),
+      ),
+    )
+      .pipe(
+        switchMap(() => {
+          if (!this.auth.isAuthenticated()) {
+            this.notifications.clearUnreadCount();
+            return EMPTY;
+          }
+          // Header failure must not block navigation; the Notification page shows its own errors.
+          return this.notifications.getMine().pipe(catchError(() => EMPTY));
+        }),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe();
+  }
 
   isLoginPage(): boolean {
     const path = this.currentUrl().split("?")[0];
@@ -137,6 +253,7 @@ export class AppComponent {
 
   private finishLogout(): void {
     this.auth.logout();
+    this.notifications.clearUnreadCount();
     void this.router.navigateByUrl("/login", { replaceUrl: true });
   }
 }
