@@ -1,0 +1,350 @@
+<div class="profile-page">
+  <section class="profile-hero" aria-labelledby="profile-title">
+    <div class="hero-grid" aria-hidden="true"></div>
+    <span class="hero-circle hero-circle--one" aria-hidden="true"></span>
+    <span class="hero-circle hero-circle--two" aria-hidden="true"></span>
+    <div class="hero-copy">
+      <span class="eyebrow"
+        ><span class="eyebrow-line"></span> KHÔNG GIAN CÁ NHÂN</span
+      >
+      <h1 id="profile-title">Hồ sơ <em>của tôi.</em></h1>
+      <p>
+        Quản lý thông tin liên hệ và bảo mật tài khoản Rental Property của bạn.
+      </p>
+    </div>
+    <div class="hero-decoration" aria-hidden="true">
+      <svg viewBox="0 0 220 190" fill="none">
+        <circle
+          cx="110"
+          cy="92"
+          r="78"
+          stroke="currentColor"
+          stroke-opacity=".38"
+        />
+        <circle
+          cx="110"
+          cy="92"
+          r="56"
+          stroke="currentColor"
+          stroke-opacity=".32"
+          stroke-dasharray="3 7"
+        />
+        <circle
+          cx="110"
+          cy="78"
+          r="21"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <path
+          d="M69 133c6-28 26-38 41-38s35 10 41 38"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      </svg>
+    </div>
+  </section>
+
+  @if (loading()) {
+    <div class="state-panel" role="status" aria-live="polite">
+      <span class="loader" aria-hidden="true"></span>
+      <strong>Đang tải hồ sơ của bạn...</strong>
+      <p>Vui lòng kiểm tra kết nối nếu thời gian tải kéo dài.</p>
+    </div>
+  } @else if (profile(); as account) {
+    @if (success()) {
+      <div class="feedback feedback--success" role="status">
+        <span class="feedback-icon" aria-hidden="true">✓</span>
+        <p>{{ success() }}</p>
+        <button
+          type="button"
+          (click)="success.set('')"
+          aria-label="Đóng thông báo thành công"
+        >
+          ×
+        </button>
+      </div>
+    }
+    @if (error()) {
+      <div class="feedback feedback--error" role="alert">
+        <span class="feedback-icon" aria-hidden="true">!</span>
+        <p>{{ error() }}</p>
+        <button
+          type="button"
+          (click)="error.set('')"
+          aria-label="Đóng thông báo lỗi"
+        >
+          ×
+        </button>
+      </div>
+    }
+
+    <div class="profile-layout">
+      <aside class="identity-card" aria-label="Tổng quan tài khoản">
+        <span class="section-label">THÔNG TIN TÀI KHOẢN</span>
+        <div class="avatar" aria-hidden="true">{{ initials() }}</div>
+        <h2>{{ account.fullName }}</h2>
+        <p class="identity-username">{{ "@" + account.username }}</p>
+        <div class="identity-badges">
+          <span class="role-pill">{{ roleLabel() }}</span>
+          <span
+            class="status-pill"
+            [class.status-pill--locked]="account.status === 'LOCKED'"
+          >
+            <span class="status-dot" aria-hidden="true"></span>
+            {{ account.status === "ACTIVE" ? "Đang hoạt động" : "Đã khóa" }}
+          </span>
+        </div>
+        <div class="identity-separator"></div>
+        <div class="identity-detail">
+          <span>Ngày tạo tài khoản</span>
+          <strong>{{ account.createdAt | date: "dd/MM/yyyy" }}</strong>
+        </div>
+        <div class="identity-detail">
+          <span>Cập nhật gần nhất</span>
+          <strong>{{ account.updatedAt | date: "dd/MM/yyyy" }}</strong>
+        </div>
+        <p class="identity-note">
+          Vai trò và trạng thái do hệ thống quản lý, không chỉnh sửa tại trang
+          này.
+        </p>
+      </aside>
+
+      <div class="profile-content">
+        <section class="details-card" aria-labelledby="details-title">
+          <div class="card-top">
+            <div>
+              <span class="section-label">THÔNG TIN LIÊN HỆ</span>
+              <h2 id="details-title">Thông tin cá nhân</h2>
+              <p>Cập nhật thông tin giúp quản lý và liên hệ thuận tiện hơn.</p>
+            </div>
+            @if (!editing()) {
+              <button
+                class="button button--primary edit-trigger"
+                type="button"
+                (click)="beginEdit()"
+              >
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path
+                    d="m4 16.5-.7 4.2 4.2-.7L19 8.5 15.5 5 4 16.5Z"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="m13.8 6.7 3.5 3.5"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                  />
+                </svg>
+                Chỉnh sửa
+              </button>
+            }
+          </div>
+
+          @if (editing()) {
+            <form
+              class="edit-form"
+              [formGroup]="form"
+              (ngSubmit)="saveProfile()"
+              novalidate
+            >
+              <div class="field-grid">
+                <div class="field field--full">
+                  <label for="profile-full-name"
+                    >Họ và tên <span class="required">*</span></label
+                  >
+                  <input
+                    id="profile-full-name"
+                    type="text"
+                    autocomplete="name"
+                    maxlength="120"
+                    formControlName="fullName"
+                    placeholder="Nhập họ và tên"
+                    [readOnly]="saving()"
+                    [class.is-invalid]="
+                      form.controls.fullName.touched &&
+                      form.controls.fullName.invalid
+                    "
+                    [attr.aria-invalid]="
+                      form.controls.fullName.touched &&
+                      form.controls.fullName.invalid
+                    "
+                  />
+                  @if (
+                    form.controls.fullName.touched &&
+                    form.controls.fullName.hasError("required")
+                  ) {
+                    <small class="field-error" role="alert"
+                      >Vui lòng nhập họ và tên.</small
+                    >
+                  } @else if (
+                    form.controls.fullName.touched &&
+                    form.controls.fullName.hasError("maxlength")
+                  ) {
+                    <small class="field-error" role="alert"
+                      >Họ và tên tối đa 120 ký tự.</small
+                    >
+                  }
+                </div>
+                <div class="field">
+                  <label for="profile-email">Địa chỉ email</label>
+                  <input
+                    id="profile-email"
+                    type="email"
+                    autocomplete="email"
+                    maxlength="160"
+                    formControlName="email"
+                    placeholder="email@example.com"
+                    [readOnly]="saving()"
+                    [class.is-invalid]="
+                      form.controls.email.touched && form.controls.email.invalid
+                    "
+                    [attr.aria-invalid]="
+                      form.controls.email.touched && form.controls.email.invalid
+                    "
+                  />
+                  @if (
+                    form.controls.email.touched &&
+                    form.controls.email.hasError("email")
+                  ) {
+                    <small class="field-error" role="alert"
+                      >Địa chỉ email chưa hợp lệ.</small
+                    >
+                  } @else if (
+                    form.controls.email.touched &&
+                    form.controls.email.hasError("maxlength")
+                  ) {
+                    <small class="field-error" role="alert"
+                      >Email tối đa 160 ký tự.</small
+                    >
+                  }
+                </div>
+                <div class="field">
+                  <label for="profile-phone">Số điện thoại</label>
+                  <input
+                    id="profile-phone"
+                    type="tel"
+                    autocomplete="tel"
+                    maxlength="25"
+                    formControlName="phone"
+                    placeholder="Nhập số điện thoại"
+                    [readOnly]="saving()"
+                    [class.is-invalid]="
+                      form.controls.phone.touched && form.controls.phone.invalid
+                    "
+                    [attr.aria-invalid]="
+                      form.controls.phone.touched && form.controls.phone.invalid
+                    "
+                  />
+                  @if (
+                    form.controls.phone.touched &&
+                    form.controls.phone.hasError("maxlength")
+                  ) {
+                    <small class="field-error" role="alert"
+                      >Số điện thoại tối đa 25 ký tự.</small
+                    >
+                  }
+                </div>
+              </div>
+              <p class="form-hint">
+                Email và số điện thoại có thể để trống. Tên đăng nhập không thể
+                thay đổi.
+              </p>
+              <div class="form-actions">
+                <button
+                  type="button"
+                  class="button button--secondary"
+                  [disabled]="saving()"
+                  (click)="cancelEdit()"
+                >
+                  Hủy bỏ
+                </button>
+                <button
+                  type="submit"
+                  class="button button--primary"
+                  [disabled]="saving()"
+                >
+                  @if (saving()) {
+                    <span class="button-spinner" aria-hidden="true"></span> Đang
+                    lưu...
+                  } @else {
+                    Lưu thay đổi
+                  }
+                </button>
+              </div>
+            </form>
+          } @else {
+            <div class="detail-grid">
+              <div class="detail-item">
+                <span class="detail-label">Họ và tên</span>
+                <strong>{{ account.fullName }}</strong>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Tên đăng nhập</span>
+                <strong>{{ account.username }}</strong>
+                <small>Không thể thay đổi</small>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Địa chỉ email</span>
+                <strong [class.not-set]="!account.email">{{
+                  account.email || "Chưa cập nhật"
+                }}</strong>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Số điện thoại</span>
+                <strong [class.not-set]="!account.phone">{{
+                  account.phone || "Chưa cập nhật"
+                }}</strong>
+              </div>
+            </div>
+          }
+        </section>
+
+        <section class="security-card" aria-labelledby="security-title">
+          <div class="security-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path
+                d="M12 2.8 20 6v5.5c0 5-3.3 8.5-8 10-4.7-1.5-8-5-8-10V6l8-3.2Z"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M9 12.2 11 14l4-4.2"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+          <div class="security-copy">
+            <span class="section-label">BẢO MẬT TÀI KHOẢN</span>
+            <h2 id="security-title">Đổi mật khẩu</h2>
+            <p>
+              Bảo vệ tài khoản bằng mật khẩu an toàn và cập nhật khi cần thiết.
+            </p>
+          </div>
+          <a class="button button--outline" routerLink="/change-password">
+            Đổi mật khẩu <span aria-hidden="true">→</span>
+          </a>
+        </section>
+      </div>
+    </div>
+  } @else {
+    <div class="state-panel state-panel--error" role="alert">
+      <div class="state-icon" aria-hidden="true">!</div>
+      <h2>Không thể tải hồ sơ</h2>
+      <p>{{ error() || "Có lỗi xảy ra khi tải thông tin tài khoản." }}</p>
+      <button
+        class="button button--primary"
+        type="button"
+        (click)="loadProfile()"
+      >
+        Thử lại
+      </button>
+    </div>
+  }
+</div>

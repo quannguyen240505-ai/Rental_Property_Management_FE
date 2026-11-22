@@ -2,7 +2,7 @@ import { Routes } from "@angular/router";
 
 import { LoginComponent } from "./features/auth/login/login.component";
 import { OwnerComponent } from "./features/owner/owner.component";
-import { ProfileComponent } from "./features/users/profile.component";
+import { ProfileComponent } from "./features/users/profile/profile.component";
 import { RegisterComponent } from "./features/auth/register/register.component";
 import { ForgotPasswordComponent } from "./features/auth/forgot-password/forgot-password.component";
 import { ResetPasswordComponent } from "./features/auth/reset-password/reset-password.component";
