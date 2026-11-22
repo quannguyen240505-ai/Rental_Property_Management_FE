@@ -36,11 +36,9 @@ export class OwnerComponent implements OnInit {
   users = signal<User[]>([]);
   error = signal("");
   ngOnInit() {
-    this.http
-      .get<User[]>("/api/users")
-      .subscribe({
-        next: (r) => this.users.set(r),
-        error: () => this.error.set("Không thể tải danh sách tài khoản."),
-      });
+    this.http.get<User[]>("/api/users").subscribe({
+      next: (r) => this.users.set(r),
+      error: () => this.error.set("Không thể tải danh sách tài khoản."),
+    });
   }
 }

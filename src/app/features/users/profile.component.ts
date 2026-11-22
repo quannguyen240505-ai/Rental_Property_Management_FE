@@ -28,11 +28,9 @@ export class ProfileComponent implements OnInit {
   user = signal<UserProfile | null>(null);
   message = signal("Đang tải...");
   ngOnInit() {
-    this.http
-      .get<UserProfile>("/api/users/me")
-      .subscribe({
-        next: (x) => this.user.set(x),
-        error: () => this.message.set("Không tải được thông tin tài khoản."),
-      });
+    this.http.get<UserProfile>("/api/users/me").subscribe({
+      next: (x) => this.user.set(x),
+      error: () => this.message.set("Không tải được thông tin tài khoản."),
+    });
   }
 }
