@@ -1,17 +1,43 @@
 import { Routes } from "@angular/router";
 
-import { LoginComponent } from "./features/auth/login.component";
+import { LoginComponent } from "./features/auth/login/login.component";
 import { OwnerComponent } from "./features/owner/owner.component";
 import { ProfileComponent } from "./features/users/profile.component";
+import { RegisterComponent } from "./features/auth/register/register.component";
+import { ForgotPasswordComponent } from "./features/auth/forgot-password/forgot-password.component";
+import { ResetPasswordComponent } from "./features/auth/reset-password/reset-password.component";
+import { ChangePasswordComponent } from "./features/auth/change-password/change-password.component";
 
-import { authGuard, ownerGuard } from "./core/auth/auth.guard";
+import { authGuard, guestGuard, ownerGuard } from "./core/auth/auth.guard";
 
-// Week 1, Quan: authentication and account management only.
-// Property's public room route will be added by its owner via a separate PR.
 export const routes: Routes = [
   { path: "", redirectTo: "login", pathMatch: "full" },
-  { path: "login", component: LoginComponent },
+  {
+    path: "login",
+    component: LoginComponent,
+    canActivate: [guestGuard],
+  },
   { path: "profile", component: ProfileComponent, canActivate: [authGuard] },
   { path: "owner", component: OwnerComponent, canActivate: [ownerGuard] },
+  {
+    path: "register",
+    component: RegisterComponent,
+    canActivate: [guestGuard],
+  },
+  {
+    path: "forgot-password",
+    component: ForgotPasswordComponent,
+    canActivate: [guestGuard],
+  },
+  {
+    path: "reset-password",
+    component: ResetPasswordComponent,
+    canActivate: [guestGuard],
+  },
+  {
+    path: "change-password",
+    component: ChangePasswordComponent,
+    canActivate: [authGuard],
+  },
   { path: "**", redirectTo: "login" },
 ];

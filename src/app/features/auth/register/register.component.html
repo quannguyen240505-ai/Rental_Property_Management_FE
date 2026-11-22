@@ -1,0 +1,304 @@
+<div class="register-shell">
+  <aside class="register-hero" aria-label="Giới thiệu Rental Property">
+    <div class="hero-orb orb-one" aria-hidden="true"></div>
+    <div class="hero-orb orb-two" aria-hidden="true"></div>
+    <div class="hero-ring" aria-hidden="true"></div>
+    <a
+      class="brand"
+      routerLink="/login"
+      aria-label="Rental Property - về đăng nhập"
+    >
+      <span class="brand-icon" aria-hidden="true">
+        <svg viewBox="0 0 40 40" fill="none">
+          <path
+            d="M6 19.5 20 7l14 12.5V34H23.5V24h-7v10H6V19.5Z"
+            stroke="currentColor"
+            stroke-width="2.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </span>
+      <span
+        ><strong>Rental Property</strong
+        ><small>Property Management System</small></span
+      >
+    </a>
+    <div class="hero-copy">
+      <span class="eyebrow">BẮT ĐẦU VỚI RENTAL PROPERTY</span>
+      <h1>Một tài khoản.<br /><em>Nhiều tiện ích.</em></h1>
+      <p>
+        Tìm kiếm phòng, theo dõi thông tin thuê và kết nối với đơn vị quản lý
+        trên một nền tảng thống nhất.
+      </p>
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 440 270" fill="none">
+          <path
+            d="M38 155 207 35l178 120v91H38v-91Z"
+            stroke="currentColor"
+            stroke-width="2"
+          />
+          <path
+            d="M75 144 207 57l140 87v102H75V144Z"
+            stroke="currentColor"
+            stroke-width="2"
+          />
+          <path
+            d="M113 156h55v56h-55zm99 0h55v56h-55zm98 0h30v90h-30zM113 229h55v17h-55zm99 0h55v17h-55z"
+            stroke="currentColor"
+            stroke-width="2"
+          />
+        </svg>
+      </div>
+    </div>
+    <div class="hero-footer">© 2026 Rental Property Management</div>
+  </aside>
+
+  <div class="register-side">
+    <section class="register-card" aria-labelledby="register-title">
+      <div class="register-heading">
+        <span class="form-eyebrow">TẠO TÀI KHOẢN MỚI</span>
+        <h2 id="register-title">Đăng ký tài khoản</h2>
+        <p>Đăng ký tài khoản khách hàng để bắt đầu sử dụng hệ thống.</p>
+      </div>
+
+      @if (success()) {
+        <div class="success-panel" role="status">
+          <span class="success-icon" aria-hidden="true">✓</span>
+          <h3>Đăng ký thành công!</h3>
+          <p>
+            Tài khoản <strong>{{ submittedUsername() }}</strong> đã được tạo với
+            vai trò <strong>CUSTOMER</strong>.
+          </p>
+          <p>Đăng nhập để tiếp tục sử dụng hệ thống.</p>
+          <a routerLink="/login" class="primary-link"
+            >Đến trang đăng nhập <span aria-hidden="true">→</span></a
+          >
+        </div>
+      } @else {
+        <form
+          novalidate
+          (ngSubmit)="
+            submit(
+              fullNameInput.value,
+              usernameInput.value,
+              emailInput.value,
+              phoneInput.value,
+              passwordInput.value,
+              confirmInput.value
+            )
+          "
+        >
+          <div class="field-row">
+            <div class="field">
+              <label for="reg-fullname"
+                >Họ và tên <span aria-hidden="true">*</span></label
+              >
+              <input
+                #fullNameInput
+                id="reg-fullname"
+                name="fullName"
+                type="text"
+                autocomplete="name"
+                maxlength="120"
+                placeholder="Nguyễn Văn A"
+                (input)="clearField('fullName')"
+                [class.invalid]="!!fieldErrors().fullName"
+                [attr.aria-invalid]="!!fieldErrors().fullName"
+                [disabled]="loading()"
+              />
+              @if (fieldErrors().fullName) {
+                <p class="field-error" role="alert">
+                  <span class="error-mark" aria-hidden="true">!</span
+                  ><span>{{ fieldErrors().fullName }}</span>
+                </p>
+              }
+            </div>
+            <div class="field">
+              <label for="reg-username"
+                >Tên đăng nhập <span aria-hidden="true">*</span></label
+              >
+              <input
+                #usernameInput
+                id="reg-username"
+                name="username"
+                type="text"
+                autocomplete="username"
+                maxlength="60"
+                placeholder="nguyenvana"
+                (input)="clearField('username')"
+                [class.invalid]="!!fieldErrors().username"
+                [attr.aria-invalid]="!!fieldErrors().username"
+                [disabled]="loading()"
+              />
+              @if (fieldErrors().username) {
+                <p class="field-error" role="alert">
+                  <span class="error-mark" aria-hidden="true">!</span
+                  ><span>{{ fieldErrors().username }}</span>
+                </p>
+              }
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="reg-email"
+                >Email <span aria-hidden="true">*</span></label
+              >
+              <input
+                #emailInput
+                id="reg-email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                maxlength="160"
+                placeholder="email@example.com"
+                (input)="clearField('email')"
+                [class.invalid]="!!fieldErrors().email"
+                [attr.aria-invalid]="!!fieldErrors().email"
+                [disabled]="loading()"
+              />
+              @if (fieldErrors().email) {
+                <p class="field-error" role="alert">
+                  <span class="error-mark" aria-hidden="true">!</span
+                  ><span>{{ fieldErrors().email }}</span>
+                </p>
+              }
+            </div>
+            <div class="field">
+              <label for="reg-phone"
+                >Số điện thoại liên hệ <span aria-hidden="true">*</span></label
+              >
+              <input
+                #phoneInput
+                id="reg-phone"
+                name="phone"
+                type="tel"
+                autocomplete="tel-national"
+                inputmode="numeric"
+                maxlength="10"
+                required
+                placeholder="09xxxxxxxx"
+                (input)="clearField('phone')"
+                [class.invalid]="!!fieldErrors().phone"
+                [attr.aria-invalid]="!!fieldErrors().phone"
+                [disabled]="loading()"
+              />
+              @if (fieldErrors().phone) {
+                <p class="field-error" role="alert">
+                  <span class="error-mark" aria-hidden="true">!</span
+                  ><span>{{ fieldErrors().phone }}</span>
+                </p>
+              }
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="reg-password"
+                >Mật khẩu <span aria-hidden="true">*</span></label
+              >
+              <div class="password-field">
+                <input
+                  #passwordInput
+                  id="reg-password"
+                  name="password"
+                  [type]="showPassword() ? 'text' : 'password'"
+                  autocomplete="new-password"
+                  placeholder="Tối thiểu 10 ký tự"
+                  (input)="clearField('password')"
+                  [class.invalid]="!!fieldErrors().password"
+                  [attr.aria-invalid]="!!fieldErrors().password"
+                  [disabled]="loading()"
+                />
+                <button
+                  type="button"
+                  class="toggle-password"
+                  (click)="showPassword.set(!showPassword())"
+                  [attr.aria-label]="
+                    showPassword() ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'
+                  "
+                >
+                  {{ showPassword() ? "Ẩn" : "Hiện" }}
+                </button>
+              </div>
+              @if (fieldErrors().password) {
+                <p class="field-error" role="alert">
+                  <span class="error-mark" aria-hidden="true">!</span
+                  ><span>{{ fieldErrors().password }}</span>
+                </p>
+              }
+            </div>
+            <div class="field">
+              <label for="reg-confirm"
+                >Xác nhận mật khẩu <span aria-hidden="true">*</span></label
+              >
+              <div class="password-field">
+                <input
+                  #confirmInput
+                  id="reg-confirm"
+                  name="confirmPassword"
+                  [type]="showConfirmPassword() ? 'text' : 'password'"
+                  autocomplete="new-password"
+                  placeholder="Nhập lại mật khẩu"
+                  (input)="clearField('confirmPassword')"
+                  [class.invalid]="!!fieldErrors().confirmPassword"
+                  [attr.aria-invalid]="!!fieldErrors().confirmPassword"
+                  [disabled]="loading()"
+                />
+                <button
+                  type="button"
+                  class="toggle-password"
+                  (click)="showConfirmPassword.set(!showConfirmPassword())"
+                  [attr.aria-label]="
+                    showConfirmPassword() ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'
+                  "
+                >
+                  {{ showConfirmPassword() ? "Ẩn" : "Hiện" }}
+                </button>
+              </div>
+              @if (fieldErrors().confirmPassword) {
+                <p class="field-error" role="alert">
+                  <span class="error-mark" aria-hidden="true">!</span
+                  ><span>{{ fieldErrors().confirmPassword }}</span>
+                </p>
+              }
+            </div>
+          </div>
+          <p class="password-hint">
+            Mật khẩu cần ít nhất 10 ký tự, có cả chữ và số.
+          </p>
+
+          @if (serverError()) {
+            <div class="server-feedback" role="alert">
+              <span aria-hidden="true">!</span>
+              <p>{{ serverError() }}</p>
+              <button
+                type="button"
+                (click)="serverError.set('')"
+                aria-label="Đóng thông báo"
+              >
+                ×
+              </button>
+            </div>
+          }
+
+          <button class="submit" type="submit" [disabled]="loading()">
+            @if (loading()) {
+              <span class="spinner" aria-hidden="true"></span> Đang tạo tài
+              khoản...
+            } @else {
+              Tạo tài khoản <span aria-hidden="true">→</span>
+            }
+          </button>
+        </form>
+      }
+      <div class="login-redirect">
+        Đã có tài khoản? <a routerLink="/login">Đăng nhập ngay</a>
+      </div>
+      <p class="form-note">
+        Tài khoản đăng ký công khai được cấp vai trò CUSTOMER. Tài khoản quản
+        trị do OWNER quản lý.
+      </p>
+    </section>
+    <p class="side-footer">Rental Property · Secure access</p>
+  </div>
+</div>
