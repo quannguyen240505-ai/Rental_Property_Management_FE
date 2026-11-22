@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "start": "ng serve --proxy-config proxy.conf.json --port 4200",
-    "build": "ng build"
+    "build": "ng build",
+    "test": "ng test --watch=false",
+    "test:watch": "ng test"
   },
   "dependencies": {
     "@angular/animations": "^20.3.0",
@@ -20,9 +22,12 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^20.3.0",
+    "@angular/build": "^20.3.43",
     "@angular/cli": "^20.3.0",
     "@angular/compiler-cli": "^20.3.0",
+    "jsdom": "^26.1.0",
     "prettier": "^3.10.1",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "vitest": "^3.2.7"
   }
 }
