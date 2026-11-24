@@ -13,6 +13,8 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { finalize } from "rxjs";
 import { UserNotification, NotificationCategory } from "./notification.model";
 import { NotificationService } from "./notification.service";
+import { UiButtonComponent } from "../../shared/ui/button/ui-button.component";
+import { UiBadgeComponent } from "../../shared/ui/badge/ui-badge.component";
 
 type DisplayFilter = "all" | "unread";
 
@@ -27,7 +29,7 @@ const CATEGORY_LABELS: Record<NotificationCategory, string> = {
 @Component({
   selector: "app-notifications",
   standalone: true,
-  imports: [DatePipe],
+  imports: [DatePipe, UiButtonComponent, UiBadgeComponent],
   templateUrl: "./notifications.component.html",
   styleUrl: "./notifications.component.css",
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -24,6 +24,7 @@ import {
   UserProfile,
 } from "./profile.model";
 import { ProfileService } from "./profile.service";
+import { UiBadgeComponent } from "../../../shared/ui";
 
 const ROLE_LABELS: Record<ProfileRole, string> = {
   OWNER: "Chủ trọ",
@@ -35,7 +36,7 @@ const ROLE_LABELS: Record<ProfileRole, string> = {
 @Component({
   selector: "app-profile",
   standalone: true,
-  imports: [DatePipe, ReactiveFormsModule, RouterLink],
+  imports: [DatePipe, ReactiveFormsModule, RouterLink, UiBadgeComponent],
   templateUrl: "./profile.component.html",
   styleUrl: "./profile.component.css",
   changeDetection: ChangeDetectionStrategy.OnPush,

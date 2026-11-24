@@ -277,12 +277,12 @@
                   >
                 </td>
                 <td>
-                  <span
-                    class="status-badge"
-                    [class.status-badge--locked]="user.status === 'LOCKED'"
-                    ><span class="status-dot" aria-hidden="true"></span
-                    >{{ statusLabel(user.status) }}</span
+                  <ui-badge
+                    [tone]="user.status === 'ACTIVE' ? 'success' : 'danger'"
+                    [dot]="true"
                   >
+                    {{ statusLabel(user.status) }}
+                  </ui-badge>
                 </td>
                 <td class="date-cell">
                   {{ user.createdAt | date: "dd/MM/yyyy" }}
