@@ -4,7 +4,7 @@ import {
   provideHttpClientTesting,
 } from "@angular/common/http/testing";
 import { TestBed } from "@angular/core/testing";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { AuthService, LoginResponse } from "./auth.service";
 
 const loginResponse: LoginResponse = {
@@ -28,6 +28,7 @@ describe("AuthService", () => {
   });
 
   afterEach(() => {
+    vi.useRealTimers();
     httpMock.verify();
     TestBed.resetTestingModule();
     sessionStorage.clear();
@@ -96,6 +97,35 @@ describe("AuthService", () => {
     expect(localStorage.getItem("accessToken")).toBeNull();
     expect(localStorage.getItem("role")).toBeNull();
     expect(auth.token()).toBeNull();
+  });
+
+  it("tự kết thúc phiên khi hết thời gian mà không cần API trả 401", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-11-24T08:00:00Z"));
+    const auth = TestBed.inject(AuthService);
+    const onExpired = vi.fn();
+    const subscription = auth.sessionExpired$.subscribe(onExpired);
+    auth.login("tenant", "Password12345").subscribe();
+    httpMock.expectOne("/api/auth/login").flush({
+      ...loginResponse,
+      expiresAt: "2026-11-24T08:00:01Z",
+    });
+    vi.advanceTimersByTime(999);
+    expect(auth.token()).toBe("jwt-for-unit-test");
+    vi.advanceTimersByTime(1);
+    expect(auth.token()).toBeNull();
+    expect(onExpired).toHaveBeenCalledTimes(1);
+    expect(sessionStorage.getItem("accessToken")).toBeNull();
+    subscription.unsubscribe();
+  });
+
+  it("logout thủ công không tạo sự kiện hết hạn", () => {
+    const auth = TestBed.inject(AuthService);
+    const onExpired = vi.fn();
+    const subscription = auth.sessionExpired$.subscribe(onExpired);
+    auth.logout();
+    expect(onExpired).not.toHaveBeenCalled();
+    subscription.unsubscribe();
   });
 
   it("logoutFromServer gọi đúng API, không tự xóa phiên trước khi phản hồi", () => {

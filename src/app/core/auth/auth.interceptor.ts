@@ -1,6 +1,5 @@
 import { HttpInterceptorFn } from "@angular/common/http";
 import { inject } from "@angular/core";
-import { Router } from "@angular/router";
 import { catchError, throwError } from "rxjs";
 
 import { AuthService } from "./auth.service";
@@ -14,7 +13,6 @@ const PUBLIC_AUTH_PATHS = [
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const auth = inject(AuthService);
-  const router = inject(Router);
 
   const token = auth.token();
   const path = req.url.split("?")[0];
@@ -39,9 +37,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(request).pipe(
     catchError((error) => {
-      if (error.status === 401 && shouldAttachToken) {
-        auth.logout();
-        void router.navigateByUrl("/login");
+      if (error.status === 401 && shouldAttachToken && auth.token() === token) {
+        auth.expireSession();
       }
 
       return throwError(() => error);

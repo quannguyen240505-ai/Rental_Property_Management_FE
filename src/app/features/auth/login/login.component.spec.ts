@@ -30,6 +30,10 @@ describe("LoginComponent (component logic)", () => {
 
   afterEach(() => TestBed.resetTestingModule());
 
+  it("không hiển thị thông báo hết hạn khi truy cập Login bình thường", () => {
+    expect(component.sessionExpiredNotice).toBe(false);
+  });
+
   it("bỏ trống username/password phải báo lỗi mà không gọi API", () => {
     component.submit("   ", "");
     expect(component.usernameRequired()).toBe(true);
