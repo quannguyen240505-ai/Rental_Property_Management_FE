@@ -7,8 +7,8 @@ import { TestBed } from "@angular/core/testing";
 import { provideRouter } from "@angular/router";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { TenantDashboardComponent } from "./tenant-dashboard.component";
-import { UserNotification } from "../notifications/notification.model";
-import { UserProfile } from "../users/profile/profile.model";
+import { UserNotification } from "../../notifications/notification.model";
+import { UserProfile } from "../../users/profile/profile.model";
 
 const profile: UserProfile = {
   id: "11111111-1111-1111-1111-111111111111",

@@ -1,0 +1,51 @@
+:host {
+  display: block;
+}
+.ui-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  padding: 16px 29px;
+  border-top: 1px solid var(--rp-border, #d5e9df);
+  color: #668d82;
+  font-size: 12px;
+}
+.ui-pagination strong {
+  color: #256e60;
+}
+.ui-pagination__controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.ui-pagination__controls button {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: #f1fffc;
+  border: 1px solid #d2eee6;
+  border-radius: 9px;
+  color: #13806c;
+  font: 700 22px/1 var(--rp-font, Arial, sans-serif);
+  cursor: pointer;
+}
+.ui-pagination__controls button:hover:not(:disabled) {
+  background: #dff7ee;
+}
+.ui-pagination__controls button:disabled {
+  cursor: not-allowed;
+  opacity: 0.46;
+}
+.ui-pagination__controls button:focus-visible {
+  outline: 3px solid var(--rp-focus-ring, #0e9276);
+  outline-offset: 2px;
+}
+@media (max-width: 590px) {
+  .ui-pagination {
+    padding: 14px 18px;
+    flex-wrap: wrap;
+  }
+}

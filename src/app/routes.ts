@@ -33,7 +33,7 @@ export const routes: Routes = [
     path: "owner",
     canActivate: [ownerGuard],
     loadComponent: () =>
-      import("./features/owner/owner-dashboard.component").then(
+      import("./features/dashboard/owner/owner-dashboard.component").then(
         (module) => module.OwnerDashboardComponent,
       ),
   },
@@ -42,7 +42,7 @@ export const routes: Routes = [
     path: "tenant",
     canActivate: [tenantGuard],
     loadComponent: () =>
-      import("./features/tenant/tenant-dashboard.component").then(
+      import("./features/dashboard/tenant/tenant-dashboard.component").then(
         (module) => module.TenantDashboardComponent,
       ),
   },

@@ -1,0 +1,41 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+.ui-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.ui-search svg {
+  position: absolute;
+  left: 14px;
+  width: 18px;
+  height: 18px;
+  color: #71bbaa;
+  pointer-events: none;
+}
+.ui-search input {
+  width: 100%;
+  min-width: 0;
+  height: 45px;
+  margin: 0;
+  padding: 0 13px 0 41px;
+  border: 1px solid #d8f4ed;
+  border-radius: 11px;
+  background: #f1fffc;
+  color: #216454;
+  font: 540 12px var(--rp-font, Arial, sans-serif);
+}
+.ui-search input::placeholder {
+  color: #769b92;
+}
+.ui-search input:focus-visible {
+  outline: 3px solid var(--rp-focus-ring, #0e9276);
+  outline-offset: 1px;
+  background: #fff;
+}
+.ui-search input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

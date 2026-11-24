@@ -176,56 +176,30 @@
       <div class="filters">
         <label class="filter-field filter-field--search" for="user-search">
           <span>Tìm kiếm tài khoản</span>
-          <span class="field-control field-control--search">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <circle
-                cx="10.7"
-                cy="10.7"
-                r="6.7"
-                stroke="currentColor"
-                stroke-width="1.8"
-              />
-              <path
-                d="m16 16 5 5"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-              />
-            </svg>
-            <input
-              id="user-search"
-              type="search"
-              placeholder="Tên, username, email hoặc SĐT"
-              [ngModel]="search()"
-              (ngModelChange)="search.set($event); onFilterChange()"
-            />
-          </span>
+          <ui-search-input
+            controlId="user-search"
+            placeholder="Tên, username, email hoặc SĐT"
+            [value]="search()"
+            (valueChange)="setSearchTerm($event)"
+          />
         </label>
         <label class="filter-field" for="user-role-filter">
           <span>Vai trò</span>
-          <select
-            id="user-role-filter"
-            [ngModel]="roleFilter()"
-            (ngModelChange)="roleFilter.set($event); onFilterChange()"
-          >
-            <option value="">Tất cả vai trò</option>
-            <option value="OWNER">Chủ trọ</option>
-            <option value="STAFF">Nhân viên</option>
-            <option value="TENANT">Người thuê</option>
-            <option value="CUSTOMER">Khách hàng</option>
-          </select>
+          <ui-filter-select
+            controlId="user-role-filter"
+            [options]="roleOptions"
+            [value]="roleFilter()"
+            (valueChange)="setRoleFilter($event)"
+          />
         </label>
         <label class="filter-field" for="user-status-filter">
           <span>Trạng thái</span>
-          <select
-            id="user-status-filter"
-            [ngModel]="statusFilter()"
-            (ngModelChange)="statusFilter.set($event); onFilterChange()"
-          >
-            <option value="">Tất cả trạng thái</option>
-            <option value="ACTIVE">Hoạt động</option>
-            <option value="LOCKED">Đã khóa</option>
-          </select>
+          <ui-filter-select
+            controlId="user-status-filter"
+            [options]="statusOptions"
+            [value]="statusFilter()"
+            (valueChange)="setStatusFilter($event)"
+          />
         </label>
         @if (hasFilters()) {
           <button type="button" class="filter-reset" (click)="clearFilters()">
@@ -361,35 +335,13 @@
           </tbody>
         </table>
       </div>
-      <div class="pagination">
-        <span
-          >Hiển thị <strong>{{ pageUsers().length }}</strong> /
-          <strong>{{ filteredUsers().length }}</strong> tài khoản</span
-        >
-        <div class="pagination-controls">
-          <button
-            type="button"
-            class="pagination-button"
-            (click)="setPage(page() - 1)"
-            [disabled]="page() === 1"
-            aria-label="Trang trước"
-          >
-            ‹
-          </button>
-          <span
-            >Trang <strong>{{ page() }}</strong> / {{ totalPages() }}</span
-          >
-          <button
-            type="button"
-            class="pagination-button"
-            (click)="setPage(page() + 1)"
-            [disabled]="page() >= totalPages()"
-            aria-label="Trang sau"
-          >
-            ›
-          </button>
-        </div>
-      </div>
+      <ui-pagination
+        [page]="page()"
+        [pageSize]="pageSize"
+        [totalItems]="filteredUsers().length"
+        itemLabel="tài khoản"
+        (pageChange)="setPage($event)"
+      />
     </section>
     <p class="workspace-footer">
       RENTAL PROPERTY <span aria-hidden="true">·</span> SECURE ACCOUNT

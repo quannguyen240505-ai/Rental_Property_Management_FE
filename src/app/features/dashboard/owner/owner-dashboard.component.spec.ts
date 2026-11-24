@@ -7,9 +7,9 @@ import { TestBed } from "@angular/core/testing";
 import { provideRouter } from "@angular/router";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
-import { UserNotification } from "../notifications/notification.model";
-import { UserAccount } from "../users/user-management/user-management.model";
-import { UserProfile } from "../users/profile/profile.model";
+import { UserNotification } from "../../notifications/notification.model";
+import { UserAccount } from "../../users/user-management/user-management.model";
+import { UserProfile } from "../../users/profile/profile.model";
 import { OwnerDashboardComponent } from "./owner-dashboard.component";
 
 const profile: UserProfile = {
