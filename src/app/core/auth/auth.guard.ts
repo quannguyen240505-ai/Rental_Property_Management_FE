@@ -1,6 +1,7 @@
 import { inject } from "@angular/core";
 import { CanActivateFn, Router } from "@angular/router";
 import { AuthService } from "./auth.service";
+import { roleHome } from "./role-home";
 
 // Yêu cầu người dùng đăng nhập.
 export const authGuard: CanActivateFn = () => {
@@ -19,9 +20,7 @@ export const guestGuard: CanActivateFn = () => {
     return true;
   }
 
-  return router.createUrlTree([
-    auth.role() === "OWNER" ? "/owner" : "/profile",
-  ]);
+  return router.createUrlTree([roleHome(auth.role())]);
 };
 
 // Chỉ OWNER được truy cập chức năng quản trị.
@@ -37,5 +36,14 @@ export const ownerGuard: CanActivateFn = () => {
     return router.createUrlTree(["/profile"]);
   }
 
+  return true;
+};
+
+// Only TENANT can access private rental dashboard.
+export const tenantGuard: CanActivateFn = () => {
+  const auth = inject(AuthService);
+  const router = inject(Router);
+  if (!auth.isAuthenticated()) return router.createUrlTree(["/login"]);
+  if (auth.role() !== "TENANT") return router.createUrlTree(["/profile"]);
   return true;
 };

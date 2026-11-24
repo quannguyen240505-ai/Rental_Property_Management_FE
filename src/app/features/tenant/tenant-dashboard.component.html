@@ -1,0 +1,342 @@
+<div class="tenant-page">
+  <div class="tenant-container">
+    <section class="tenant-welcome" aria-labelledby="tenant-heading">
+      <div class="tenant-welcome__copy">
+        <div class="tenant-eyebrow">
+          <span class="tenant-eyebrow__line" aria-hidden="true"></span>KHÔNG
+          GIAN NGƯỜI THUÊ
+        </div>
+        <h1 id="tenant-heading">
+          Xin chào, <span>{{ profile()?.fullName || "bạn" }}</span>
+        </h1>
+        <p>
+          Theo dõi những cập nhật quan trọng và quản lý thông tin thuê nhà tại
+          một nơi.
+        </p>
+        <a class="tenant-welcome__link" routerLink="/profile"
+          >Xem hồ sơ của tôi <span aria-hidden="true">→</span></a
+        >
+      </div>
+      <div class="tenant-welcome__art" aria-hidden="true">
+        <svg viewBox="0 0 330 245" fill="none">
+          <circle
+            cx="170"
+            cy="132"
+            r="109"
+            stroke="currentColor"
+            stroke-opacity=".20"
+          />
+          <circle
+            cx="170"
+            cy="132"
+            r="85"
+            stroke="currentColor"
+            stroke-opacity=".12"
+          />
+          <path
+            d="M62 126 171 38l109 88v94H62v-94Z"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M97 112 171 54l74 58v108H97V112Z"
+            stroke="currentColor"
+            stroke-opacity=".8"
+            stroke-width="1.8"
+          />
+          <path
+            d="M145 220v-71h52v71M114 136h20v25h-20zM207 136h20v25h-20z"
+            stroke="currentColor"
+            stroke-width="1.8"
+          />
+          <path
+            d="M48 220h251"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+          <circle
+            cx="253"
+            cy="64"
+            r="20"
+            stroke="currentColor"
+            stroke-opacity=".5"
+          />
+        </svg>
+      </div>
+    </section>
+
+    <div class="tenant-section-head">
+      <div>
+        <span class="tenant-section-head__eyebrow">TỔNG QUAN</span>
+        <h2>Thông tin của bạn</h2>
+      </div>
+      <ui-badge tone="info" [dot]="true">Dữ liệu theo tài khoản</ui-badge>
+    </div>
+
+    <section class="tenant-stats" aria-label="Tổng quan thuê nhà">
+      <ui-card variant="outlined" padding="md">
+        <div class="tenant-stat">
+          <div class="tenant-stat__symbol" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path
+                d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9ZM10 21h4"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+              />
+            </svg>
+          </div>
+          <p>Thông báo chưa đọc</p>
+          <strong
+            class="tenant-stat__value"
+            [attr.aria-label]="
+              notificationError()
+                ? 'Chưa tải được'
+                : unreadCount() + ' thông báo chưa đọc'
+            "
+            >{{
+              notificationLoading() || notificationError() ? "—" : unreadCount()
+            }}</strong
+          >
+          <span class="tenant-stat__hint">{{
+            notificationError()
+              ? "Chưa tải được dữ liệu"
+              : "Cập nhật từ Notification Service"
+          }}</span>
+        </div>
+      </ui-card>
+      <ui-card variant="outlined" padding="md">
+        <div class="tenant-stat">
+          <div class="tenant-stat__symbol" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path
+                d="m3 11 9-8 9 8v10h-7v-7h-4v7H3V11Z"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+          <p>Phòng đang thuê</p>
+          <strong class="tenant-stat__pending">Chưa kết nối</strong>
+          <span class="tenant-stat__hint">Đang tích hợp dữ liệu phòng</span>
+        </div>
+      </ui-card>
+      <ui-card variant="outlined" padding="md">
+        <div class="tenant-stat">
+          <div class="tenant-stat__symbol" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path
+                d="M6 2h9l4 4v16H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm9 0v5h5M8 12h8M8 16h8"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+          <p>Hợp đồng thuê</p>
+          <strong class="tenant-stat__pending">Chưa kết nối</strong>
+          <span class="tenant-stat__hint">Đang tích hợp Rental Service</span>
+        </div>
+      </ui-card>
+      <ui-card variant="outlined" padding="md">
+        <div class="tenant-stat">
+          <div class="tenant-stat__symbol" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path
+                d="M4 3h16v18l-3-2-3 2-3-2-3 2-4-2V3ZM8 8h8M8 12h8"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+          <p>Hóa đơn gần nhất</p>
+          <strong class="tenant-stat__pending">Chưa kết nối</strong>
+          <span class="tenant-stat__hint">Đang tích hợp Billing Service</span>
+        </div>
+      </ui-card>
+    </section>
+
+    <div class="tenant-content-grid">
+      <section class="tenant-panel" aria-labelledby="tenant-notices-title">
+        <ui-card padding="lg">
+          <div class="tenant-panel__head">
+            <div>
+              <span class="tenant-panel__eyebrow">DÀNH CHO BẠN</span>
+              <h2 id="tenant-notices-title">Thông báo gần đây</h2>
+              <p>Cập nhật mới nhất từ hệ thống</p>
+            </div>
+            <ui-button
+              variant="secondary"
+              size="sm"
+              [loading]="notificationLoading()"
+              (pressed)="loadNotifications()"
+              >Làm mới</ui-button
+            >
+          </div>
+          @if (notificationError()) {
+            <div class="tenant-state tenant-state--error" role="alert">
+              <p>{{ notificationError() }}</p>
+              <ui-button
+                variant="secondary"
+                size="sm"
+                (pressed)="loadNotifications()"
+                >Thử lại</ui-button
+              >
+            </div>
+          } @else if (notificationLoading()) {
+            <p class="tenant-state" role="status">Đang tải thông báo...</p>
+          } @else if (recentNotifications().length === 0) {
+            <div class="tenant-state" role="status">
+              <span class="tenant-state__symbol" aria-hidden="true">✓</span>
+              <strong>Bạn chưa có thông báo nào</strong>
+              <p>Những thông tin quan trọng sẽ xuất hiện tại đây.</p>
+            </div>
+          } @else {
+            <div class="tenant-notices">
+              @for (notice of recentNotifications(); track notice.id) {
+                <a
+                  routerLink="/notifications"
+                  class="tenant-notice"
+                  [class.tenant-notice--unread]="!notice.read"
+                >
+                  <span class="tenant-notice__symbol" aria-hidden="true">{{
+                    notice.read ? "✓" : "•"
+                  }}</span>
+                  <span class="tenant-notice__copy">
+                    <strong>{{ notice.title }}</strong>
+                    <span>{{ notice.message }}</span>
+                  </span>
+                  <time
+                    class="tenant-notice__time"
+                    [attr.datetime]="notice.createdAt"
+                    >{{ notice.createdAt | date: "dd/MM/yyyy" }}</time
+                  >
+                </a>
+              }
+            </div>
+          }
+          <a class="tenant-panel__footer-link" routerLink="/notifications"
+            >Xem tất cả thông báo <span aria-hidden="true">→</span></a
+          >
+        </ui-card>
+      </section>
+
+      <section class="tenant-panel" aria-labelledby="tenant-rental-title">
+        <ui-card padding="lg">
+          <div class="tenant-panel__head">
+            <div>
+              <span class="tenant-panel__eyebrow">KHÔNG GIAN THUÊ</span>
+              <h2 id="tenant-rental-title">Phòng & hợp đồng</h2>
+              <p>Thông tin nơi ở của bạn</p>
+            </div>
+            <ui-badge tone="neutral">Đang tích hợp</ui-badge>
+          </div>
+          <div class="tenant-rental-placeholder">
+            <span class="tenant-rental-placeholder__icon" aria-hidden="true">
+              <svg viewBox="0 0 64 64" fill="none">
+                <path
+                  d="m9 29 23-19 23 19v27H9V29Z"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M25 56V38h14v18M17 32h8M40 32h8"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </span>
+            <strong>Thông tin phòng thuê sắp được cập nhật</strong>
+            <p>
+              Khi Property và Rental Service được tích hợp, phòng đang thuê,
+              thời hạn hợp đồng và hóa đơn sẽ hiển thị tại đây.
+            </p>
+          </div>
+        </ui-card>
+      </section>
+    </div>
+
+    <div class="tenant-bottom-grid">
+      <section aria-labelledby="tenant-actions-title">
+        <ui-card padding="lg">
+          <div class="tenant-panel__head">
+            <div>
+              <span class="tenant-panel__eyebrow">TIỆN ÍCH</span>
+              <h2 id="tenant-actions-title">Thao tác nhanh</h2>
+            </div>
+          </div>
+          <div class="tenant-actions">
+            <a routerLink="/profile" class="tenant-action"
+              ><span aria-hidden="true">♙</span><strong>Hồ sơ cá nhân</strong
+              ><small>Xem và cập nhật thông tin</small></a
+            >
+            <a routerLink="/notifications" class="tenant-action"
+              ><span aria-hidden="true">◉</span><strong>Thông báo</strong
+              ><small>Xem các cập nhật</small></a
+            >
+            <div
+              class="tenant-action tenant-action--disabled"
+              aria-disabled="true"
+            >
+              <span aria-hidden="true">▤</span><strong>Xem hóa đơn</strong
+              ><small>Sắp tích hợp</small>
+            </div>
+            <div
+              class="tenant-action tenant-action--disabled"
+              aria-disabled="true"
+            >
+              <span aria-hidden="true">⌁</span><strong>Yêu cầu hỗ trợ</strong
+              ><small>Sắp tích hợp</small>
+            </div>
+          </div>
+        </ui-card>
+      </section>
+      <section aria-labelledby="tenant-account-title">
+        <ui-card padding="lg">
+          <div class="tenant-panel__head">
+            <div>
+              <span class="tenant-panel__eyebrow">TÀI KHOẢN</span>
+              <h2 id="tenant-account-title">Thông tin liên hệ</h2>
+            </div>
+          </div>
+          @if (profileError()) {
+            <div class="tenant-state tenant-state--error" role="alert">
+              <p>{{ profileError() }}</p>
+              <ui-button variant="secondary" size="sm" (pressed)="loadProfile()"
+                >Tải lại</ui-button
+              >
+            </div>
+          } @else if (profileLoading()) {
+            <p class="tenant-state" role="status">
+              Đang tải thông tin hồ sơ...
+            </p>
+          } @else if (profile(); as account) {
+            <div class="tenant-account-info">
+              <div>
+                <span>Tên đăng nhập</span
+                ><strong>{{ account.username }}</strong>
+              </div>
+              <div>
+                <span>Email</span
+                ><strong>{{ account.email || "Chưa cập nhật" }}</strong>
+              </div>
+              <div>
+                <span>Số điện thoại</span
+                ><strong>{{ account.phone || "Chưa cập nhật" }}</strong>
+              </div>
+            </div>
+            <a class="tenant-panel__footer-link" routerLink="/profile"
+              >Chỉnh sửa hồ sơ <span aria-hidden="true">→</span></a
+            >
+          }
+        </ui-card>
+      </section>
+    </div>
+  </div>
+</div>
