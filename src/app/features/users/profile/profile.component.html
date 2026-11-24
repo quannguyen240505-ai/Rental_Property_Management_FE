@@ -88,13 +88,12 @@
         <p class="identity-username">{{ "@" + account.username }}</p>
         <div class="identity-badges">
           <span class="role-pill">{{ roleLabel() }}</span>
-          <span
-            class="status-pill"
-            [class.status-pill--locked]="account.status === 'LOCKED'"
+          <ui-badge
+            [tone]="account.status === 'ACTIVE' ? 'success' : 'danger'"
+            [dot]="true"
           >
-            <span class="status-dot" aria-hidden="true"></span>
             {{ account.status === "ACTIVE" ? "Đang hoạt động" : "Đã khóa" }}
-          </span>
+          </ui-badge>
         </div>
         <div class="identity-separator"></div>
         <div class="identity-detail">

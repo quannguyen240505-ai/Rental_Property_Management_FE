@@ -1,7 +1,8 @@
+/* Rental Property · Forest Emerald theme — CSS only */
 /* Hybrid 80/20 — geometric accents and restrained glass, same palette as Login/User Management. */
 :host {
   display: block;
-  color: #10264b;
+  color: #104b3d;
   font-family: Inter, "Segoe UI", Arial, sans-serif;
 }
 *,
@@ -18,7 +19,7 @@ button:disabled {
   cursor: not-allowed;
 }
 button:focus-visible {
-  outline: 3px solid #7aaff5;
+  outline: 3px solid #7af5d8;
   outline-offset: 3px;
 }
 .notice-page {
@@ -26,7 +27,7 @@ button:focus-visible {
   isolation: isolate;
   min-height: calc(100svh - 76px);
   padding: clamp(22px, 3vw, 42px) clamp(15px, 3.4vw, 50px) 30px;
-  background: linear-gradient(155deg, #f8fbff, #edf5ff 65%, #f8faff);
+  background: linear-gradient(155deg, #f7fcfa, #eaf8f2 65%, #f6fcf9);
   overflow: hidden;
 }
 .ambient {
@@ -40,7 +41,7 @@ button:focus-visible {
   position: absolute;
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, #b9dbff77, transparent 70%);
+  background: radial-gradient(circle, #b9ffef77, transparent 70%);
 }
 .ambient__glow--one {
   top: -230px;
@@ -65,23 +66,23 @@ button:focus-visible {
   border-radius: 24px;
   color: #fff;
   padding: clamp(23px, 3vw, 40px);
-  background: linear-gradient(130deg, #071c3a, #103b76 57%, #1c65b6);
-  box-shadow: 0 18px 48px #173e6c1f;
+  background: linear-gradient(130deg, #053e33, #056f56 57%, #098c6d);
+  box-shadow: 0 18px 48px #176c581f;
 }
 .notice-hero__grid {
   position: absolute;
   z-index: -1;
   inset: -30% -8% -30% 40%;
   background-image:
-    linear-gradient(#cce5ff16 1px, transparent 1px),
-    linear-gradient(90deg, #cce5ff16 1px, transparent 1px);
+    linear-gradient(#ccfff316 1px, transparent 1px),
+    linear-gradient(90deg, #ccfff316 1px, transparent 1px);
   background-size: 38px 38px;
   transform: rotate(-12deg);
 }
 .notice-hero__ring {
   position: absolute;
   z-index: -1;
-  border: 1px solid #b9dcff38;
+  border: 1px solid #b9ffef38;
   border-radius: 50%;
   pointer-events: none;
 }
@@ -104,7 +105,7 @@ button:focus-visible {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: #c9e7ff;
+  color: #c9fff2;
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 1.7px;
@@ -112,7 +113,7 @@ button:focus-visible {
 .eyebrow__line {
   width: 24px;
   height: 2px;
-  background: #92cbff;
+  background: #92ffe6;
 }
 .notice-hero h1 {
   margin: 16px 0 12px;
@@ -121,13 +122,13 @@ button:focus-visible {
   line-height: 1.21;
 }
 .notice-hero h1 em {
-  color: #abd9ff;
+  color: #a5efd1;
   font-style: normal;
 }
 .notice-hero p {
   margin: 0;
   max-width: 490px;
-  color: #d4e8fc;
+  color: #d4fcf3;
   font-size: 13px;
   line-height: 1.8;
 }
@@ -136,7 +137,7 @@ button:focus-visible {
   width: 135px;
   height: 135px;
   margin-right: 5%;
-  color: #c1e3ffb0;
+  color: #c1fff1b0;
 }
 .notice-hero__symbol svg {
   width: 100%;
@@ -158,7 +159,7 @@ button:focus-visible {
   border-radius: 19px;
   background: #ffffffd3;
   backdrop-filter: blur(14px);
-  box-shadow: 0 12px 30px #2849710b;
+  box-shadow: 0 12px 30px #2871600b;
 }
 .stat-card__text {
   display: flex;
@@ -166,12 +167,12 @@ button:focus-visible {
   gap: 8px;
 }
 .stat-card__text span {
-  color: #647e9d;
+  color: #649d90;
   font-size: 12px;
   font-weight: 650;
 }
 .stat-card__text strong {
-  color: #163b67;
+  color: #166754;
   font-size: 33px;
   line-height: 1;
 }
@@ -182,8 +183,8 @@ button:focus-visible {
   height: 52px;
   border-radius: 15px;
   font-size: 25px;
-  color: #2264c5;
-  background: #e9f2ff;
+  color: #22c59f;
+  background: #e8f8f1;
 }
 .stat-card__icon--unread {
   color: #0b9078;
@@ -196,7 +197,7 @@ button:focus-visible {
   border-radius: 22px;
   background: #ffffffdb;
   backdrop-filter: blur(15px);
-  box-shadow: 0 20px 45px #244b7d0f;
+  box-shadow: 0 20px 45px #247d680f;
 }
 .inbox__heading {
   display: flex;
@@ -209,18 +210,18 @@ button:focus-visible {
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 1.7px;
-  color: #2261b8;
+  color: #22b895;
 }
 .inbox__heading h2 {
   margin: 7px 0;
-  color: #122e56;
+  color: #125646;
   font-size: 23px;
   letter-spacing: -0.5px;
 }
 .inbox__heading p {
   margin: 0;
   font-size: 12px;
-  color: #8393a7;
+  color: #83a79f;
   line-height: 1.6;
 }
 .refresh-btn {
@@ -230,15 +231,15 @@ button:focus-visible {
   flex: none;
   min-height: 41px;
   padding: 10px 15px;
-  border: 1px solid #d1e3f7;
-  background: #f0f6ff;
+  border: 1px solid #d1f7ee;
+  background: #f0fffc;
   border-radius: 10px;
-  color: #20599e;
+  color: #209e81;
   font-weight: 750;
   font-size: 12px;
 }
 .refresh-btn:hover:not(:disabled) {
-  background: #e4f0ff;
+  background: #e4fff9;
 }
 .refresh-btn svg {
   width: 16px;
@@ -248,7 +249,7 @@ button:focus-visible {
   display: flex;
   gap: 8px;
   padding: 5px 29px 19px;
-  border-bottom: 1px solid #e5eef9;
+  border-bottom: 1px solid #e5f9f4;
 }
 .filter-tabs button {
   display: flex;
@@ -258,24 +259,24 @@ button:focus-visible {
   border: 1px solid transparent;
   border-radius: 9px;
   background: transparent;
-  color: #6a809c;
+  color: #6a9c90;
   font-size: 12px;
   font-weight: 750;
 }
 .filter-tabs button span {
-  background: #eaf1fa;
+  background: #eafaf6;
   border-radius: 99px;
   padding: 3px 7px;
   font-size: 10px;
 }
 .filter-tabs button.filter-tabs__active {
-  border-color: #d6e7ff;
-  background: #e8f2ff;
-  color: #1c5bb5;
+  border-color: #d6fff5;
+  background: #e8fffa;
+  color: #1cb591;
 }
 .filter-tabs button.filter-tabs__active span {
-  color: #1c5bb5;
-  background: #d4e5fe;
+  color: #1cb591;
+  background: #d4fef4;
 }
 .items {
   min-height: 190px;
@@ -285,13 +286,13 @@ button:focus-visible {
   align-items: flex-start;
   gap: 13px;
   padding: 23px 29px;
-  border-bottom: 1px solid #ebf0f7;
+  border-bottom: 1px solid #ebf7f4;
 }
 .message:last-child {
   border-bottom: 0;
 }
 .message--unread {
-  background: #f6faff;
+  background: #f6fffd;
 }
 .message__marker {
   flex: 0 0 9px;
@@ -302,7 +303,7 @@ button:focus-visible {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #2873e9;
+  background: #28e9bc;
 }
 .message__body {
   flex: 1;
@@ -317,34 +318,34 @@ button:focus-visible {
 .category {
   padding: 5px 9px;
   border-radius: 7px;
-  background: #eaf2fc;
-  color: #2b68ae;
+  background: #eafcf8;
+  color: #2bae8f;
   font-size: 10px;
   font-weight: 800;
 }
 .timestamp {
   font-size: 11px;
-  color: #94a4b8;
+  color: #94b8b0;
 }
 .message h3 {
   margin: 12px 0 7px;
   font-size: 15px;
-  color: #163356;
+  color: #165647;
 }
 .message p {
   margin: 0 0 12px;
-  color: #607590;
+  color: #609085;
   font-size: 12px;
   line-height: 1.75;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
 .read-status {
-  color: #92a1b3;
+  color: #92b3ab;
   font-size: 11px;
 }
 .message--unread .read-status {
-  color: #2c67b1;
+  color: #2cb192;
   font-weight: 700;
 }
 .message__actions {
@@ -352,16 +353,16 @@ button:focus-visible {
 }
 .mark-read {
   white-space: nowrap;
-  color: #235fae;
-  border: 1px solid #cfe1fa;
+  color: #23ae8e;
+  border: 1px solid #cffaf0;
   border-radius: 9px;
-  background: #ebf4ff;
+  background: #ebfffa;
   padding: 10px 12px;
   font-size: 11px;
   font-weight: 750;
 }
 .mark-read:hover:not(:disabled) {
-  background: #d9ebff;
+  background: #d9fff6;
 }
 .feedback {
   margin: 17px 29px;
@@ -391,8 +392,8 @@ button:focus-visible {
   height: 78px;
   margin-bottom: 12px;
   border-radius: 22px;
-  color: #4082d4;
-  background: #ecf5ff;
+  color: #40d4b1;
+  background: #ecfffb;
   font-size: 38px;
 }
 .empty-state__symbol svg {
@@ -400,20 +401,20 @@ button:focus-visible {
   height: 63px;
 }
 .empty-state strong {
-  color: #17375f;
+  color: #175f4e;
   font-size: 17px;
 }
 .empty-state p {
   margin: 9px 0 0;
   font-size: 12px;
   line-height: 1.7;
-  color: #8093ab;
+  color: #80aba1;
 }
 .notice-footer {
   margin: 22px 0 0;
   text-align: center;
   font-size: 11px;
-  color: #9aacc1;
+  color: #9ac1b8;
 }
 @media (max-width: 760px) {
   .notice-hero__symbol {

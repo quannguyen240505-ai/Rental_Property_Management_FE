@@ -1,0 +1,107 @@
+:host {
+  display: inline-flex;
+  max-width: 100%;
+  vertical-align: middle;
+}
+:host:has(.rp-ui-button--block) {
+  display: flex;
+  width: 100%;
+}
+.rp-ui-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 17px;
+  border: 1px solid transparent;
+  border-radius: var(--rp-radius-md, 12px);
+  font: 650 13px/1.45 var(--rp-font, Inter, "Segoe UI", Arial, sans-serif);
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+}
+.rp-ui-button__content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 0;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+.rp-ui-button--primary {
+  background: var(--rp-component-primary, #0f766e);
+  color: #fff;
+}
+.rp-ui-button--primary:hover:not(:disabled) {
+  background: var(--rp-component-primary-hover, #0b5d51);
+}
+.rp-ui-button--secondary {
+  border-color: #b9e5d5;
+  color: #0b5d51;
+  background: #edf9f4;
+}
+.rp-ui-button--secondary:hover:not(:disabled) {
+  background: #d9f2e7;
+}
+.rp-ui-button--ghost {
+  color: #0b5d51;
+  background: transparent;
+}
+.rp-ui-button--ghost:hover:not(:disabled) {
+  background: #e8f8f1;
+}
+.rp-ui-button--danger {
+  background: #b42334;
+  color: #fff;
+}
+.rp-ui-button--danger:hover:not(:disabled) {
+  background: #941c2a;
+}
+.rp-ui-button--sm {
+  min-height: 36px;
+  padding: 7px 12px;
+  font-size: 12px;
+}
+.rp-ui-button--lg {
+  min-height: 48px;
+  padding: 12px 20px;
+  font-size: 14px;
+}
+.rp-ui-button:disabled {
+  opacity: 0.56;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.rp-ui-button:focus-visible {
+  outline: 3px solid var(--rp-focus-ring, #0e9276);
+  outline-offset: 3px;
+}
+.rp-ui-button__spinner {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: rp-button-spin 750ms linear infinite;
+}
+@keyframes rp-button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rp-ui-button {
+    transition: none;
+  }
+  .rp-ui-button__spinner {
+    animation: none;
+    border-right-color: currentColor;
+  }
+}

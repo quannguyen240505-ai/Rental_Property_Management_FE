@@ -11,6 +11,7 @@ import {
 import { FormsModule } from "@angular/forms";
 import { finalize } from "rxjs";
 import { UserManagementService } from "./user-management.service";
+import { UiBadgeComponent } from "../../../shared/ui";
 import { UserAccount, UserRole, UserStatus } from "./user-management.model";
 
 type Panel = "create" | "edit" | "status" | "role" | "history" | null;
@@ -40,7 +41,7 @@ const emptyEdit = (): EditableFields => ({
 @Component({
   selector: "app-user-management",
   standalone: true,
-  imports: [FormsModule, DatePipe],
+  imports: [FormsModule, DatePipe, UiBadgeComponent],
   templateUrl: "./user-management.component.html",
   styleUrl: "./user-management.component.css",
   changeDetection: ChangeDetectionStrategy.OnPush,

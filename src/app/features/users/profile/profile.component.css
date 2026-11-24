@@ -1,7 +1,8 @@
+/* Rental Property · Forest Emerald theme — CSS only */
 /* Profile — Hybrid 80/20: Minimalist & Geometric + restrained Glassmorphism. */
 :host {
   display: block;
-  color: #10264b;
+  color: #104b3d;
   font-family: Inter, "Segoe UI", Arial, sans-serif;
 }
 *,
@@ -27,8 +28,8 @@ input {
   padding: clamp(26px, 4vw, 42px);
   overflow: hidden;
   border-radius: 24px;
-  background: linear-gradient(125deg, #071c3a 0%, #103a75 60%, #1c65b6 100%);
-  box-shadow: 0 20px 46px #123c7124;
+  background: linear-gradient(125deg, #053e33 0%, #10755d 60%, #098c6d 100%);
+  box-shadow: 0 20px 46px #12715b24;
   color: #fff;
 }
 .profile-hero::before {
@@ -36,15 +37,15 @@ input {
   inset: 0;
   z-index: -1;
   content: "";
-  background: radial-gradient(circle at 95% 0%, #a8d6ff26, transparent 42%);
+  background: radial-gradient(circle at 95% 0%, #a8ffeb26, transparent 42%);
 }
 .hero-grid {
   position: absolute;
   inset: -100px -130px -50px 48%;
   z-index: -1;
   background-image:
-    linear-gradient(#d0e5ff17 1px, transparent 1px),
-    linear-gradient(90deg, #d0e5ff17 1px, transparent 1px);
+    linear-gradient(#d0fff417 1px, transparent 1px),
+    linear-gradient(90deg, #d0fff417 1px, transparent 1px);
   background-size: 40px 40px;
   transform: perspective(650px) rotateX(13deg) rotateZ(-10deg);
   mask-image: linear-gradient(90deg, transparent, #000 33%);
@@ -53,7 +54,7 @@ input {
   position: absolute;
   z-index: -1;
   border-radius: 50%;
-  border: 1px solid #b9ddff30;
+  border: 1px solid #b9ffef30;
 }
 .hero-circle--one {
   width: 330px;
@@ -78,7 +79,7 @@ input {
   font-weight: 800;
 }
 .eyebrow {
-  color: #c1e0ff;
+  color: #c1fff1;
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -87,7 +88,7 @@ input {
   display: inline-block;
   width: 23px;
   height: 2px;
-  background: #86caff;
+  background: #86ffe3;
 }
 .profile-hero h1 {
   font-size: clamp(30px, 3.5vw, 43px);
@@ -97,17 +98,17 @@ input {
 }
 .profile-hero h1 em {
   font-style: normal;
-  color: #a9d8ff;
+  color: #a9ffeb;
 }
 .profile-hero p {
   margin: 0;
-  color: #d7eaff;
+  color: #d7fff6;
   font-size: 13px;
   line-height: 1.7;
 }
 .hero-decoration {
   flex: 0 0 180px;
-  color: #badbffb6;
+  color: #baffefb6;
   opacity: 0.9;
 }
 .hero-decoration svg {
@@ -131,7 +132,7 @@ input {
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   box-shadow:
-    0 13px 36px #244b7d12,
+    0 13px 36px #247d6812,
     inset 0 1px #fff;
 }
 .identity-card {
@@ -144,7 +145,7 @@ input {
   margin-bottom: 27px;
 }
 .section-label {
-  color: #2563b6;
+  color: #25b694;
 }
 .avatar {
   display: grid;
@@ -153,13 +154,13 @@ input {
   height: 95px;
   margin: 0 auto 19px;
   border-radius: 28px;
-  background: linear-gradient(135deg, #e1efff, #d0e4ff);
-  color: #245db9;
+  background: linear-gradient(135deg, #e1fff8, #d0fff4);
+  color: #24b996;
   font-size: 32px;
   font-weight: 800;
   letter-spacing: -1px;
   border: 4px solid #fff;
-  box-shadow: 0 12px 29px #255eae24;
+  box-shadow: 0 12px 29px #25ae8e24;
 }
 .identity-card h2 {
   margin: 0;
@@ -171,7 +172,7 @@ input {
 .identity-username {
   margin: 8px 0 18px;
   font-size: 12px;
-  color: #7289a3;
+  color: #72a398;
   overflow-wrap: anywhere;
 }
 .identity-badges {
@@ -191,8 +192,8 @@ input {
   font-weight: 730;
 }
 .role-pill {
-  color: #235daa;
-  background: #e7f1ff;
+  color: #23aa8b;
+  background: #e7fff9;
 }
 .status-pill {
   color: #13795d;
@@ -210,7 +211,7 @@ input {
 }
 .identity-separator {
   height: 1px;
-  background: #e6edf7;
+  background: #e6f7f3;
   margin: 27px 0 21px;
 }
 .identity-detail {
@@ -223,10 +224,10 @@ input {
   text-align: left;
 }
 .identity-detail span {
-  color: #788ca5;
+  color: #78a59b;
 }
 .identity-detail strong {
-  color: #2a4769;
+  color: #2a695a;
   font-size: 12px;
   text-align: right;
   font-weight: 680;
@@ -236,8 +237,8 @@ input {
   margin: 24px 0 0;
   border-radius: 11px;
   padding: 13px 14px;
-  background: #eff6ff;
-  color: #607fa5;
+  background: #effffb;
+  color: #60a595;
   font-size: 11px;
   line-height: 1.65;
 }
@@ -256,11 +257,11 @@ input {
   justify-content: space-between;
   gap: 16px;
   padding-bottom: 25px;
-  border-bottom: 1px solid #e8eff8;
+  border-bottom: 1px solid #e8f8f4;
 }
 .card-top h2,
 .security-copy h2 {
-  color: #102e57;
+  color: #105746;
   font-size: 23px;
   letter-spacing: -0.6px;
   margin: 9px 0;
@@ -270,7 +271,7 @@ input {
 .security-copy p {
   margin: 0;
   font-size: 12px;
-  color: #788da7;
+  color: #78a79c;
   line-height: 1.7;
 }
 .button {
@@ -306,26 +307,26 @@ input {
 }
 .button--primary {
   color: #fff;
-  background: linear-gradient(110deg, #2875ee, #1254b4);
-  border-color: #2165cd;
-  box-shadow: 0 9px 21px #1357b52c;
+  background: linear-gradient(110deg, #28eec0, #12b48e);
+  border-color: #21cda5;
+  box-shadow: 0 9px 21px #13b58f2c;
 }
 .button--secondary {
-  color: #214c83;
-  background: #eef5ff;
-  border-color: #d3e1f4;
+  color: #21836c;
+  background: #eefffb;
+  border-color: #d3f4ec;
   box-shadow: none;
 }
 .button--outline {
-  color: #235daa;
-  background: #f5f9ff;
-  border-color: #cfe1fa;
+  color: #23aa8b;
+  background: #f5fffd;
+  border-color: #cffaf0;
   box-shadow: none;
 }
 .button:focus-visible,
 input:focus-visible,
 .button--outline:focus-visible {
-  outline: 3px solid #90c6ff;
+  outline: 3px solid #90ffe5;
   outline-offset: 3px;
 }
 .edit-trigger {
@@ -341,34 +342,34 @@ input:focus-visible,
   min-width: 0;
   min-height: 94px;
   padding: 16px 17px;
-  background: #f2f7ff;
-  border: 1px solid #e2ecfa;
+  background: #f2fffc;
+  border: 1px solid #e2faf4;
   border-radius: 13px;
 }
 .detail-label {
   display: block;
-  color: #6b84a2;
+  color: #6ba295;
   font-size: 11px;
   font-weight: 650;
   margin-bottom: 10px;
 }
 .detail-item strong {
   display: block;
-  color: #193957;
+  color: #195749;
   font-weight: 720;
   font-size: 13px;
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
 .detail-item strong.not-set {
-  color: #98a8ba;
+  color: #98bab2;
   font-weight: 500;
 }
 .detail-item small {
   display: block;
   margin-top: 5px;
   font-size: 10px;
-  color: #97a9bd;
+  color: #97bdb4;
 }
 .edit-form {
   padding-top: 25px;
@@ -386,7 +387,7 @@ input:focus-visible,
 }
 .field label {
   display: block;
-  color: #254261;
+  color: #256153;
   margin-bottom: 9px;
   font-size: 12px;
   font-weight: 740;
@@ -400,24 +401,24 @@ input:focus-visible,
   margin: 0;
   min-height: 47px;
   padding: 11px 13px;
-  border: 1px solid #d5e2f5;
+  border: 1px solid #d5f5ee;
   border-radius: 11px;
-  background: #f0f5fd;
-  color: #183653;
+  background: #f0fdfa;
+  color: #185345;
   font-size: 13px;
   outline: 0;
 }
 .field input:focus {
-  border-color: #3679e4;
+  border-color: #36e4bb;
   background: #fff;
-  box-shadow: 0 0 0 4px #2e72df1c;
+  box-shadow: 0 0 0 4px #2edfb61c;
 }
 .field input.is-invalid {
   border-color: #d88e9a;
   background: #fff7f8;
 }
 .field input::placeholder {
-  color: #94a6bd;
+  color: #94bdb3;
 }
 .field-error {
   display: block;
@@ -428,7 +429,7 @@ input:focus-visible,
 }
 .form-hint {
   margin: 18px 0;
-  color: #8398b1;
+  color: #83b1a6;
   font-size: 11px;
   line-height: 1.6;
 }
@@ -437,7 +438,7 @@ input:focus-visible,
   justify-content: flex-end;
   gap: 11px;
   padding-top: 20px;
-  border-top: 1px solid #e7eef9;
+  border-top: 1px solid #e7f9f5;
 }
 .button-spinner {
   width: 15px;
@@ -464,9 +465,9 @@ input:focus-visible,
   height: 52px;
   display: grid;
   place-items: center;
-  background: #e3efff;
+  background: #e3fff8;
   border-radius: 16px;
-  color: #2365bf;
+  color: #23bf9b;
 }
 .security-icon svg {
   width: 27px;
@@ -549,17 +550,17 @@ input:focus-visible,
   text-align: center;
   border-radius: 20px;
   background: #fff;
-  border: 1px solid #e5edf8;
+  border: 1px solid #e5f8f4;
 }
 .state-panel strong,
 .state-panel h2 {
   margin: 16px 0 0;
-  color: #173656;
+  color: #175647;
   font-size: 17px;
 }
 .state-panel p {
   font-size: 12px;
-  color: #7d90a8;
+  color: #7da89e;
   line-height: 1.6;
 }
 .state-panel--error .button {
@@ -580,8 +581,8 @@ input:focus-visible,
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  border: 3px solid #deebfa;
-  border-top-color: #1b64c4;
+  border: 3px solid #defaf3;
+  border-top-color: #1bc49d;
   animation: spin 0.8s linear infinite;
 }
 @media (max-width: 800px) {

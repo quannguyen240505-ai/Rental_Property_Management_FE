@@ -1,0 +1,29 @@
+/* Rental Property · Forest Emerald theme — CSS only */
+/* Rental Property design tokens — shared semantic UI foundation. */
+:root {
+  --rp-emerald-950: #053e33;
+  --rp-emerald-900: #104c46;
+  --rp-emerald-800: #126758;
+  --rp-emerald-600: #0f766e;
+  --rp-mint-100: #e8f8f1;
+  color-scheme: light;
+  --rp-navy-950: var(--rp-emerald-950);
+  --rp-navy-900: var(--rp-emerald-900);
+  --rp-navy-800: var(--rp-emerald-800);
+  --rp-blue-600: var(--rp-emerald-600);
+  --rp-blue-100: var(--rp-mint-100);
+  --rp-canvas: #f3faf7;
+  --rp-surface: #ffffff;
+  --rp-text: #173a36;
+  --rp-text-muted: #58796f;
+  --rp-border: #d5e9df;
+  --rp-danger: #dc354c;
+  --rp-success: #128163;
+  --rp-radius-sm: 8px;
+  --rp-radius-md: 12px;
+  --rp-radius-lg: 18px;
+  --rp-shadow-card: 0 12px 32px rgba(12, 39, 74, 0.07);
+  --rp-font: Inter, "Segoe UI", Arial, sans-serif;
+  --rp-header-height: 72px;
+  --rp-focus-ring: #0e9276;
+}

@@ -263,8 +263,7 @@
                 <td>
                   <span class="contact-value">{{
                     user.email || "Chưa cập nhật"
-                  }}</span
-                  ><small class="contact-muted">{{
+                  }}</span><small class="contact-muted">{{
                     user.phone || "Chưa có SĐT"
                   }}</small>
                 </td>
@@ -278,12 +277,12 @@
                   >
                 </td>
                 <td>
-                  <span
-                    class="status-badge"
-                    [class.status-badge--locked]="user.status === 'LOCKED'"
-                    ><span class="status-dot" aria-hidden="true"></span
-                    >{{ statusLabel(user.status) }}</span
+                  <ui-badge
+                    [tone]="user.status === 'ACTIVE' ? 'success' : 'danger'"
+                    [dot]="true"
                   >
+                    {{ statusLabel(user.status) }}
+                  </ui-badge>
                 </td>
                 <td class="date-cell">
                   {{ user.createdAt | date: "dd/MM/yyyy" }}
@@ -709,8 +708,9 @@
             @case ("role") {
               @if (selected(); as account) {
                 <div class="role-transition">
-                  <span>{{ roleLabel(account.role) }}</span
-                  ><span class="role-transition__arrow" aria-hidden="true"
+                  <span>{{ roleLabel(account.role) }}</span><span
+                    class="role-transition__arrow"
+                    aria-hidden="true"
                     >→</span
                   ><strong>{{
                     account.role === "CUSTOMER" ? "Nhân viên" : "Khách hàng"
