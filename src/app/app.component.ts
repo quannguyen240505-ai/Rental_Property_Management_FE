@@ -16,12 +16,9 @@ import { NotificationService } from "./features/notifications/notification.servi
       <app-header (logoutRequested)="logout()" />
     }
     <main
-      [class.auth-main]="isLoginPage()"
-      [class.owner-main]="
-        isOwnerPage() ||
-        currentUrl().startsWith('/notifications') ||
-        currentUrl().startsWith('/tenant')
-      "
+      class="app-main"
+      [class.app-main--auth]="isLoginPage()"
+      [class.app-main--full-width]="isFullWidthPage()"
     >
       <router-outlet />
     </main>
@@ -75,9 +72,12 @@ export class AppComponent {
     ].includes(path);
   }
 
-  isOwnerPage(): boolean {
+  /** Expanded layout is shared by every private dashboard and notifications. */
+  isFullWidthPage(): boolean {
     const path = this.currentUrl().split("?")[0];
-    return path === "/owner" || path.startsWith("/owner/");
+    return ["/owner", "/tenant", "/notifications"].some(
+      (prefix) => path === prefix || path.startsWith(`${prefix}/`),
+    );
   }
 
   logout(): void {

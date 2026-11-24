@@ -17,11 +17,11 @@ import {
   UiBadgeComponent,
   UiButtonComponent,
   UiCardComponent,
-} from "../../shared/ui";
-import { NotificationService } from "../notifications/notification.service";
-import { UserNotification } from "../notifications/notification.model";
-import { ProfileService } from "../users/profile/profile.service";
-import { UserProfile } from "../users/profile/profile.model";
+} from "../../../shared/ui";
+import { NotificationService } from "../../notifications/notification.service";
+import { UserNotification } from "../../notifications/notification.model";
+import { ProfileService } from "../../users/profile/profile.service";
+import { UserProfile } from "../../users/profile/profile.model";
 
 /**
  * Tenant's real-data-first dashboard.

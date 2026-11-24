@@ -1,7 +1,6 @@
 import { Routes } from "@angular/router";
 
 import { LoginComponent } from "./features/auth/login/login.component";
-import { OwnerComponent } from "./features/owner/owner.component";
 import { ProfileComponent } from "./features/users/profile/profile.component";
 import { NotificationsComponent } from "./features/notifications/notifications.component";
 import { RegisterComponent } from "./features/auth/register/register.component";
@@ -33,16 +32,23 @@ export const routes: Routes = [
     path: "owner",
     canActivate: [ownerGuard],
     loadComponent: () =>
-      import("./features/owner/owner-dashboard.component").then(
+      import("./features/dashboard/owner/owner-dashboard.component").then(
         (module) => module.OwnerDashboardComponent,
       ),
   },
-  { path: "owner/users", component: OwnerComponent, canActivate: [ownerGuard] },
+  {
+    path: "owner/users",
+    canActivate: [ownerGuard],
+    loadComponent: () =>
+      import("./features/users/user-management/user-management.component").then(
+        (module) => module.UserManagementComponent,
+      ),
+  },
   {
     path: "tenant",
     canActivate: [tenantGuard],
     loadComponent: () =>
-      import("./features/tenant/tenant-dashboard.component").then(
+      import("./features/dashboard/tenant/tenant-dashboard.component").then(
         (module) => module.TenantDashboardComponent,
       ),
   },

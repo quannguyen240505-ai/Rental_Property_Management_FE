@@ -1,0 +1,27 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+select {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  height: 45px;
+  margin: 0;
+  padding: 0 13px;
+  border-radius: 11px;
+  border: 1px solid #d8f4ed;
+  color: #216454;
+  background: #f1fffc;
+  font: 540 12px var(--rp-font, Arial, sans-serif);
+  cursor: pointer;
+}
+select:focus-visible {
+  outline: 3px solid var(--rp-focus-ring, #0e9276);
+  outline-offset: 1px;
+  background: #fff;
+}
+select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

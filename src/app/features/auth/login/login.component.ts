@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from "@angular/common/http";
 import { Component, inject, signal } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { Router, RouterLink } from "@angular/router";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { finalize, interval } from "rxjs";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
@@ -18,6 +18,10 @@ import { roleHome } from "../../../core/auth/role-home";
 export class LoginComponent {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute, { optional: true });
+
+  readonly sessionExpiredNotice =
+    this.route?.snapshot.queryParamMap.get("reason") === "expired";
 
   username = "";
   password = "";

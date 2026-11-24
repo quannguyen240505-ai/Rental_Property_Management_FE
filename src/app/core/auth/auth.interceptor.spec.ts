@@ -19,13 +19,13 @@ describe("authInterceptor", () => {
   let httpMock: HttpTestingController;
   const authStub = {
     token: signal<string | null>("jwt-test"),
-    logout: vi.fn(),
+    expireSession: vi.fn(),
   };
   const routerStub = { navigateByUrl: vi.fn().mockResolvedValue(true) };
 
   beforeEach(() => {
     authStub.token.set("jwt-test");
-    authStub.logout.mockClear();
+    authStub.expireSession.mockClear();
     routerStub.navigateByUrl.mockClear();
     TestBed.configureTestingModule({
       providers: [
@@ -74,13 +74,14 @@ describe("authInterceptor", () => {
     req.flush({});
   });
 
-  it("401 trên API riêng tư xóa phiên và chuyển về Login", () => {
+  it("401 trên API riêng tư yêu cầu kết thúc phiên", () => {
     http.get("/api/users/me").subscribe({ error: () => undefined });
     httpMock
       .expectOne("/api/users/me")
       .flush({}, { status: 401, statusText: "Unauthorized" });
-    expect(authStub.logout).toHaveBeenCalledOnce();
-    expect(routerStub.navigateByUrl).toHaveBeenCalledWith("/login");
+    expect(authStub.expireSession).toHaveBeenCalledOnce();
+    // Redirect is centralized in AuthSessionCoordinatorService.
+    expect(routerStub.navigateByUrl).not.toHaveBeenCalled();
   });
 
   it("503 từ Auth Service không tự xóa phiên người dùng", () => {
@@ -88,8 +89,16 @@ describe("authInterceptor", () => {
     httpMock
       .expectOne("/api/users/me")
       .flush({}, { status: 503, statusText: "Unavailable" });
-    expect(authStub.logout).not.toHaveBeenCalled();
+    expect(authStub.expireSession).not.toHaveBeenCalled();
     expect(routerStub.navigateByUrl).not.toHaveBeenCalled();
+  });
+
+  it("401 từ request của phiên cũ không được đăng xuất phiên mới", () => {
+    http.get("/api/users/me").subscribe({ error: () => undefined });
+    const request = httpMock.expectOne("/api/users/me");
+    authStub.token.set("new-session-token");
+    request.flush({}, { status: 401, statusText: "Unauthorized" });
+    expect(authStub.expireSession).not.toHaveBeenCalled();
   });
 
   it("không gắn header khi không có token", () => {

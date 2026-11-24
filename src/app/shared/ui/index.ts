@@ -8,3 +8,8 @@ export { UiBadgeComponent } from "./badge/ui-badge.component";
 export type { UiBadgeTone } from "./badge/ui-badge.component";
 export { UiCardComponent } from "./card/ui-card.component";
 export type { UiCardPadding, UiCardVariant } from "./card/ui-card.component";
+
+export { UiPaginationComponent } from "./pagination/ui-pagination.component";
+export { UiSearchInputComponent } from "./search-input/ui-search-input.component";
+export { UiFilterSelectComponent } from "./filter-select/ui-filter-select.component";
+export type { UiFilterOption } from "./filter-select/ui-filter-select.component";

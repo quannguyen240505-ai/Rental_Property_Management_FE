@@ -17,13 +17,13 @@ import {
   UiBadgeComponent,
   UiButtonComponent,
   UiCardComponent,
-} from "../../shared/ui";
-import { UserNotification } from "../notifications/notification.model";
-import { NotificationService } from "../notifications/notification.service";
-import { UserAccount } from "../users/user-management/user-management.model";
-import { UserManagementService } from "../users/user-management/user-management.service";
-import { UserProfile } from "../users/profile/profile.model";
-import { ProfileService } from "../users/profile/profile.service";
+} from "../../../shared/ui";
+import { UserNotification } from "../../notifications/notification.model";
+import { NotificationService } from "../../notifications/notification.service";
+import { UserAccount } from "../../users/user-management/user-management.model";
+import { UserManagementService } from "../../users/user-management/user-management.service";
+import { UserProfile } from "../../users/profile/profile.model";
+import { ProfileService } from "../../users/profile/profile.service";
 
 /**
  * OWNER dashboard uses only APIs already available on dev.

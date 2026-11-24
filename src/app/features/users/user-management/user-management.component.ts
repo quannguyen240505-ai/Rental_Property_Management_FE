@@ -11,7 +11,20 @@ import {
 import { FormsModule } from "@angular/forms";
 import { finalize } from "rxjs";
 import { UserManagementService } from "./user-management.service";
-import { UiBadgeComponent } from "../../../shared/ui";
+import {
+  UiBadgeComponent,
+  UiPaginationComponent,
+  UiSearchInputComponent,
+  UiFilterSelectComponent,
+} from "../../../shared/ui";
+import type { UiFilterOption } from "../../../shared/ui";
+import {
+  searchItems,
+  filterItems,
+  getTotalPages,
+  paginateItems,
+  clampPage,
+} from "../../../shared/utils/list-query";
 import { UserAccount, UserRole, UserStatus } from "./user-management.model";
 
 type Panel = "create" | "edit" | "status" | "role" | "history" | null;
@@ -41,7 +54,14 @@ const emptyEdit = (): EditableFields => ({
 @Component({
   selector: "app-user-management",
   standalone: true,
-  imports: [FormsModule, DatePipe, UiBadgeComponent],
+  imports: [
+    FormsModule,
+    DatePipe,
+    UiBadgeComponent,
+    UiPaginationComponent,
+    UiSearchInputComponent,
+    UiFilterSelectComponent,
+  ],
   templateUrl: "./user-management.component.html",
   styleUrl: "./user-management.component.css",
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -61,6 +81,18 @@ export class UserManagementComponent implements OnInit {
   readonly statusFilter = signal<UserStatus | "">("");
   readonly page = signal(1);
   readonly pageSize = 10;
+  readonly roleOptions: readonly UiFilterOption[] = [
+    { value: "", label: "Tất cả vai trò" },
+    { value: "OWNER", label: "Chủ trọ" },
+    { value: "STAFF", label: "Nhân viên" },
+    { value: "TENANT", label: "Người thuê" },
+    { value: "CUSTOMER", label: "Khách hàng" },
+  ];
+  readonly statusOptions: readonly UiFilterOption[] = [
+    { value: "", label: "Tất cả trạng thái" },
+    { value: "ACTIVE", label: "Hoạt động" },
+    { value: "LOCKED", label: "Đã khóa" },
+  ];
   readonly panel = signal<Panel>(null);
   readonly selected = signal<UserAccount | null>(null);
   readonly roleHistory = signal<
@@ -73,28 +105,22 @@ export class UserManagementComponent implements OnInit {
   roleReason = "";
 
   readonly filteredUsers = computed(() => {
-    const query = this.search().trim().toLocaleLowerCase();
-    return this.users().filter(
-      (user) =>
-        (!this.roleFilter() || user.role === this.roleFilter()) &&
-        (!this.statusFilter() || user.status === this.statusFilter()) &&
-        (!query ||
-          [
-            user.username,
-            user.fullName,
-            user.email ?? "",
-            user.phone ?? "",
-          ].some((field) => field.toLocaleLowerCase().includes(query))),
-    );
+    const selected = filterItems(this.users(), [
+      (user) => !this.roleFilter() || user.role === this.roleFilter(),
+      (user) => !this.statusFilter() || user.status === this.statusFilter(),
+    ]);
+    return searchItems(selected, this.search(), (user) => [
+      user.username,
+      user.fullName,
+      user.email,
+      user.phone,
+    ]);
   });
   readonly totalPages = computed(() =>
-    Math.max(1, Math.ceil(this.filteredUsers().length / this.pageSize)),
+    getTotalPages(this.filteredUsers().length, this.pageSize),
   );
   readonly pageUsers = computed(() =>
-    this.filteredUsers().slice(
-      (this.page() - 1) * this.pageSize,
-      this.page() * this.pageSize,
-    ),
+    paginateItems(this.filteredUsers(), this.page(), this.pageSize),
   );
   readonly hasFilters = computed(() =>
     Boolean(this.search().trim() || this.roleFilter() || this.statusFilter()),
@@ -121,13 +147,7 @@ export class UserManagementComponent implements OnInit {
         next: (accounts) => {
           this.users.set(accounts);
           this.page.set(
-            Math.min(
-              this.page(),
-              Math.max(
-                1,
-                Math.ceil(this.filteredUsers().length / this.pageSize),
-              ),
-            ),
+            clampPage(this.page(), this.filteredUsers().length, this.pageSize),
           );
           const currentId = this.selected()?.id;
           if (currentId)
@@ -136,6 +156,21 @@ export class UserManagementComponent implements OnInit {
         error: (err: HttpErrorResponse) =>
           this.listError.set(this.errorMessage(err)),
       });
+  }
+
+  setSearchTerm(value: string): void {
+    this.search.set(value);
+    this.onFilterChange();
+  }
+
+  setRoleFilter(value: string): void {
+    this.roleFilter.set(value as UserRole | "");
+    this.onFilterChange();
+  }
+
+  setStatusFilter(value: string): void {
+    this.statusFilter.set(value as UserStatus | "");
+    this.onFilterChange();
   }
 
   onFilterChange(): void {
