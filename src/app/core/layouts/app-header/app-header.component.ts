@@ -11,6 +11,7 @@ import { toSignal } from "@angular/core/rxjs-interop";
 import { filter, map } from "rxjs";
 
 import { AuthService } from "../../auth/auth.service";
+import { roleHome } from "../../auth/role-home";
 import { NotificationService } from "../../../features/notifications/notification.service";
 
 @Component({
@@ -36,6 +37,10 @@ export class AppHeaderComponent {
     ),
     { initialValue: this.router.url },
   );
+
+  homeUrl(): string {
+    return roleHome(this.auth.role());
+  }
 
   isActive(path: string): boolean {
     const current = this.currentUrl().split("?")[0];

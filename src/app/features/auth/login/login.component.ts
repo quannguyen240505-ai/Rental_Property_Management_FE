@@ -6,6 +6,7 @@ import { finalize, interval } from "rxjs";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 import { AuthService } from "../../../core/auth/auth.service";
+import { roleHome } from "../../../core/auth/role-home";
 
 @Component({
   selector: "app-login",
@@ -106,7 +107,7 @@ export class LoginComponent {
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
         next: ({ role }) => {
-          const destination = role === "OWNER" ? "/owner" : "/profile";
+          const destination = roleHome(role);
           void this.router.navigateByUrl(destination, { replaceUrl: true });
         },
         error: (error: HttpErrorResponse) => {

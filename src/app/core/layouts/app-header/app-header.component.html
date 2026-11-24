@@ -2,7 +2,7 @@
   <div class="rp-header__inner">
     <a
       class="rp-header__brand"
-      [routerLink]="auth.role() === 'OWNER' ? '/owner' : '/profile'"
+      [routerLink]="homeUrl()"
       aria-label="Rental Property - trang chính"
       (click)="closeMenu()"
     >
@@ -33,6 +33,17 @@
             [attr.aria-current]="isActive('/owner') ? 'page' : null"
             (click)="closeMenu()"
             >Quản lý tài khoản</a
+          >
+        }
+
+        @if (auth.role() === "TENANT") {
+          <a
+            class="rp-header__desktop-link"
+            routerLink="/tenant"
+            [class.is-current]="isActive('/tenant')"
+            [attr.aria-current]="isActive('/tenant') ? 'page' : null"
+            (click)="closeMenu()"
+            >Tổng quan</a
           >
         }
 
@@ -122,6 +133,11 @@
               @if (auth.role() === "OWNER") {
                 <a routerLink="/owner" (click)="closeMenu()"
                   >Quản lý tài khoản</a
+                >
+              }
+              @if (auth.role() === "TENANT") {
+                <a routerLink="/tenant" (click)="closeMenu()"
+                  >Tổng quan của tôi</a
                 >
               }
               <a routerLink="/profile" (click)="closeMenu()">Hồ sơ của tôi</a>

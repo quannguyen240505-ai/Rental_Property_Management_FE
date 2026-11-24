@@ -18,7 +18,9 @@ import { NotificationService } from "./features/notifications/notification.servi
     <main
       [class.auth-main]="isLoginPage()"
       [class.owner-main]="
-        isOwnerPage() || currentUrl().startsWith('/notifications')
+        isOwnerPage() ||
+        currentUrl().startsWith('/notifications') ||
+        currentUrl().startsWith('/tenant')
       "
     >
       <router-outlet />
