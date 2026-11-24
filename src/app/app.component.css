@@ -3,7 +3,15 @@
   min-height: 100svh;
 }
 
-main.owner-main {
+/* App Shell owns page width. Feature headers, controls and cards are self-styled. */
+.app-main {
+  max-width: 1050px;
+  margin: 32px auto;
+  padding: 0 20px;
+}
+
+.app-main.app-main--auth,
+.app-main.app-main--full-width {
   width: 100%;
   max-width: none;
   margin: 0;
