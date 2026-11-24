@@ -1,0 +1,294 @@
+/* Rental Property - Phase 2: Forest Emerald UI/UX polish.
+   Scoped overrides preserve existing Angular components, APIs and layout logic.
+   CSS specificity is intentional: global rules must win over component-scoped CSS. */
+
+:root {
+  --rp-polish-muted: #526d66;
+  --rp-polish-subtle: #607a71;
+  --rp-polish-primary: #0f766e;
+  --rp-polish-primary-hover: #0b5d51;
+  --rp-polish-focus: #0c7764;
+}
+
+/* Shared header: compact controls, keyboard focus and safe small-screen menu. */
+app-header .rp-header .rp-header__account-trigger,
+app-header .rp-header .rp-header__bell {
+  min-width: 44px;
+  min-height: 44px;
+}
+app-header .rp-header .rp-header__account-trigger:focus-visible,
+app-header .rp-header .rp-header__bell:focus-visible,
+app-header .rp-header .rp-header__desktop-link:focus-visible {
+  outline: 3px solid #a5efd1;
+  outline-offset: 3px;
+}
+app-header .rp-header .rp-header__menu {
+  max-width: calc(100vw - 24px);
+  max-height: min(350px, calc(100dvh - 92px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+app-header .rp-header .rp-header__menu a:focus-visible,
+app-header .rp-header .rp-header__menu button:focus-visible {
+  outline: 3px solid var(--rp-polish-focus);
+  outline-offset: -3px;
+}
+
+/* Notification: useful content appears sooner; stronger readable metadata. */
+app-notifications .notice-page .notice-hero {
+  min-height: 166px;
+  padding: clamp(20px, 2.5vw, 31px);
+}
+app-notifications .notice-page .notice-hero h1 {
+  margin: 11px 0 9px;
+  font-size: clamp(27px, 2.7vw, 37px);
+  line-height: 1.19;
+}
+app-notifications .notice-page .notice-hero p {
+  line-height: 1.55;
+}
+app-notifications .notice-page .notice-hero__symbol {
+  width: 106px;
+  height: 106px;
+}
+app-notifications .notice-page .stats-grid {
+  gap: 14px;
+  margin: 16px 0 18px;
+}
+app-notifications .notice-page .stat-card {
+  min-height: 102px;
+  padding: 18px 22px;
+}
+app-notifications .notice-page .stat-card__text span,
+app-notifications .notice-page .inbox__heading p,
+app-notifications .notice-page .message p,
+app-notifications .notice-page .read-status,
+app-notifications .notice-page .empty-state p {
+  color: var(--rp-polish-muted);
+  font-size: 13px;
+}
+app-notifications .notice-page .timestamp {
+  color: var(--rp-polish-subtle);
+  font-size: 12px;
+}
+app-notifications .notice-page .message__body {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+app-notifications .notice-page .inbox__heading {
+  padding: 22px 24px 14px;
+}
+app-notifications .notice-page .filter-tabs {
+  padding: 4px 24px 16px;
+}
+app-notifications .notice-page .message {
+  padding: 19px 24px;
+}
+app-notifications .notice-page .refresh-btn,
+app-notifications .notice-page .mark-read,
+app-notifications .notice-page .filter-tabs button {
+  min-height: 44px;
+}
+app-notifications .notice-page :is(button, a):focus-visible {
+  outline: 3px solid var(--rp-polish-focus);
+  outline-offset: 3px;
+}
+
+/* User Management: less decorative height, denser metrics and consistent buttons. */
+app-user-management .management-shell .management-hero {
+  min-height: 184px;
+  padding: clamp(22px, 2.8vw, 33px);
+}
+app-user-management .management-shell .management-hero h1 {
+  margin: 10px 0 8px;
+  font-size: clamp(29px, 2.8vw, 40px);
+}
+app-user-management .management-shell .management-hero p {
+  line-height: 1.6;
+}
+app-user-management .management-shell .overview {
+  gap: 14px;
+  margin: 17px 0 20px;
+}
+app-user-management .management-shell .metric-card {
+  min-height: 110px;
+  padding: 18px 21px;
+}
+app-user-management .management-shell .metric-card__copy > span,
+app-user-management .management-shell .metric-card__copy small,
+app-user-management .management-shell .workspace-header p,
+app-user-management .management-shell .contact-muted,
+app-user-management .management-shell .empty-state small {
+  color: var(--rp-polish-muted);
+  font-size: 12px;
+}
+app-user-management .management-shell .btn--primary {
+  border-color: var(--rp-polish-primary);
+  background: var(--rp-polish-primary);
+  box-shadow: 0 7px 17px rgb(15 118 110 / 18%);
+}
+app-user-management .management-shell .btn--primary:hover:not(:disabled) {
+  border-color: var(--rp-polish-primary-hover);
+  background: var(--rp-polish-primary-hover);
+}
+app-user-management .management-shell .contact-value,
+app-user-management .management-shell .user-cell__copy {
+  overflow-wrap: anywhere;
+}
+app-user-management
+  .management-shell
+  :is(button, a, input, select, textarea):focus-visible {
+  outline: 3px solid var(--rp-polish-focus);
+  outline-offset: 2px;
+}
+
+/* Profile: compact information cards and improved secondary text contrast. */
+app-profile .profile-page .profile-hero {
+  min-height: 165px;
+  padding: clamp(22px, 3vw, 32px);
+}
+app-profile .profile-page .profile-hero h1 {
+  font-size: clamp(28px, 3vw, 39px);
+}
+app-profile .profile-page .profile-layout {
+  margin-top: 18px;
+}
+app-profile .profile-page .detail-item {
+  min-height: 83px;
+  padding: 13px 16px;
+}
+app-profile .profile-page .detail-label,
+app-profile .profile-page .detail-item small,
+app-profile .profile-page .identity-detail span,
+app-profile .profile-page .identity-note,
+app-profile .profile-page .card-top p,
+app-profile .profile-page .security-copy p {
+  color: var(--rp-polish-muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+app-profile .profile-page :is(button, a, input, textarea):focus-visible {
+  outline: 3px solid var(--rp-polish-focus);
+  outline-offset: 2px;
+}
+
+/* Forms: clearer supporting copy and visible focus without rewriting validation. */
+app-login .login-shell .login-subtitle,
+app-login .login-shell .login-note,
+app-login .login-shell .form-footer,
+app-register .register-shell .register-heading p,
+app-register .register-shell .password-hint,
+body .authflow-shell .authflow-description,
+body .authflow-shell .authflow-note {
+  color: var(--rp-polish-muted);
+}
+app-login .login-shell .login-submit:focus-visible,
+app-login .login-shell .google-login:focus-visible,
+app-register .register-shell :is(button, a, input, select):focus-visible,
+body .authflow-shell :is(button, a, input):focus-visible {
+  outline: 3px solid var(--rp-polish-focus);
+  outline-offset: 3px;
+}
+.authflow-shell.authflow-shell--private .authflow-intro {
+  padding-top: clamp(22px, 4vw, 48px);
+  padding-bottom: clamp(22px, 4vw, 48px);
+}
+
+/* Mobile: compact typography, no clipped content, easy tap targets. */
+@media (max-width: 760px) {
+  app-notifications .notice-page .notice-hero,
+  app-profile .profile-page .profile-hero,
+  app-user-management .management-shell .management-hero {
+    min-height: auto;
+  }
+  app-notifications .notice-page .inbox__heading {
+    padding: 20px 18px 13px;
+  }
+  app-notifications .notice-page .filter-tabs {
+    padding: 4px 18px 15px;
+  }
+  app-notifications .notice-page .message {
+    padding: 17px 18px;
+  }
+  app-user-management .management-shell .metric-card {
+    min-height: 98px;
+  }
+}
+@media (max-width: 600px) {
+  app-header .rp-header .rp-header__inner,
+  app-header .rp-header .rp-header__nav,
+  app-header .rp-header .rp-header__brand {
+    min-width: 0;
+  }
+  app-header .rp-header .rp-header__menu {
+    right: 0;
+  }
+  app-notifications .notice-page .notice-hero {
+    padding: 22px 19px;
+  }
+  app-notifications .notice-page .notice-hero h1 {
+    font-size: clamp(25px, 6vw, 31px);
+  }
+  app-notifications .notice-page .notice-hero__symbol {
+    display: none;
+  }
+  app-notifications .notice-page .stat-card {
+    min-height: 94px;
+    padding: 14px;
+  }
+  app-notifications .notice-page .stat-card__text strong {
+    font-size: 27px;
+  }
+  app-user-management .management-shell .management-hero {
+    padding: 22px 20px;
+  }
+  app-user-management .management-shell .management-hero h1 {
+    font-size: 30px;
+  }
+  app-user-management .management-shell .overview {
+    margin: 15px 0;
+  }
+  app-user-management .management-shell .metric-card {
+    min-height: 91px;
+    padding: 14px 17px;
+  }
+  app-profile .profile-page .profile-hero {
+    padding: 22px 18px;
+  }
+  app-profile .profile-page .detail-item {
+    min-height: 77px;
+    padding: 12px 14px;
+  }
+  app-notifications .notice-page .message__actions {
+    min-width: 0;
+  }
+}
+@media (max-width: 390px) {
+  app-header .rp-header .rp-header__brand-text strong {
+    font-size: 14px;
+  }
+  app-header .rp-header .rp-header__mark {
+    flex-basis: 27px;
+    width: 27px;
+  }
+  app-notifications .notice-page .stats-grid {
+    gap: 8px;
+  }
+  app-notifications .notice-page .stat-card {
+    padding: 12px 10px;
+  }
+  app-notifications .notice-page .stat-card__icon {
+    width: 35px;
+    height: 35px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  app-header .rp-header *,
+  .notice-page *,
+  .management-shell *,
+  .profile-page * {
+    scroll-behavior: auto;
+    animation-duration: 0.01ms;
+    transition-duration: 0.01ms;
+  }
+}

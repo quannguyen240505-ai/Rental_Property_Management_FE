@@ -1,5 +1,6 @@
 /* Rental Property · Forest Emerald theme — CSS only */
 @import "./styles/tokens.css";
+@import "./styles/phase2-polish.css";
 
 * {
   box-sizing: border-box;
