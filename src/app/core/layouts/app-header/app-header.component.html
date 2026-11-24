@@ -1,0 +1,146 @@
+<header class="rp-header">
+  <div class="rp-header__inner">
+    <a
+      class="rp-header__brand"
+      [routerLink]="auth.role() === 'OWNER' ? '/owner' : '/profile'"
+      aria-label="Rental Property - trang chính"
+      (click)="closeMenu()"
+    >
+      <span class="rp-header__mark" aria-hidden="true">
+        <svg viewBox="0 0 40 40" fill="none">
+          <path
+            d="M6 19.5 20 7l14 12.5V34H23.5V24h-7v10H6V19.5Z"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </span>
+      <span class="rp-header__brand-text">
+        <strong>Rental Property</strong>
+        <small>PROPERTY MANAGEMENT SYSTEM</small>
+      </span>
+    </a>
+
+    <nav class="rp-header__nav" aria-label="Điều hướng chính">
+      @if (auth.token()) {
+        @if (auth.role() === "OWNER") {
+          <a
+            class="rp-header__desktop-link"
+            routerLink="/owner"
+            [class.is-current]="isActive('/owner')"
+            [attr.aria-current]="isActive('/owner') ? 'page' : null"
+            (click)="closeMenu()"
+            >Quản lý tài khoản</a
+          >
+        }
+
+        <a
+          class="rp-header__bell"
+          routerLink="/notifications"
+          [class.is-current]="isActive('/notifications')"
+          [attr.aria-current]="isActive('/notifications') ? 'page' : null"
+          [attr.aria-label]="
+            notifications.unreadCount()
+              ? 'Thông báo: ' + notifications.unreadCount() + ' chưa đọc'
+              : 'Thông báo, không có thông báo chưa đọc'
+          "
+          title="Thông báo"
+          (click)="closeMenu()"
+        >
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path
+              d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9ZM10 21h4"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          @if (notifications.unreadCount() > 0) {
+            <span class="rp-header__badge" aria-hidden="true">{{
+              notifications.unreadCount() > 99
+                ? "99+"
+                : notifications.unreadCount()
+            }}</span>
+          }
+        </a>
+
+        <span class="rp-header__divider" aria-hidden="true"></span>
+        <div class="rp-header__account">
+          <button
+            class="rp-header__account-trigger"
+            type="button"
+            aria-haspopup="true"
+            [attr.aria-expanded]="menuOpen()"
+            aria-controls="rp-account-menu"
+            (click)="toggleMenu()"
+          >
+            <span class="rp-header__avatar" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <circle
+                  cx="12"
+                  cy="8"
+                  r="3.25"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                />
+                <path
+                  d="M5.5 20a6.5 6.5 0 0 1 13 0"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </span>
+            <span class="rp-header__account-label">{{ accountLabel() }}</span>
+            <svg
+              class="rp-header__chevron"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="m7 10 5 5 5-5"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+
+          @if (menuOpen()) {
+            <div
+              class="rp-header__menu"
+              id="rp-account-menu"
+              role="group"
+              aria-label="Tùy chọn tài khoản"
+            >
+              @if (auth.role() === "OWNER") {
+                <a routerLink="/owner" (click)="closeMenu()"
+                  >Quản lý tài khoản</a
+                >
+              }
+              <a routerLink="/profile" (click)="closeMenu()">Hồ sơ của tôi</a>
+              <a routerLink="/change-password" (click)="closeMenu()"
+                >Đổi mật khẩu</a
+              >
+              <div class="rp-header__menu-rule" aria-hidden="true"></div>
+              <button
+                type="button"
+                class="rp-header__logout"
+                (click)="requestLogout()"
+              >
+                Đăng xuất
+              </button>
+            </div>
+          }
+        </div>
+      } @else {
+        <a class="rp-header__desktop-link" routerLink="/login">Đăng nhập</a>
+      }
+    </nav>
+  </div>
+</header>

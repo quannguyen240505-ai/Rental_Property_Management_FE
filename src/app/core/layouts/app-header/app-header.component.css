@@ -1,0 +1,290 @@
+/* Rental Property · Forest Emerald theme — CSS only */
+:host {
+  display: block;
+}
+
+.rp-header {
+  display: block;
+  position: relative;
+  z-index: 40;
+  width: 100%;
+  padding: 0;
+  background: linear-gradient(
+    110deg,
+    var(--rp-emerald-950),
+    var(--rp-emerald-900) 62%,
+    var(--rp-emerald-800)
+  );
+  box-shadow: 0 5px 22px rgba(7, 28, 58, 0.1);
+  color: #fff;
+  font-family: var(--rp-font);
+}
+.rp-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  width: 100%;
+  max-width: 1532px;
+  min-height: var(--rp-header-height);
+  margin: 0 auto;
+  padding: 0 clamp(16px, 3.4vw, 50px);
+}
+.rp-header a {
+  color: inherit;
+  text-decoration: none;
+}
+.rp-header__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 1 auto;
+  min-width: 0;
+}
+.rp-header__mark {
+  display: grid;
+  place-items: center;
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  color: #b9f2d9;
+}
+.rp-header__mark svg {
+  width: 32px;
+  height: 32px;
+}
+.rp-header__brand-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.rp-header__brand-text strong {
+  font-size: 18px;
+  font-weight: 750;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.rp-header__brand-text small {
+  font-size: 9px;
+  color: #b5e7d2;
+  font-weight: 650;
+  letter-spacing: 0.9px;
+  white-space: nowrap;
+}
+.rp-header__nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-left: auto;
+  flex: 0 1 auto;
+}
+.rp-header__desktop-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 9px 13px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 650;
+  white-space: nowrap;
+  color: #dcfff7 !important;
+}
+.rp-header__desktop-link:hover,
+.rp-header__desktop-link.is-current {
+  background: #ffffff18;
+  color: #fff !important;
+}
+.rp-header__bell {
+  display: grid;
+  place-items: center;
+  position: relative;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  border-radius: 11px;
+}
+.rp-header__bell:hover,
+.rp-header__bell.is-current {
+  background: #ffffff16;
+}
+.rp-header__bell svg {
+  display: block;
+  width: 23px;
+  height: 23px;
+}
+.rp-header__badge {
+  display: grid;
+  place-items: center;
+  position: absolute;
+  right: 0;
+  top: 0;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 4px;
+  border: 2px solid var(--rp-emerald-900);
+  border-radius: 999px;
+  background: var(--rp-danger);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.rp-header__divider {
+  height: 25px;
+  width: 1px;
+  background: #c6fff242;
+  flex: none;
+}
+.rp-header__account {
+  position: relative;
+  flex: 0 0 auto;
+}
+.rp-header__account-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 5px 9px 5px 5px;
+  min-height: 44px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+}
+.rp-header__account-trigger:hover,
+.rp-header__account-trigger[aria-expanded="true"] {
+  background: #ffffff16;
+}
+.rp-header__avatar {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #e3f6ed;
+  color: #1c7d66;
+}
+.rp-header__avatar svg {
+  width: 22px;
+  height: 22px;
+}
+.rp-header__account-label {
+  font-size: 13px;
+  font-weight: 680;
+  white-space: nowrap;
+}
+.rp-header__chevron {
+  width: 16px;
+  height: 16px;
+}
+.rp-header__menu {
+  position: absolute;
+  z-index: 50;
+  top: calc(100% + 11px);
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 215px;
+  padding: 7px;
+  border: 1px solid var(--rp-border);
+  border-radius: var(--rp-radius-md);
+  background: #fff;
+  color: var(--rp-text);
+  box-shadow: var(--rp-shadow-card);
+}
+.rp-header__menu a,
+.rp-header__menu button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 42px;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--rp-text);
+  font-family: var(--rp-font);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+.rp-header__menu a:hover,
+.rp-header__menu button:hover {
+  background: var(--rp-mint-100);
+  color: #178c71;
+}
+.rp-header__menu .rp-header__logout {
+  color: #b33345;
+}
+.rp-header__menu-rule {
+  height: 1px;
+  background: var(--rp-border);
+  margin: 4px 3px;
+}
+.rp-header a:focus-visible,
+.rp-header button:focus-visible {
+  outline: 3px solid var(--rp-focus-ring);
+  outline-offset: 3px;
+}
+@media (max-width: 600px) {
+  .rp-header__inner {
+    gap: 8px;
+  }
+  .rp-header__brand-text strong {
+    font-size: 16px;
+  }
+  .rp-header__brand-text small {
+    font-size: 7px;
+    letter-spacing: 0.4px;
+  }
+  .rp-header__mark {
+    width: 29px;
+    flex-basis: 29px;
+  }
+  .rp-header__mark svg {
+    width: 27px;
+    height: 27px;
+  }
+  .rp-header__nav {
+    gap: 5px;
+  }
+  .rp-header__desktop-link,
+  .rp-header__account-label,
+  .rp-header__divider {
+    display: none;
+  }
+  .rp-header__account-trigger {
+    padding: 5px;
+  }
+  .rp-header__chevron {
+    width: 12px;
+  }
+}
+@media (max-width: 390px) {
+  .rp-header__brand-text small {
+    display: none;
+  }
+  .rp-header__brand-text strong {
+    font-size: 14px;
+  }
+  .rp-header__bell {
+    width: 38px;
+    height: 42px;
+    flex-basis: 38px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}

@@ -1,12 +1,13 @@
+/* Rental Property · Forest Emerald theme — CSS only */
 /* User Management — Hybrid 80/20 (Minimalist & Geometric + restrained Glassmorphism).
    Visual tokens match Login / Register in the dev branch. */
 :host {
   display: block;
-  --um-navy: #071c3a;
-  --um-ink: #10264b;
-  --um-blue: #2563eb;
-  --um-sky: #dcecff;
-  --um-muted: #7185a0;
+  --um-navy: #053e33;
+  --um-ink: #104b3d;
+  --um-blue: #0f766e;
+  --um-sky: #dcfff7;
+  --um-muted: #71a095;
   color: var(--um-ink);
   font-family: Inter, "Segoe UI", Arial, sans-serif;
 }
@@ -32,7 +33,7 @@ button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-  outline: 3px solid #6eabfa;
+  outline: 3px solid #6efad9;
   outline-offset: 3px;
 }
 .management-shell {
@@ -40,7 +41,7 @@ textarea:focus-visible {
   isolation: isolate;
   min-height: calc(100svh - 76px);
   padding: clamp(27px, 3.5vw, 48px) clamp(16px, 3.4vw, 50px) 35px;
-  background: linear-gradient(160deg, #f7faff 0%, #eef5ff 60%, #f6f9fe 100%);
+  background: linear-gradient(160deg, #f7fffd 0%, #eefffb 60%, #f6fefc 100%);
   overflow: hidden;
 }
 .page-ambient {
@@ -61,12 +62,12 @@ textarea:focus-visible {
 .ambient-glow--a {
   top: -295px;
   right: -150px;
-  background: radial-gradient(circle, #b7d8ff9c 0%, transparent 70%);
+  background: radial-gradient(circle, #b7ffee9c 0%, transparent 70%);
 }
 .ambient-glow--b {
   bottom: -290px;
   left: -210px;
-  background: radial-gradient(circle, #bddbff7c 0%, transparent 70%);
+  background: radial-gradient(circle, #bdfff07c 0%, transparent 70%);
 }
 .management-container {
   max-width: 1432px;
@@ -83,9 +84,9 @@ textarea:focus-visible {
   overflow: hidden;
   padding: clamp(26px, 3.1vw, 44px);
   color: #fff;
-  background: linear-gradient(128deg, #071c3a 0%, #103a75 56%, #1c65b6 100%);
+  background: linear-gradient(128deg, #053e33 0%, #10755d 56%, #098c6d 100%);
   border-radius: 25px;
-  box-shadow: 0 22px 50px #143b6d1c;
+  box-shadow: 0 22px 50px #146d581c;
 }
 .management-hero::after {
   content: "";
@@ -93,7 +94,7 @@ textarea:focus-visible {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background: radial-gradient(circle at 86% 0%, #8bc3ff29 0%, transparent 42%);
+  background: radial-gradient(circle at 86% 0%, #8bffe429 0%, transparent 42%);
 }
 .hero-grid {
   position: absolute;
@@ -104,8 +105,8 @@ textarea:focus-visible {
   top: -10%;
   opacity: 0.6;
   background-image:
-    linear-gradient(#c1e0ff14 1px, transparent 1px),
-    linear-gradient(90deg, #c1e0ff14 1px, transparent 1px);
+    linear-gradient(#c1fff114 1px, transparent 1px),
+    linear-gradient(90deg, #c1fff114 1px, transparent 1px);
   background-size: 37px 37px;
   transform: perspective(720px) rotateX(20deg) rotateZ(-10deg);
   mask-image: linear-gradient(90deg, transparent, #000 36%);
@@ -113,7 +114,7 @@ textarea:focus-visible {
 .hero-ring {
   position: absolute;
   z-index: -1;
-  border: 1px solid #c5e2ff38;
+  border: 1px solid #c5fff138;
   border-radius: 50%;
   pointer-events: none;
 }
@@ -136,7 +137,7 @@ textarea:focus-visible {
   bottom: -27px;
   right: 12%;
   width: 290px;
-  color: #b9ddff48;
+  color: #b9ffef48;
   transform: rotate(-2deg);
   pointer-events: none;
 }
@@ -150,14 +151,14 @@ textarea:focus-visible {
   gap: 10px;
   font-size: 10px;
   font-weight: 790;
-  color: #c8e4ff;
+  color: #c8fff2;
   letter-spacing: 1.9px;
 }
 .hero-eyebrow__line {
   display: inline-block;
   width: 22px;
   height: 2px;
-  background: #8fcaff;
+  background: #8fffe5;
 }
 .management-hero h1 {
   margin: 14px 0 12px;
@@ -168,12 +169,12 @@ textarea:focus-visible {
 }
 .management-hero h1 em {
   font-style: normal;
-  color: #a7d9ff;
+  color: #a7ffea;
 }
 .management-hero p {
   margin: 0;
   max-width: 550px;
-  color: #d1e6ff;
+  color: #d1fff4;
   font-size: 13px;
   line-height: 1.75;
 }
@@ -211,16 +212,16 @@ textarea:focus-visible {
 }
 .btn--primary {
   color: #fff;
-  border: 1px solid #2165cd;
-  background: linear-gradient(110deg, #2875ee, #1255bb);
-  box-shadow: 0 9px 21px #1357b52e;
+  border: 1px solid #21cda5;
+  background: linear-gradient(110deg, #28eec0, #12bb94);
+  box-shadow: 0 9px 21px #13b58f2e;
 }
 .btn--primary:hover:not(:disabled) {
-  box-shadow: 0 13px 24px #1357b544;
+  box-shadow: 0 13px 24px #13b58f44;
 }
 .btn--light {
   color: #fff;
-  border: 1px solid #c9e3ff68;
+  border: 1px solid #c9fff268;
   background: #ffffff23;
   backdrop-filter: blur(8px);
 }
@@ -228,9 +229,9 @@ textarea:focus-visible {
   background: #ffffff38;
 }
 .btn--subtle {
-  color: #234f82;
-  border: 1px solid #d5e2f5;
-  background: #edf5ff;
+  color: #23826c;
+  border: 1px solid #d5f5ee;
+  background: #eaf8f2;
   box-shadow: none;
 }
 .btn--danger {
@@ -258,7 +259,7 @@ textarea:focus-visible {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   box-shadow:
-    0 13px 34px #244b7d0d,
+    0 13px 34px #247d680d,
     inset 0 1px #fff;
 }
 .metric-card__copy {
@@ -269,7 +270,7 @@ textarea:focus-visible {
   min-width: 0;
 }
 .metric-card__copy > span {
-  color: #557396;
+  color: #559687;
   font-size: 12px;
   font-weight: 690;
 }
@@ -277,13 +278,13 @@ textarea:focus-visible {
   font-size: clamp(28px, 2.7vw, 38px);
   font-weight: 780;
   line-height: 1.2;
-  color: #123965;
+  color: #126552;
   letter-spacing: -1px;
   font-variant-numeric: tabular-nums;
 }
 .metric-card__copy small {
   margin-top: 4px;
-  color: #91a2b5;
+  color: #91b5ad;
   font-size: 10px;
 }
 .metric-icon {
@@ -299,16 +300,16 @@ textarea:focus-visible {
   height: 24px;
 }
 .metric-icon--blue {
-  color: #2563be;
-  background: #e3efff;
+  color: #25be9a;
+  background: #e3fff8;
 }
 .metric-icon--mint {
   color: #15866b;
   background: #e2f6f0;
 }
 .metric-icon--violet {
-  color: #7051b9;
-  background: #eeeaff;
+  color: #51b99c;
+  background: #eafffa;
 }
 .notice {
   display: flex;
@@ -370,7 +371,7 @@ textarea:focus-visible {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   box-shadow:
-    0 20px 48px #244b7d12,
+    0 20px 48px #247d6812,
     inset 0 1px #fff;
 }
 .workspace-header {
@@ -381,7 +382,7 @@ textarea:focus-visible {
   padding: 28px 30px 21px;
 }
 .section-eyebrow {
-  color: #2463bf;
+  color: #24bf9b;
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 1.65px;
@@ -390,20 +391,20 @@ textarea:focus-visible {
   margin: 7px 0;
   font-size: 22px;
   letter-spacing: -0.6px;
-  color: #102d55;
+  color: #105545;
 }
 .workspace-header p {
   margin: 0;
-  color: #8193aa;
+  color: #81aaa0;
   font-size: 12px;
   line-height: 1.5;
 }
 .workspace-count {
   flex: none;
   display: inline-flex;
-  color: #2665ac;
-  background: #eaf3ff;
-  border: 1px solid #d3e6ff;
+  color: #26ac8d;
+  background: #e3f6ed;
+  border: 1px solid #d3fff5;
   padding: 8px 13px;
   border-radius: 99px;
   font-size: 11px;
@@ -411,21 +412,20 @@ textarea:focus-visible {
 }
 .filters {
   display: grid;
-  grid-template-columns: minmax(230px, 1fr) minmax(145px, 0.3fr) minmax(
-      145px,
-      0.3fr
-    ) auto;
+  grid-template-columns:
+    minmax(230px, 1fr) minmax(145px, 0.3fr) minmax(145px, 0.3fr)
+    auto;
   gap: 14px;
   padding: 0 30px 24px;
   align-items: end;
-  border-bottom: 1px solid #e8eff8;
+  border-bottom: 1px solid #e8f8f4;
 }
 .filter-field {
   display: block;
   min-width: 0;
   font-size: 12px;
   font-weight: 740;
-  color: #284566;
+  color: #286658;
 }
 .filter-field > span:first-child {
   display: block;
@@ -438,23 +438,23 @@ textarea:focus-visible {
   height: 45px;
   min-width: 0;
   border-radius: 11px;
-  border: 1px solid #d8e4f4;
+  border: 1px solid #d8f4ed;
   margin: 0;
   padding: 0 13px;
-  color: #214164;
-  background: #f1f6ff;
+  color: #216454;
+  background: #f1fffc;
   font-size: 12px;
   font-weight: 540;
 }
 .filter-field input::placeholder {
-  color: #8da0b8;
+  color: #8db8ae;
 }
 .filter-field input:focus,
 .filter-field select:focus {
   background: #fff;
-  border-color: #3679e4;
+  border-color: #36e4bb;
   outline: 0;
-  box-shadow: 0 0 0 4px #2e72df1c;
+  box-shadow: 0 0 0 4px #2edfb61c;
 }
 .field-control--search {
   display: flex;
@@ -466,7 +466,7 @@ textarea:focus-visible {
   left: 14px;
   width: 18px;
   height: 18px;
-  color: #7194bb;
+  color: #71bbaa;
   pointer-events: none;
 }
 .filter-field .field-control--search input {
@@ -476,14 +476,14 @@ textarea:focus-visible {
   height: 43px;
   border: 0;
   background: transparent;
-  color: #266cba;
+  color: #26ba97;
   font-size: 11px;
   font-weight: 750;
   white-space: nowrap;
   padding: 0 6px;
 }
 .filter-reset:hover {
-  color: #103a75;
+  color: #10755d;
   text-decoration: underline;
 }
 .table-wrap {
@@ -498,13 +498,13 @@ textarea:focus-visible {
 }
 .table-wrap th {
   padding: 17px 15px;
-  background: #f4f8fe;
-  color: #7890a9;
+  background: #f4fefc;
+  color: #78a99e;
   font-size: 10px;
   font-weight: 790;
   text-transform: uppercase;
   letter-spacing: 0.75px;
-  border-bottom: 1px solid #e9f0f9;
+  border-bottom: 1px solid #e9f9f5;
   white-space: nowrap;
 }
 .table-wrap th:first-child,
@@ -517,16 +517,16 @@ textarea:focus-visible {
 }
 .table-wrap td {
   padding: 19px 15px;
-  border-bottom: 1px solid #edf2f8;
+  border-bottom: 1px solid #edf8f5;
   vertical-align: middle;
   font-size: 12px;
-  color: #2a4768;
+  color: #2a685a;
 }
 .table-wrap tbody tr {
   transition: background 0.18s;
 }
 .table-wrap tbody tr:hover {
-  background: #f5f9ff;
+  background: #f5fffd;
 }
 .table-wrap tbody tr:last-child td {
   border-bottom: 0;
@@ -544,8 +544,8 @@ textarea:focus-visible {
   width: 40px;
   height: 40px;
   border-radius: 12px;
-  color: #2861af;
-  background: linear-gradient(145deg, #e1efff, #c8dfff);
+  color: #28af90;
+  background: linear-gradient(145deg, #e1fff8, #c8fff2);
   font-size: 15px;
   font-weight: 800;
   box-shadow: inset 0 1px #fff;
@@ -557,13 +557,13 @@ textarea:focus-visible {
   display: block;
   font-size: 12px;
   font-weight: 760;
-  color: #173456;
+  color: #175647;
   white-space: nowrap;
 }
 .user-cell__copy small {
   display: block;
   margin-top: 5px;
-  color: #8197ae;
+  color: #81aea3;
   font-size: 11px;
   overflow-wrap: anywhere;
 }
@@ -571,12 +571,12 @@ textarea:focus-visible {
   display: block;
   max-width: 290px;
   overflow-wrap: anywhere;
-  color: #314c6b;
+  color: #316b5d;
 }
 .contact-muted {
   display: block;
   margin-top: 6px;
-  color: #97a7b7;
+  color: #97b7b0;
   font-size: 11px;
 }
 .role-badge,
@@ -592,16 +592,16 @@ textarea:focus-visible {
   white-space: nowrap;
 }
 .role-badge {
-  color: #2369b9;
-  background: #e7f1ff;
+  color: #23b996;
+  background: #e7fff9;
 }
 .role-badge--owner {
-  color: #7447a9;
-  background: #f0eafb;
+  color: #47a98d;
+  background: #eafbf6;
 }
 .role-badge--staff {
-  color: #245f9b;
-  background: #e2effb;
+  color: #249b7f;
+  background: #e2fbf5;
 }
 .role-badge--tenant {
   color: #856229;
@@ -626,7 +626,7 @@ textarea:focus-visible {
 }
 .date-cell {
   white-space: nowrap;
-  color: #617b98;
+  color: #61988b;
 }
 .table-actions {
   display: grid;
@@ -637,18 +637,18 @@ textarea:focus-visible {
 .table-action {
   min-height: 28px;
   padding: 5px 9px;
-  color: #326cae;
-  background: #eff5ff;
-  border: 1px solid #e1ebf9;
+  color: #32ae91;
+  background: #effffb;
+  border: 1px solid #e1f9f3;
   border-radius: 7px;
   font-size: 10px;
   font-weight: 750;
   white-space: nowrap;
 }
 .table-action:hover:not(:disabled) {
-  color: #154e91;
-  background: #daeaff;
-  border-color: #bad7fd;
+  color: #159174;
+  background: #dafff6;
+  border-color: #bafded;
 }
 .table-action--danger {
   color: #a54955;
@@ -661,23 +661,23 @@ textarea:focus-visible {
   border-color: #f0c3c9;
 }
 .table-action--history {
-  color: #556d90;
-  background: #f3f6fb;
+  color: #559082;
+  background: #f3fbf9;
 }
 .empty-state {
   height: 210px;
   text-align: center;
-  color: #8394a8;
+  color: #83a89f;
 }
 .empty-state__symbol {
   display: block;
   font-size: 32px;
-  color: #9dbce2;
+  color: #9de2d2;
   margin-bottom: 10px;
 }
 .empty-state strong {
   display: block;
-  color: #486a91;
+  color: #489180;
   font-size: 14px;
 }
 .empty-state small {
@@ -691,12 +691,12 @@ textarea:focus-visible {
   align-items: center;
   gap: 15px;
   padding: 16px 29px;
-  border-top: 1px solid #e6eef8;
-  color: #8296ac;
+  border-top: 1px solid #e6f8f4;
+  color: #82aca2;
   font-size: 11px;
 }
 .pagination strong {
-  color: #365a7c;
+  color: #367c6c;
 }
 .pagination-controls {
   display: flex;
@@ -709,20 +709,20 @@ textarea:focus-visible {
   width: 34px;
   height: 34px;
   padding: 0;
-  background: #f1f6ff;
-  border: 1px solid #deebfa;
+  background: #f1fffc;
+  border: 1px solid #defaf3;
   border-radius: 9px;
-  color: #2864a7;
+  color: #28a789;
   font-size: 22px;
   line-height: 1;
 }
 .pagination-button:hover:not(:disabled) {
-  background: #dfebfc;
+  background: #dffcf5;
 }
 .workspace-footer {
   margin: 23px 0 4px;
   text-align: center;
-  color: #9caec1;
+  color: #9cc1b8;
   font-weight: 690;
   font-size: 9px;
   letter-spacing: 1.7px;
@@ -739,7 +739,7 @@ textarea:focus-visible {
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background: #061c3b9c;
+  background: #063b2f9c;
   backdrop-filter: blur(7px);
   -webkit-backdrop-filter: blur(7px);
 }
@@ -747,11 +747,11 @@ textarea:focus-visible {
   width: min(100%, 640px);
   max-height: min(92svh, 830px);
   overflow: auto;
-  color: #142f52;
+  color: #145244;
   background: #fff;
-  border: 1px solid #d9e6f6;
+  border: 1px solid #d9f6ef;
   border-radius: 23px;
-  box-shadow: 0 30px 90px #061d3b5b;
+  box-shadow: 0 30px 90px #063b2f5b;
 }
 .editor-heading {
   position: relative;
@@ -759,16 +759,16 @@ textarea:focus-visible {
   gap: 15px;
   align-items: center;
   padding: 27px 86px 25px 29px;
-  color: #122f56;
-  border-bottom: 1px solid #dce8f7;
-  background: linear-gradient(115deg, #f8fbff 0%, #eaf3ff 100%);
+  color: #125646;
+  border-bottom: 1px solid #dcf7f1;
+  background: linear-gradient(115deg, #f7fcfa 0%, #e3f6ed 100%);
 }
 .editor-heading::before {
   content: "";
   position: absolute;
   inset: 0 0 auto;
   height: 3px;
-  background: linear-gradient(90deg, #1757b5, #6fb5fa 65%, transparent);
+  background: linear-gradient(90deg, #17b590, #6ffada 65%, transparent);
 }
 .editor-heading__mark {
   flex: none;
@@ -777,9 +777,9 @@ textarea:focus-visible {
   width: 46px;
   height: 46px;
   border-radius: 13px;
-  color: #1f5fbb;
-  background: #dcecff;
-  border: 1px solid #c9e2ff;
+  color: #1fbb97;
+  background: #dcfff7;
+  border: 1px solid #c9fff2;
 }
 .editor-heading__mark svg {
   width: 25px;
@@ -791,7 +791,7 @@ textarea:focus-visible {
 }
 .editor-heading__copy h2 {
   margin: 7px 0 7px;
-  color: #102c52;
+  color: #105243;
   font-size: 23px;
   font-weight: 780;
   letter-spacing: -0.6px;
@@ -800,12 +800,12 @@ textarea:focus-visible {
 .editor-heading__copy p {
   margin: 0;
   font-size: 12px;
-  color: #607f9f;
+  color: #609f90;
   line-height: 1.6;
   overflow-wrap: anywhere;
 }
 .editor-heading__copy p span {
-  color: #98a7bb;
+  color: #98bbb3;
 }
 /* Shared close control for every dialog (create/edit/status/role/history).
    Reset global button padding; anchor the control to the panel instead of flex flow. */
@@ -823,13 +823,13 @@ textarea:focus-visible {
   margin: 0;
   padding: 0;
   appearance: none;
-  border: 1px solid #d4e2f5;
+  border: 1px solid #d4f5ed;
   border-radius: 12px;
   background: #fff;
-  color: #526d91;
+  color: #529182;
   cursor: pointer;
   line-height: 1;
-  box-shadow: 0 2px 6px #0c336309;
+  box-shadow: 0 2px 6px #0c634f09;
   transition:
     background-color 150ms ease,
     border-color 150ms ease,
@@ -842,12 +842,12 @@ textarea:focus-visible {
   flex: none;
 }
 .editor-close:hover:not(:disabled) {
-  background: #e7f0fc;
-  border-color: #aacbeb;
-  color: #174e91;
+  background: #e7fcf7;
+  border-color: #aaebdc;
+  color: #179175;
 }
 .editor-close:focus-visible {
-  outline: 3px solid #8bc0ff;
+  outline: 3px solid #8bffe4;
   outline-offset: 2px;
 }
 .editor-close:disabled {
@@ -864,7 +864,7 @@ textarea:focus-visible {
 }
 .form-field {
   display: block;
-  color: #27415f;
+  color: #275f52;
   font-size: 12px;
   font-weight: 760;
 }
@@ -885,10 +885,10 @@ textarea:focus-visible {
   width: 100%;
   margin: 0;
   min-width: 0;
-  border: 1px solid #d5e2f5;
+  border: 1px solid #d5f5ee;
   border-radius: 10px;
-  background: #f0f5fd;
-  color: #193452;
+  background: #f0fdfa;
+  color: #195245;
   font-size: 13px;
   font-weight: 500;
   padding: 12px 13px;
@@ -903,13 +903,13 @@ textarea:focus-visible {
 }
 .form-field input::placeholder,
 .form-field textarea::placeholder {
-  color: #92a6bd;
+  color: #92bdb3;
 }
 .form-field input:focus,
 .form-field textarea:focus {
   background: white;
-  border-color: #3879e4;
-  box-shadow: 0 0 0 4px #2e72df1c;
+  border-color: #38e4bc;
+  box-shadow: 0 0 0 4px #2edfb61c;
 }
 .form-field small {
   display: block;
@@ -917,7 +917,7 @@ textarea:focus-visible {
   font-size: 10px;
   font-weight: 450;
   line-height: 1.6;
-  color: #7c91ad;
+  color: #7cada2;
 }
 .password-control {
   position: relative;
@@ -935,12 +935,12 @@ textarea:focus-visible {
   border-radius: 7px;
   padding: 3px 8px;
   background: transparent;
-  color: #2f6fbe;
+  color: #2fbe9d;
   font-size: 11px;
   font-weight: 750;
 }
 .password-toggle:hover {
-  background: #dfecfc;
+  background: #dffcf5;
 }
 .hint-panel {
   display: flex;
@@ -948,10 +948,10 @@ textarea:focus-visible {
   align-items: flex-start;
   margin-top: 22px;
   padding: 13px 14px;
-  background: #edf5ff;
-  border: 1px solid #dce9fa;
+  background: #eaf8f2;
+  border: 1px solid #dcfaf3;
   border-radius: 11px;
-  color: #547290;
+  color: #549082;
   font-size: 11px;
   line-height: 1.6;
 }
@@ -967,20 +967,20 @@ textarea:focus-visible {
   height: 18px;
   border-radius: 50%;
   flex: none;
-  background: #cbdef5;
-  color: #2565ac;
+  background: #cbf5eb;
+  color: #25ac8d;
   font-weight: 830;
   font-family: Georgia, serif;
   font-size: 12px;
 }
 .hint-panel strong {
-  color: #245da6;
+  color: #24a688;
 }
 .form-caption {
   margin: 16px 0 0;
   font-size: 11px;
   line-height: 1.6;
-  color: #8599b2;
+  color: #85b2a8;
 }
 .editor-actions {
   display: flex;
@@ -988,7 +988,7 @@ textarea:focus-visible {
   justify-content: flex-end;
   flex-wrap: wrap;
   gap: 10px;
-  border-top: 1px solid #e3ecf6;
+  border-top: 1px solid #e3f6f2;
   padding-top: 21px;
   margin-top: 25px;
 }
@@ -1023,17 +1023,17 @@ textarea:focus-visible {
 .confirmation-panel h3 {
   margin: 0 0 9px;
   font-size: 19px;
-  color: #193b62;
+  color: #196251;
 }
 .confirmation-panel p {
   margin: 0 0 7px;
   font-size: 12px;
   line-height: 1.7;
-  color: #536d88;
+  color: #53887c;
 }
 .confirmation-panel .subdued {
   font-size: 11px;
-  color: #8499ad;
+  color: #84ada3;
 }
 .role-transition {
   display: flex;
@@ -1044,18 +1044,18 @@ textarea:focus-visible {
   margin-bottom: 24px;
   padding: 22px;
   border-radius: 14px;
-  border: 1px solid #e0eaf8;
-  background: linear-gradient(135deg, #f4f9ff, #e9f3ff);
+  border: 1px solid #e0f8f2;
+  background: linear-gradient(135deg, #f4fffc, #e9fffa);
   font-size: 13px;
   font-weight: 750;
-  color: #496689;
+  color: #49897a;
 }
 .role-transition strong {
-  color: #1761b3;
+  color: #17b38f;
 }
 .role-transition__arrow {
   font-size: 23px;
-  color: #81aee1;
+  color: #81e1cb;
   font-weight: 400;
 }
 .history-list {
@@ -1066,7 +1066,7 @@ textarea:focus-visible {
 .history-entry {
   position: relative;
   padding: 0 0 24px 23px;
-  border-left: 2px solid #d2e4fb;
+  border-left: 2px solid #d2fbf1;
 }
 .history-entry:last-child {
   padding-bottom: 0;
@@ -1079,8 +1079,8 @@ textarea:focus-visible {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: #3681d2;
-  box-shadow: 0 0 0 4px #e6f2ff;
+  background: #36d2ae;
+  box-shadow: 0 0 0 4px #e6fff9;
 }
 .history-entry__top {
   display: flex;
@@ -1090,17 +1090,17 @@ textarea:focus-visible {
 }
 .history-entry__top strong {
   font-size: 12px;
-  color: #254e7c;
+  color: #257c68;
 }
 .history-entry__top time {
   font-size: 10px;
-  color: #8ca1b9;
+  color: #8cb9af;
   white-space: nowrap;
 }
 .history-entry p {
   margin: 7px 0;
   font-size: 12px;
-  color: #506b8b;
+  color: #508b7d;
   line-height: 1.6;
 }
 .history-entry small {
@@ -1108,12 +1108,12 @@ textarea:focus-visible {
   margin-top: 5px;
   overflow-wrap: anywhere;
   font-size: 10px;
-  color: #9caab8;
+  color: #9cb8b1;
 }
 .history-empty {
   margin: 20px 0 10px;
   text-align: center;
-  color: #8196b0;
+  color: #81b0a5;
   font-size: 13px;
 }
 @media (max-width: 1180px) {
