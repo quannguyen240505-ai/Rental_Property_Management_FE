@@ -29,7 +29,15 @@ export const routes: Routes = [
     component: NotificationsComponent,
     canActivate: [authGuard],
   },
-  { path: "owner", component: OwnerComponent, canActivate: [ownerGuard] },
+  {
+    path: "owner",
+    canActivate: [ownerGuard],
+    loadComponent: () =>
+      import("./features/owner/owner-dashboard.component").then(
+        (module) => module.OwnerDashboardComponent,
+      ),
+  },
+  { path: "owner/users", component: OwnerComponent, canActivate: [ownerGuard] },
   {
     path: "tenant",
     canActivate: [tenantGuard],

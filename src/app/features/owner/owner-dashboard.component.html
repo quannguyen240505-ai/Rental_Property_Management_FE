@@ -1,0 +1,332 @@
+<div class="owner-dashboard">
+  <div class="owner-dashboard__container">
+    <section class="owner-welcome" aria-labelledby="owner-welcome-title">
+      <div class="owner-welcome__content">
+        <span class="owner-eyebrow"
+          ><span aria-hidden="true"></span> TRUNG TÂM QUẢN TRỊ</span
+        >
+        <h1 id="owner-welcome-title">
+          Xin chào, <em>{{ greeting() }}</em>
+        </h1>
+        <p>
+          Toàn cảnh tài khoản và hoạt động hệ thống Rental Property, trong một
+          không gian làm việc.
+        </p>
+        <div class="owner-welcome__actions">
+          <a routerLink="/owner/users" class="owner-hero-link"
+            >Quản lý tài khoản <span aria-hidden="true">→</span></a
+          >
+          <a
+            routerLink="/notifications"
+            class="owner-hero-link owner-hero-link--quiet"
+            >Xem thông báo</a
+          >
+        </div>
+      </div>
+      <svg
+        class="owner-welcome__art"
+        viewBox="0 0 310 220"
+        fill="none"
+        aria-hidden="true"
+      >
+        <circle
+          cx="155"
+          cy="120"
+          r="105"
+          stroke="currentColor"
+          stroke-opacity=".19"
+        />
+        <circle
+          cx="155"
+          cy="120"
+          r="83"
+          stroke="currentColor"
+          stroke-opacity=".12"
+        />
+        <path
+          d="m45 110 110-86 110 86v102H45V110Z"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+        <path
+          d="m75 112 80-63 80 63v100H75V112Z"
+          stroke="currentColor"
+          stroke-opacity=".75"
+          stroke-width="2"
+        />
+        <path
+          d="M135 212v-68h40v68M93 120h26v29H93v-29ZM191 120h26v29h-26v-29ZM32 212h248"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </section>
+
+    <div class="owner-section-head">
+      <div>
+        <span class="owner-section-kicker">TỔNG QUAN HỆ THỐNG</span>
+        <h2>Bảng Thống Kê</h2>
+      </div>
+      <ui-button
+        variant="secondary"
+        size="sm"
+        [loading]="usersLoading() || notificationsLoading() || profileLoading()"
+        (pressed)="refresh()"
+        >Làm mới</ui-button
+      >
+    </div>
+
+    <section
+      class="owner-metrics"
+      aria-label="Chỉ số quản lý tài khoản và thông báo"
+    >
+      <ui-card variant="outlined" padding="md">
+        <div class="owner-metric">
+          <span class="owner-metric__icon" aria-hidden="true"
+            ><svg viewBox="0 0 24 24" fill="none">
+              <circle cx="9" cy="8" r="3" />
+              <path
+                d="M3 20v-2a6 6 0 0 1 12 0v2M17 5a3 3 0 0 1 0 6M18 14a5 5 0 0 1 3 5"
+              /></svg
+          ></span>
+          <span class="owner-metric__label">Tổng tài khoản</span>
+          <strong class="owner-metric__value">{{
+            usersLoaded() ? totalUsers() : "—"
+          }}</strong>
+          <span class="owner-metric__hint">{{
+            usersError()
+              ? "Chưa tải được dữ liệu"
+              : "Tất cả vai trò trong hệ thống"
+          }}</span>
+        </div>
+      </ui-card>
+      <ui-card variant="outlined" padding="md">
+        <div class="owner-metric">
+          <span class="owner-metric__icon" aria-hidden="true"
+            ><svg viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="9" />
+              <path d="m8 12 3 3 5-6" /></svg
+          ></span>
+          <span class="owner-metric__label">Đang hoạt động</span>
+          <strong class="owner-metric__value">{{
+            usersLoaded() ? activeUsers() : "—"
+          }}</strong>
+          <span class="owner-metric__hint">Tài khoản có trạng thái ACTIVE</span>
+        </div>
+      </ui-card>
+      <ui-card variant="outlined" padding="md">
+        <div class="owner-metric">
+          <span class="owner-metric__icon" aria-hidden="true"
+            ><svg viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="6" width="18" height="15" rx="2" />
+              <path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2M3 12h18" /></svg
+          ></span>
+          <span class="owner-metric__label">Nhân viên</span>
+          <strong class="owner-metric__value">{{
+            usersLoaded() ? staffUsers() : "—"
+          }}</strong>
+          <span class="owner-metric__hint">Tài khoản có vai trò STAFF</span>
+        </div>
+      </ui-card>
+      <ui-card variant="outlined" padding="md">
+        <div class="owner-metric">
+          <span class="owner-metric__icon" aria-hidden="true"
+            ><svg viewBox="0 0 24 24" fill="none">
+              <path
+                d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9ZM10 21h4"
+              /></svg
+          ></span>
+          <span class="owner-metric__label">Thông báo chưa đọc</span>
+          <strong class="owner-metric__value">{{
+            notificationsLoaded() ? unreadNotifications() : "—"
+          }}</strong>
+          <span class="owner-metric__hint">Từ Notification Service</span>
+        </div>
+      </ui-card>
+    </section>
+
+    <div class="owner-main-grid">
+      <section class="owner-panel" aria-labelledby="owner-users-heading">
+        <ui-card padding="lg">
+          <div class="owner-panel__heading">
+            <div>
+              <span class="owner-section-kicker">NGƯỜI DÙNG</span>
+              <h2 id="owner-users-heading">Tài khoản mới nhất</h2>
+              <p>Tổng hợp từ Auth Service</p>
+            </div>
+            <a routerLink="/owner/users" class="owner-text-link"
+              >Quản lý tất cả <span aria-hidden="true">→</span></a
+            >
+          </div>
+          @if (usersError()) {
+            <div class="owner-state owner-state--error" role="alert">
+              <p>{{ usersError() }}</p>
+              <ui-button variant="secondary" size="sm" (pressed)="loadUsers()"
+                >Thử lại</ui-button
+              >
+            </div>
+          } @else if (usersLoading() || !usersLoaded()) {
+            <p class="owner-state" role="status">
+              Đang tải danh sách tài khoản...
+            </p>
+          } @else if (recentUsers().length === 0) {
+            <p class="owner-state" role="status">Chưa có tài khoản nào.</p>
+          } @else {
+            <div class="owner-users-table-wrap">
+              <table class="owner-users-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Người dùng</th>
+                    <th scope="col">Vai trò</th>
+                    <th scope="col">Trạng thái</th>
+                    <th scope="col">Ngày tạo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (user of recentUsers(); track user.id) {
+                    <tr>
+                      <td>
+                        <strong>{{ user.fullName }}</strong><span>{{
+                          "@" + user.username
+                        }}</span>
+                      </td>
+                      <td>{{ roleLabel(user.role) }}</td>
+                      <td>
+                        <ui-badge
+                          [tone]="
+                            user.status === 'ACTIVE' ? 'success' : 'danger'
+                          "
+                          size="sm"
+                          [dot]="true"
+                          >{{
+                            user.status === "ACTIVE" ? "Hoạt động" : "Đã khóa"
+                          }}</ui-badge
+                        >
+                      </td>
+                      <td>{{ user.createdAt | date: "dd/MM/yyyy" }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+        </ui-card>
+      </section>
+
+      <section class="owner-panel" aria-labelledby="owner-notices-heading">
+        <ui-card padding="lg">
+          <div class="owner-panel__heading">
+            <div>
+              <span class="owner-section-kicker">THÔNG BÁO</span>
+              <h2 id="owner-notices-heading">Cập nhật gần đây</h2>
+              <p>Dành riêng cho tài khoản này</p>
+            </div>
+            <a class="owner-text-link" routerLink="/notifications"
+              >Xem tất cả <span aria-hidden="true">→</span></a
+            >
+          </div>
+          @if (notificationsError()) {
+            <div class="owner-state owner-state--error" role="alert">
+              <p>{{ notificationsError() }}</p>
+              <ui-button
+                variant="secondary"
+                size="sm"
+                (pressed)="loadNotifications()"
+                >Thử lại</ui-button
+              >
+            </div>
+          } @else if (notificationsLoading() || !notificationsLoaded()) {
+            <p class="owner-state" role="status">Đang tải thông báo...</p>
+          } @else if (recentNotifications().length === 0) {
+            <div class="owner-empty" role="status">
+              <span aria-hidden="true">✓</span
+              ><strong>Bạn chưa có thông báo nào</strong>
+              <p>Các cập nhật mới sẽ xuất hiện tại đây.</p>
+            </div>
+          } @else {
+            <div class="owner-notice-list">
+              @for (notice of recentNotifications(); track notice.id) {
+                <a
+                  routerLink="/notifications"
+                  class="owner-notice"
+                  [class.owner-notice--unread]="!notice.read"
+                >
+                  <span class="owner-notice__dot" aria-hidden="true"></span>
+                  <div>
+                    <strong>{{ notice.title }}</strong>
+                    <p>{{ notice.message }}</p>
+                    <time [attr.datetime]="notice.createdAt">{{
+                      notice.createdAt | date: "dd/MM/yyyy, HH:mm"
+                    }}</time>
+                  </div>
+                </a>
+              }
+            </div>
+          }
+        </ui-card>
+      </section>
+    </div>
+
+    <div class="owner-section-head owner-section-head--modules">
+      <div>
+        <span class="owner-section-kicker">NGHIỆP VỤ</span>
+        <h2>Các module quản lý</h2>
+      </div>
+      <ui-badge tone="neutral">Tích hợp theo tiến độ Backend</ui-badge>
+    </div>
+    <section
+      class="owner-modules"
+      aria-label="Trạng thái tích hợp các module nghiệp vụ"
+    >
+      <ui-card variant="outlined" padding="md"
+        ><div class="owner-module">
+          <span class="owner-module__icon" aria-hidden="true"
+            ><svg viewBox="0 0 24 24" fill="none">
+              <path d="m3 11 9-8 9 8v10h-7v-7h-4v7H3V11Z" /></svg
+          ></span>
+          <div>
+            <h3>Quản lý khu trọ & phòng</h3>
+            <p>Property Service chưa được tích hợp trên nhánh hiện tại.</p>
+          </div>
+          <ui-badge tone="neutral">Chờ tích hợp</ui-badge>
+        </div></ui-card
+      >
+      <ui-card variant="outlined" padding="md"
+        ><div class="owner-module">
+          <span class="owner-module__icon" aria-hidden="true"
+            ><svg viewBox="0 0 24 24" fill="none">
+              <path
+                d="M6 2h9l4 4v16H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm9 0v5h5M8 12h8M8 16h8"
+              /></svg
+          ></span>
+          <div>
+            <h3>Hợp đồng thuê</h3>
+            <p>Rental Service sẽ cung cấp số hợp đồng và tình trạng thuê.</p>
+          </div>
+          <ui-badge tone="neutral">Chờ tích hợp</ui-badge>
+        </div></ui-card
+      >
+      <ui-card variant="outlined" padding="md"
+        ><div class="owner-module">
+          <span class="owner-module__icon" aria-hidden="true"
+            ><svg viewBox="0 0 24 24" fill="none">
+              <path d="M4 3h16v18l-3-2-3 2-3-2-3 2-4-2V3ZM8 8h8M8 12h8" /></svg
+          ></span>
+          <div>
+            <h3>Hóa đơn & thanh toán</h3>
+            <p>Chờ Billing/Payment API để hiển thị số liệu thực tế.</p>
+          </div>
+          <ui-badge tone="neutral">Chờ tích hợp</ui-badge>
+        </div></ui-card
+      >
+    </section>
+    <div class="owner-bottom-links">
+      <a routerLink="/profile"
+        >Hồ sơ của tôi <span aria-hidden="true">→</span></a
+      ><a routerLink="/owner/users"
+        >Đi tới quản lý tài khoản <span aria-hidden="true">→</span></a
+      >
+    </div>
+  </div>
+</div>

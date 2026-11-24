@@ -29,8 +29,18 @@
           <a
             class="rp-header__desktop-link"
             routerLink="/owner"
-            [class.is-current]="isActive('/owner')"
-            [attr.aria-current]="isActive('/owner') ? 'page' : null"
+            [class.is-current]="isActive('/owner') && !isActive('/owner/users')"
+            [attr.aria-current]="
+              isActive('/owner') && !isActive('/owner/users') ? 'page' : null
+            "
+            (click)="closeMenu()"
+            >Tổng quan</a
+          >
+          <a
+            class="rp-header__desktop-link"
+            routerLink="/owner/users"
+            [class.is-current]="isActive('/owner/users')"
+            [attr.aria-current]="isActive('/owner/users') ? 'page' : null"
             (click)="closeMenu()"
             >Quản lý tài khoản</a
           >
@@ -131,7 +141,8 @@
               aria-label="Tùy chọn tài khoản"
             >
               @if (auth.role() === "OWNER") {
-                <a routerLink="/owner" (click)="closeMenu()"
+                <a routerLink="/owner" (click)="closeMenu()">Tổng quan</a>
+                <a routerLink="/owner/users" (click)="closeMenu()"
                   >Quản lý tài khoản</a
                 >
               }
