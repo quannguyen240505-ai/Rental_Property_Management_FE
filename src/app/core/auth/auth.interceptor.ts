@@ -9,6 +9,7 @@ const PUBLIC_AUTH_PATHS = [
   "/api/auth/register",
   "/api/auth/forgot-password",
   "/api/auth/reset-password",
+  "/api/auth/google",
 ];
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
