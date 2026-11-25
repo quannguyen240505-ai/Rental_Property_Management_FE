@@ -1,0 +1,78 @@
+<section class="contract-page">
+    <header class="page-header">
+        <div>
+            <h1>Quản lý hợp đồng thuê</h1>
+            <p>Danh sách hợp đồng thuê phòng trong hệ thống</p>
+        </div>
+
+        <div class="header-actions">
+            <a routerLink="/owner/contracts/new" class="create-btn">
+                + Tạo hợp đồng
+            </a>
+
+            <button type="button" class="refresh-btn" (click)="loadContracts()" [disabled]="loading()">
+                Tải lại
+            </button>
+        </div>
+    </header>
+
+    @if (loading()) {
+    <div class="message">Đang tải danh sách hợp đồng...</div>
+    }
+
+    @if (errorMessage()) {
+    <div class="error-message" role="alert">
+        {{ errorMessage() }}
+        <button type="button" (click)="loadContracts()">
+            Thử lại
+        </button>
+    </div>
+    }
+
+    @if (!loading() && !errorMessage()) {
+    @if (contracts().length === 0) {
+    <div class="message">
+        Chưa có hợp đồng thuê nào.
+    </div>
+    } @else {
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Mã hợp đồng</th>
+                    <th>Mã phòng</th>
+                    <th>Ngày bắt đầu</th>
+                    <th>Ngày kết thúc</th>
+                    <th>Tiền thuê</th>
+                    <th>Tiền cọc</th>
+                    <th>Trạng thái</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @for (contract of contracts(); track contract.id) {
+                <tr>
+                    <td>
+                        <a [routerLink]="['/owner/contracts', contract.id]" class="contract-link"
+                            [title]="'Xem chi tiết hợp đồng ' + contract.id">
+                            {{ contract.id.slice(0, 8) }}
+                        </a>
+                    </td>
+                    <td>{{ contract.roomId.slice(0, 8) }}</td>
+                    <td>{{ contract.startDate | date: 'dd/MM/yyyy' }}</td>
+                    <td>{{ contract.endDate | date: 'dd/MM/yyyy' }}</td>
+                    <td>{{ contract.rentAmount | number }} VNĐ</td>
+                    <td>{{ contract.depositRequired | number }} VNĐ</td>
+                    <td>
+                        <span class="status" [attr.data-status]="contract.status">
+                            {{ contract.status }}
+                        </span>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    }
+    }
+</section>
