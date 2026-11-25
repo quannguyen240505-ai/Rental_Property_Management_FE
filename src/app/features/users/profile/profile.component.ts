@@ -25,6 +25,8 @@ import {
 } from "./profile.model";
 import { ProfileService } from "./profile.service";
 import { UiBadgeComponent } from "../../../shared/ui";
+import { AuthService } from "../../../core/auth/auth.service";
+import { GoogleSignInComponent } from "../../../shared/google-sign-in/google-sign-in.component";
 
 const ROLE_LABELS: Record<ProfileRole, string> = {
   OWNER: "Chủ trọ",
@@ -36,7 +38,13 @@ const ROLE_LABELS: Record<ProfileRole, string> = {
 @Component({
   selector: "app-profile",
   standalone: true,
-  imports: [DatePipe, ReactiveFormsModule, RouterLink, UiBadgeComponent],
+  imports: [
+    DatePipe,
+    ReactiveFormsModule,
+    RouterLink,
+    UiBadgeComponent,
+    GoogleSignInComponent,
+  ],
   templateUrl: "./profile.component.html",
   styleUrl: "./profile.component.css",
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -51,6 +59,11 @@ export class ProfileComponent implements OnInit {
   readonly editing = signal(false);
   readonly error = signal("");
   readonly success = signal("");
+  private readonly auth = inject(AuthService);
+
+  readonly googleLinked = signal(false);
+
+  readonly linkingGoogle = signal(false);
 
   readonly form = new FormGroup({
     fullName: new FormControl("", {
@@ -102,6 +115,7 @@ export class ProfileComponent implements OnInit {
         next: (account) => {
           this.profile.set(account);
           this.resetForm(account);
+          this.googleLinked.set(account.googleLinked);
         },
         error: (error: HttpErrorResponse) =>
           this.error.set(this.describeError(error, false)),
@@ -179,6 +193,45 @@ export class ProfileComponent implements OnInit {
       email: account.email ?? "",
       phone: account.phone ?? "",
     });
+  }
+
+  linkGoogle(idToken: string): void {
+    if (this.linkingGoogle()) return;
+
+    this.linkingGoogle.set(true);
+    this.error.set("");
+    this.success.set("");
+
+    this.auth
+      .linkGoogle(idToken)
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => this.linkingGoogle.set(false)),
+      )
+      .subscribe({
+        next: () => {
+          this.googleLinked.set(true);
+
+          this.profile.update((account) =>
+            account ? { ...account, googleLinked: true } : account,
+          );
+
+          this.success.set("Tài khoản Google đã được liên kết thành công.");
+        },
+        error: (err: HttpErrorResponse) => {
+          const code = err.error?.code;
+
+          if (code === "GOOGLE_EMAIL_MISMATCH") {
+            this.error.set(
+              "Email Google không trùng email tài khoản hiện tại.",
+            );
+          } else if (code === "GOOGLE_ALREADY_LINKED") {
+            this.error.set("Tài khoản Google này đã được liên kết.");
+          } else {
+            this.error.set("Không thể liên kết Google. Vui lòng thử lại.");
+          }
+        },
+      });
   }
 
   private describeError(error: HttpErrorResponse, updating: boolean): string {

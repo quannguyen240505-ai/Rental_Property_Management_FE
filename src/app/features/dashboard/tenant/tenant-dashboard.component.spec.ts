@@ -20,6 +20,7 @@ const profile: UserProfile = {
   status: "ACTIVE",
   createdAt: "2026-11-19T00:00:00Z",
   updatedAt: "2026-11-22T00:00:00Z",
+  googleLinked: false,
 };
 
 const notice = (

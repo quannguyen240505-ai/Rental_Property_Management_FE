@@ -9,6 +9,7 @@ export interface UserProfile {
   email: string | null;
   phone: string | null;
   role: ProfileRole;
+  googleLinked: boolean;
   status: ProfileStatus;
   createdAt: string;
   updatedAt: string;
