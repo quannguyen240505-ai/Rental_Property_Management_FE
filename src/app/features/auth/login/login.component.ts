@@ -8,10 +8,12 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { AuthService } from "../../../core/auth/auth.service";
 import { roleHome } from "../../../core/auth/role-home";
 
+import { GoogleSignInComponent } from "../../../shared/google-sign-in/google-sign-in.component";
+
 @Component({
   selector: "app-login",
   standalone: true,
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, GoogleSignInComponent],
   templateUrl: "./login.component.html",
   styleUrl: "./login.component.css",
 })
@@ -85,6 +87,45 @@ export class LoginComponent {
   onPasswordInput(): void {
     this.passwordRequired.set(false);
     this.error.set("");
+  }
+
+  onGoogleReady(): void {
+    if (this.error() === "Không thể tải đăng nhập Google. Vui lòng thử lại.") {
+      this.error.set("");
+    }
+  }
+
+  handleGoogleCredential(idToken: string): void {
+    if (this.loading()) return;
+
+    this.loading.set(true);
+    this.error.set("");
+
+    this.auth
+      .googleLogin(idToken)
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe({
+        next: ({ role }) => {
+          void this.router.navigateByUrl(roleHome(role), {
+            replaceUrl: true,
+          });
+        },
+        error: (err: HttpErrorResponse) => {
+          const code = err.error?.code;
+
+          if (code === "ACCOUNT_LINK_REQUIRED") {
+            this.error.set(
+              "Email đã có tài khoản. Hãy đăng nhập bằng mật khẩu và liên kết Google.",
+            );
+          } else if (err.status === 401) {
+            this.error.set("Google ID Token không hợp lệ.");
+          } else if (err.status === 503) {
+            this.error.set("Dịch vụ Google Login chưa sẵn sàng.");
+          } else {
+            this.error.set("Đăng nhập Google thất bại.");
+          }
+        },
+      });
   }
 
   submit(rawUsername: string, rawPassword: string): void {

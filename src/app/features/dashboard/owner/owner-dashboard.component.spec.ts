@@ -22,6 +22,7 @@ const profile: UserProfile = {
   status: "ACTIVE",
   createdAt: "2026-11-21T00:00:00Z",
   updatedAt: "2026-11-22T00:00:00Z",
+  googleLinked: false,
 };
 
 function account(

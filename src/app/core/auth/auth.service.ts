@@ -36,23 +36,40 @@ export class AuthService {
 
   login(username: string, password: string) {
     return this.http
-      .post<LoginResponse>("/api/auth/login", { username, password })
-      .pipe(
-        tap((response) => {
-          sessionStorage.setItem("accessToken", response.accessToken);
-          sessionStorage.setItem("role", response.role);
-          sessionStorage.setItem("expiresAt", response.expiresAt);
+      .post<LoginResponse>("/api/auth/login", {
+        username,
+        password,
+      })
+      .pipe(tap((response) => this.saveSession(response)));
+  }
 
-          // Dọn dữ liệu từ phiên bản FE cũ.
-          localStorage.removeItem("accessToken");
-          localStorage.removeItem("role");
+  linkGoogle(idToken: string) {
+    return this.http.post<{ message: string }>("/api/auth/google/link", {
+      idToken,
+    });
+  }
 
-          this.token.set(response.accessToken);
-          this.role.set(response.role);
-          this.expiresAt.set(response.expiresAt);
-          this.scheduleExpiry();
-        }),
-      );
+  googleLogin(idToken: string) {
+    return this.http
+      .post<LoginResponse>("/api/auth/google", {
+        idToken,
+      })
+      .pipe(tap((response) => this.saveSession(response)));
+  }
+
+  private saveSession(response: LoginResponse): void {
+    sessionStorage.setItem("accessToken", response.accessToken);
+    sessionStorage.setItem("role", response.role);
+    sessionStorage.setItem("expiresAt", response.expiresAt);
+
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("role");
+
+    this.token.set(response.accessToken);
+    this.role.set(response.role);
+    this.expiresAt.set(response.expiresAt);
+
+    this.scheduleExpiry();
   }
 
   isAuthenticated(): boolean {

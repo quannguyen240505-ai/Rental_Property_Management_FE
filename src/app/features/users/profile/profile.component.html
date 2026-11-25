@@ -301,6 +301,49 @@
           }
         </section>
 
+        <section class="details-card" aria-labelledby="google-link-title">
+          <div class="card-top">
+            <div>
+              <span class="section-label">BẢO MẬT TÀI KHOẢN</span>
+              <h2 id="google-link-title">Liên kết Google</h2>
+              <p>
+                Quản lý phương thức đăng nhập bằng Google cho tài khoản Rental
+                Property.
+              </p>
+            </div>
+          </div>
+
+          @if (googleLinked()) {
+            <div class="google-linked-status" role="status">
+              <span class="google-linked-icon" aria-hidden="true">✓</span>
+
+              <div>
+                <strong>Đã liên kết với Google</strong>
+                <p>
+                  Bạn có thể sử dụng Google để đăng nhập. Tài khoản và quyền
+                  truy cập được giữ nguyên.
+                </p>
+              </div>
+            </div>
+          } @else {
+            <div class="google-link-content">
+              <p>
+                Liên kết Google để đăng nhập nhanh hơn mà không cần nhập mật
+                khẩu.
+              </p>
+
+              @if (linkingGoogle()) {
+                <p role="status">Đang liên kết tài khoản...</p>
+              } @else {
+                <app-google-sign-in
+                  (credential)="linkGoogle($event)"
+                  (loadError)="error.set('Không thể tải Google Login.')"
+                />
+              }
+            </div>
+          }
+        </section>
+
         <section class="security-card" aria-labelledby="security-title">
           <div class="security-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none">
