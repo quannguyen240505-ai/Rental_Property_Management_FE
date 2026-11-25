@@ -8,38 +8,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { AuthService } from "../../../core/auth/auth.service";
 import { roleHome } from "../../../core/auth/role-home";
 
-import { AfterViewInit, ElementRef, NgZone, ViewChild } from "@angular/core";
-
-import { GOOGLE_CLIENT_ID } from "../../../core/config/google.config";
 import { GoogleSignInComponent } from "../../../shared/google-sign-in/google-sign-in.component";
-
-interface GoogleCredentialResponse {
-  credential: string;
-}
-
-interface GoogleIdentityApi {
-  accounts: {
-    id: {
-      initialize(config: {
-        client_id: string;
-        callback: (response: GoogleCredentialResponse) => void;
-      }): void;
-      renderButton(
-        element: HTMLElement,
-        options: {
-          theme: string;
-          size: string;
-          text: string;
-          width: number;
-        },
-      ): void;
-    };
-  };
-}
-
-type GoogleWindow = Window & {
-  google?: GoogleIdentityApi;
-};
 
 @Component({
   selector: "app-login",
@@ -48,14 +17,10 @@ type GoogleWindow = Window & {
   templateUrl: "./login.component.html",
   styleUrl: "./login.component.css",
 })
-export class LoginComponent implements AfterViewInit {
-  @ViewChild("googleButton")
-  googleButton!: ElementRef<HTMLDivElement>;
-
+export class LoginComponent {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute, { optional: true });
-  private readonly zone = inject(NgZone);
 
   readonly sessionExpiredNotice =
     this.route?.snapshot.queryParamMap.get("reason") === "expired";
@@ -128,54 +93,6 @@ export class LoginComponent implements AfterViewInit {
     if (this.error() === "Không thể tải đăng nhập Google. Vui lòng thử lại.") {
       this.error.set("");
     }
-  }
-
-  ngAfterViewInit(): void {
-    void this.initializeGoogleLogin();
-  }
-
-  private async initializeGoogleLogin(): Promise<void> {
-    try {
-      await this.loadGoogleScript();
-
-      const google = (window as GoogleWindow).google;
-      if (!google) {
-        throw new Error("Google SDK unavailable");
-      }
-
-      google.accounts.id.initialize({
-        client_id: GOOGLE_CLIENT_ID,
-        callback: (response) => {
-          this.zone.run(() => {
-            this.handleGoogleCredential(response.credential);
-          });
-        },
-      });
-
-      google.accounts.id.renderButton(this.googleButton.nativeElement, {
-        theme: "outline",
-        size: "large",
-        text: "signin_with",
-        width: 300,
-      });
-    } catch {
-      this.error.set("Không thể tải đăng nhập Google. Vui lòng thử lại.");
-    }
-  }
-
-  private loadGoogleScript(): Promise<void> {
-    const googleWindow = window as GoogleWindow;
-    if (googleWindow.google) return Promise.resolve();
-
-    return new Promise((resolve, reject) => {
-      const script = document.createElement("script");
-      script.src = "https://accounts.google.com/gsi/client";
-      script.async = true;
-      script.onload = () => resolve();
-      script.onerror = () => reject(new Error("Google SDK failed to load"));
-
-      document.head.appendChild(script);
-    });
   }
 
   handleGoogleCredential(idToken: string): void {
