@@ -1,0 +1,122 @@
+<main class="room-page">
+  <div class="room-shell">
+    <section class="room-hero">
+      <div>
+        <span class="room-eyebrow">PROPERTY SERVICE / QUẢN TRỊ PHÒNG</span>
+        <h1>Quản lý <em>phòng trọ</em></h1>
+        <p>Xem và quản lý phòng trong từng khu trọ. Phòng mới mặc định chưa công khai.</p>
+      </div>
+      <ui-button size="md" [disabled]="!propertyId() || loadingRooms()" (pressed)="openCreate()">+ Thêm phòng</ui-button>
+    </section>
+
+    <div class="room-toolbar">
+      <label for="property-select">Chọn khu trọ</label>
+      <select id="property-select" [ngModel]="propertyId()" (ngModelChange)="changeProperty($event)" [disabled]="loadingProperties() || loadingRooms() || saving()">
+        @for (property of properties(); track property.id) {
+          <option [value]="property.id">{{ property.name }} — {{ property.address }}</option>
+        }
+      </select>
+      <a routerLink="/owner/properties" class="room-link">Xem danh sách khu trọ</a>
+    </div>
+
+    @if (loadingProperties()) { <p class="room-empty">Đang tải danh sách khu trọ...</p> }
+    @if (!loadingProperties() && !properties().length && !error()) {
+      <p class="room-empty">Chưa có khu trọ. Vui lòng tạo khu trọ trước khi thêm phòng.</p>
+    }
+    @if (error()) {
+      <div class="room-alert room-alert--error" role="alert">{{ error() }}
+        <button type="button" (click)="loadingProperties() ? null : loadProperties()">Thử lại</button>
+      </div>
+    }
+    @if (notice()) { <div class="room-alert room-alert--success" role="status">{{ notice() }}</div> }
+
+    @if (propertyId()) {
+      <section class="room-stats" aria-label="Thống kê phòng">
+        <article><span>Tổng số phòng</span><strong>{{ rooms().length }}</strong><small>{{ currentProperty()?.name }}</small></article>
+        <article><span>Phòng còn trống</span><strong>{{ availableCount() }}</strong><small>Trạng thái AVAILABLE</small></article>
+        <article><span>Đang công khai</span><strong>{{ publishedCount() }}</strong><small>Hiển thị trong danh sách công khai</small></article>
+      </section>
+
+      <div class="room-section-head">
+        <div><span class="room-eyebrow room-eyebrow--dark">QUẢN LÝ DỮ LIỆU</span><h2>Danh sách phòng</h2></div>
+        <div class="room-filters">
+          <ui-search-input controlId="room-keyword" placeholder="Tìm mã, tên, mô tả phòng..." [value]="keyword()" (valueChange)="setKeyword($event)" />
+          <label class="sr-only" for="room-status">Lọc theo trạng thái</label>
+          <select id="room-status" [ngModel]="statusFilter()" (ngModelChange)="setStatus($event)">
+            <option value="">Tất cả trạng thái</option>
+            <option value="AVAILABLE">Còn trống</option>
+            <option value="RESERVED_PENDING">Đang chờ giữ</option>
+            <option value="RESERVED">Đã giữ</option>
+            <option value="OCCUPIED">Đang thuê</option>
+          </select>
+          <button type="button" class="room-soft-button" (click)="loadRooms()">Làm mới</button>
+        </div>
+      </div>
+      @if (loadingRooms()) { <p class="room-empty">Đang tải phòng...</p> }
+      @if (!loadingRooms() && !error() && !filtered().length) {
+        <div class="room-empty">{{ rooms().length ? 'Không có phòng nào khớp bộ lọc.' : 'Khu trọ này chưa có phòng. Nhấn “+ Thêm phòng” để bắt đầu.' }}</div>
+      }
+      <section class="room-grid" aria-label="Các phòng trong khu trọ">
+        @for (room of visible(); track room.id) {
+          <article class="room-card">
+            <div class="room-card-top"><span class="room-icon" aria-hidden="true">⌂</span><span class="room-pill" [class.room-pill--occupied]="room.status !== 'AVAILABLE'">{{ statusName(room.status) }}</span></div>
+            <h3>{{ room.code }} – {{ room.title }}</h3>
+            <p class="room-desc">{{ room.description || 'Chưa có mô tả phòng.' }}</p>
+            <div class="room-meta"><span>{{ room.areaM2 != null ? room.areaM2 + ' m²' : 'Chưa nhập diện tích' }}</span><span>{{ room.floorNumber != null ? 'Tầng ' + room.floorNumber : 'Chưa nhập tầng' }}</span></div>
+            <div class="room-price">{{ room.monthlyRent | number:'1.0-0' }} đ <small>/ tháng</small></div>
+            <div class="room-pub"><strong [class.is-public]="room.published">{{ room.published ? 'Đã công khai' : 'Đang ẩn' }}</strong></div>
+            <div class="room-actions">
+              <button type="button" (click)="openDetail(room)">Chi tiết</button>
+              <button type="button" (click)="openEdit(room)">Sửa</button>
+              <button type="button" [disabled]="saving() || (!room.published && room.status !== 'AVAILABLE')"
+                [title]="!room.published && room.status !== 'AVAILABLE' ? 'Chỉ phòng còn trống mới được công khai' : ''"
+                (click)="togglePublished(room)">{{ room.published ? 'Ẩn' : 'Công khai' }}</button>
+            </div>
+          </article>
+        }
+      </section>
+      @if (filtered().length) {
+        <div class="room-pagination">
+          <ui-pagination [page]="page()" [pageSize]="pageSize" [totalItems]="filtered().length" itemLabel="phòng" (pageChange)="setPage($event)" />
+        </div>
+      }
+    }
+  </div>
+</main>
+
+@if (panel()) {
+  <div class="room-overlay" role="presentation">
+    <div class="room-shade" (click)="closePanel()"></div>
+    <section class="room-dialog" role="dialog" aria-modal="true" [attr.aria-label]="panel() === 'create' ? 'Tạo phòng' : panel() === 'edit' ? 'Sửa phòng' : 'Chi tiết phòng'">
+      <header><div><span class="room-eyebrow room-eyebrow--dark">PROPERTY SERVICE</span><h2>{{ panel() === 'create' ? 'Thêm phòng mới' : panel() === 'edit' ? 'Chỉnh sửa phòng' : 'Chi tiết phòng trọ' }}</h2></div>
+        <button type="button" class="room-close" (click)="closePanel()" aria-label="Đóng">×</button></header>
+      @if (actionError()) { <div class="room-alert room-alert--error" role="alert">{{ actionError() }}</div> }
+      @if (panel() === 'detail') {
+        @if (detailLoading()) { <p>Đang tải chi tiết...</p> }
+        @if (selected(); as room) {
+          <dl class="room-detail">
+            <div><dt>Mã phòng</dt><dd>{{ room.code }}</dd></div><div><dt>Tên phòng</dt><dd>{{ room.title }}</dd></div>
+            <div><dt>Trạng thái</dt><dd>{{ statusName(room.status) }}</dd></div><div><dt>Hiển thị</dt><dd>{{ room.published ? 'Công khai' : 'Đang ẩn' }}</dd></div>
+            <div><dt>Giá thuê</dt><dd>{{ room.monthlyRent | number:'1.0-0' }} đ/tháng</dd></div>
+            <div><dt>Diện tích</dt><dd>{{ room.areaM2 != null ? room.areaM2 + ' m²' : 'Chưa nhập' }}</dd></div>
+            <div><dt>Tầng</dt><dd>{{ room.floorNumber ?? 'Chưa nhập' }}</dd></div>
+            <div><dt>Mô tả</dt><dd>{{ room.description || 'Không có' }}</dd></div>
+            <div><dt>Ngày tạo</dt><dd>{{ room.createdAt | date:'dd/MM/yyyy HH:mm' }}</dd></div>
+          </dl>
+        }
+        <footer><ui-button variant="secondary" (pressed)="closePanel()">Đóng</ui-button></footer>
+      } @else {
+        <form (ngSubmit)="save()" class="room-form">
+          <label for="room-code">Mã phòng *</label><input id="room-code" name="code" [(ngModel)]="form.code" maxlength="30" required placeholder="VD: A101" />
+          <label for="room-title">Tên phòng *</label><input id="room-title" name="title" [(ngModel)]="form.title" maxlength="150" required placeholder="VD: Phòng A101" />
+          <label for="room-rent">Tiền thuê (đồng/tháng) *</label><input id="room-rent" name="monthlyRent" [(ngModel)]="form.monthlyRent" type="number" min="0" step="1" required placeholder="2000000" />
+          <div class="room-two"><div><label for="room-floor">Tầng</label><input id="room-floor" name="floorNumber" [(ngModel)]="form.floorNumber" type="number" min="0" step="1" /></div>
+          <div><label for="room-area">Diện tích (m²)</label><input id="room-area" name="areaM2" [(ngModel)]="form.areaM2" type="number" min="0.01" step="0.01" /></div></div>
+          <label for="room-description">Mô tả</label><textarea id="room-description" name="description" [(ngModel)]="form.description" rows="3" maxlength="2000"></textarea>
+          <p class="room-help">Chỉ thay đổi thông tin phòng. Trạng thái và quyền công khai được quản lý riêng.</p>
+          <footer><ui-button variant="secondary" [disabled]="saving()" (pressed)="closePanel()">Hủy</ui-button><button type="submit" class="room-submit" [disabled]="saving()">{{ saving() ? 'Đang lưu...' : panel() === 'edit' ? 'Lưu thay đổi' : 'Tạo phòng' }}</button></footer>
+        </form>
+      }
+    </section>
+  </div>
+}

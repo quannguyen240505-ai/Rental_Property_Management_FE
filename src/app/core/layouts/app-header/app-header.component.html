@@ -29,9 +29,19 @@
           <a
             class="rp-header__desktop-link"
             routerLink="/owner"
-            [class.is-current]="isActive('/owner') && !isActive('/owner/users')"
+            [class.is-current]="
+              isActive('/owner') &&
+              !isActive('/owner/users') &&
+              !isActive('/owner/properties') &&
+              !isActive('/owner/rooms')
+            "
             [attr.aria-current]="
-              isActive('/owner') && !isActive('/owner/users') ? 'page' : null
+              isActive('/owner') &&
+              !isActive('/owner/users') &&
+              !isActive('/owner/properties') &&
+              !isActive('/owner/rooms')
+                ? 'page'
+                : null
             "
             (click)="closeMenu()"
             >Tổng quan</a
@@ -43,6 +53,22 @@
             [attr.aria-current]="isActive('/owner/users') ? 'page' : null"
             (click)="closeMenu()"
             >Quản lý tài khoản</a
+          >
+          <a
+            class="rp-header__desktop-link"
+            routerLink="/owner/properties"
+            [class.is-current]="isActive('/owner/properties')"
+            [attr.aria-current]="isActive('/owner/properties') ? 'page' : null"
+            (click)="closeMenu()"
+            >Quản lý khu trọ</a
+          >
+          <a
+            class="rp-header__desktop-link"
+            routerLink="/owner/rooms"
+            [class.is-current]="isActive('/owner/rooms')"
+            [attr.aria-current]="isActive('/owner/rooms') ? 'page' : null"
+            (click)="closeMenu()"
+            >Quản lý phòng</a
           >
         }
 
@@ -144,6 +170,12 @@
                 <a routerLink="/owner" (click)="closeMenu()">Tổng quan</a>
                 <a routerLink="/owner/users" (click)="closeMenu()"
                   >Quản lý tài khoản</a
+                >
+                <a routerLink="/owner/properties" (click)="closeMenu()"
+                  >Quản lý khu trọ</a
+                >
+                <a routerLink="/owner/rooms" (click)="closeMenu()"
+                  >Quản lý phòng</a
                 >
               }
               @if (auth.role() === "TENANT") {
