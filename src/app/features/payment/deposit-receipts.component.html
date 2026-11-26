@@ -1,0 +1,34 @@
+<main class="payment-page">
+  <header class="page-heading"><span class="eyebrow">QUẢN LÝ THANH TOÁN</span><h1>Phiếu thu tiền cọc</h1><p>Ghi nhận tiền cọc giữ phòng và xác minh trước khi liên kết hợp đồng.</p></header>
+  <div class="payment-grid">
+    <section class="panel" aria-labelledby="create-title"><span class="step">01 · GHI NHẬN</span><h2 id="create-title">Tạo phiếu thu cọc</h2>
+      <form (ngSubmit)="create()" #createForm="ngForm">
+        <label for="hold">Hold ID</label><input id="hold" name="hold" [(ngModel)]="holdId" required placeholder="Nhập mã giữ phòng (UUID)" [disabled]="busy()"><small>Dùng Hold đang chờ xác minh, còn thời hạn và đủ điều kiện nhận cọc.</small>
+        <label for="amount">Số tiền cọc (VND)</label><input id="amount" name="amount" type="number" min="1" step="1" [(ngModel)]="amount" required [disabled]="busy()" placeholder="Ví dụ: 1000000">
+        <label for="method">Phương thức thu</label><select id="method" name="method" [(ngModel)]="method" [disabled]="busy()"><option value="CASH">Tiền mặt</option><option value="BANK_TRANSFER">Chuyển khoản</option></select>
+        <label for="evidence">Đường dẫn chứng từ <span>(không bắt buộc)</span></label><input id="evidence" name="evidence" [(ngModel)]="evidenceUrl" maxlength="500" [disabled]="busy()" placeholder="Đường dẫn ảnh hoặc chứng từ">
+        <button class="primary" type="submit" [disabled]="busy() || createForm.invalid">Tạo phiếu thu</button>
+      </form>
+    </section>
+    <section class="panel" aria-labelledby="verify-title"><span class="step">02 · KIỂM TRA & XÁC MINH</span><h2 id="verify-title">Tra cứu phiếu thu</h2>
+      <form (ngSubmit)="check()"><label for="receipt">Receipt ID</label><input id="receipt" name="receipt" [(ngModel)]="receiptId" required [disabled]="busy() || confirmVerification()" placeholder="Nhập UUID của phiếu thu"><small>Mã tự điền sau khi tạo phiếu. Có thể nhập mã phiếu đã tạo trước đó.</small><button class="secondary" type="submit" [disabled]="busy()">Kiểm tra cho Rental</button></form>
+      @if (auth.role() === 'OWNER') {
+        <div class="verification"><h3>Xác nhận tiền thực nhận</h3><p>Chỉ xác minh sau khi đã kiểm tra đủ tiền mặt hoặc giao dịch chuyển khoản.</p><button class="primary" type="button" (click)="requestVerification()" [disabled]="busy() || !receiptId.trim()">OWNER xác minh phiếu</button></div>
+      } @else {<p class="hint">Nhân viên được tạo và kiểm tra phiếu. Chủ trọ thực hiện xác minh tiền cọc.</p>}
+      @if (confirmVerification()) {
+        <div class="confirm" role="group" aria-label="Xác nhận đã nhận tiền"><strong>Bạn đã thực nhận {{ eligibility()?.amount | number:'1.0-0' }} VND?</strong><p>Phiếu: {{ eligibility()?.receiptReference }}</p><p>Phiếu được đánh dấu đã xác minh cho quy trình hợp đồng.</p><button type="button" class="primary" (click)="verify()" [disabled]="busy()">Đã nhận đủ tiền, xác minh</button><button type="button" class="secondary" (click)="confirmVerification.set(false)">Hủy</button></div>
+      }
+    </section>
+  </div>
+  @if (busy()) {<p role="status" class="notice">Đang xử lý yêu cầu…</p>}
+  @if (error()) {<p role="alert" class="notice error">{{ error() }}</p>}
+  @if (message()) {<p role="status" class="notice success">{{ message() }}</p>}
+  @if (eligibility(); as result) {
+    <section class="panel result"><div class="result-heading"><h2>Kết quả kiểm tra phiếu thu</h2><span class="badge" [class.ready]="result.eligible">{{ result.eligible ? 'Đủ điều kiện cho Rental' : 'Chưa đủ điều kiện' }}</span></div>
+      <p class="money">{{ result.amount | number:'1.0-0' }} <span>VND</span></p><dl><dt>Mã phiếu thu</dt><dd>{{ result.receiptReference }}</dd><dt>Trạng thái</dt><dd>{{ result.status === 'OWNER_VERIFIED' ? 'Chủ trọ đã xác minh' : result.status === 'REPORTED' ? 'Đã ghi nhận, chờ xác minh' : result.status }}</dd><dt>Hold ID</dt><dd>{{ result.holdId }}</dd><dt>Phòng</dt><dd>{{ result.roomId }}</dd><dt>Khách hàng</dt><dd>{{ result.customerId }}</dd><dt>Receipt ID</dt><dd>{{ result.receiptId }}</dd></dl>
+      @if (result.reason) {<p class="hint">{{ result.reason === 'RECEIPT_NOT_OWNER_VERIFIED' ? 'Cần OWNER xác minh đã nhận tiền trước khi sử dụng cho hợp đồng.' : result.reason === 'HOLD_NOT_ELIGIBLE' ? 'Hold không còn đủ điều kiện sử dụng cho hợp đồng.' : 'Phiếu chưa đủ điều kiện sử dụng cho hợp đồng.' }}</p>}
+    </section>
+  } @else if (receipt(); as item) {
+    <section class="panel result"><h2>{{ item.status === 'OWNER_VERIFIED' ? 'Đã xác minh tiền cọc' : 'Phiếu thu đã ghi nhận' }}</h2><p class="money">{{ item.amount | number:'1.0-0' }} <span>VND</span></p><dl><dt>Mã phiếu</dt><dd>{{ item.receiptReference || item.receiptCode }}</dd><dt>Receipt ID</dt><dd>{{ item.id }}</dd><dt>Trạng thái</dt><dd>{{ item.status }}</dd></dl></section>
+  }
+</main>
