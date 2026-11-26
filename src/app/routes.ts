@@ -71,6 +71,24 @@ export const routes: Routes = [
       ),
   },
 
+  // PROPERTY AND ROOM MANAGEMENT – Thiện
+  {
+    path: "owner/properties",
+    canActivate: [ownerGuard],
+    loadComponent: () =>
+      import("./features/properties/property-management.component").then(
+        (module) => module.PropertyManagementComponent,
+      ),
+  },
+  {
+    path: "owner/rooms",
+    canActivate: [ownerGuard],
+    loadComponent: () =>
+      import("./features/rooms/room-management.component").then(
+        (module) => module.RoomManagementComponent,
+      ),
+  },
+
   // DANH SÁCH HỢP ĐỒNG
   {
     path: "owner/contracts",
