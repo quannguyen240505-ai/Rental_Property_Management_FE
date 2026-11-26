@@ -35,6 +35,12 @@
       </a>
       }
 
+      @if (auth.role() === "OWNER" || auth.role() === "STAFF") {
+      <a class="rp-header__desktop-link" routerLink="/payments/deposit-receipts"
+        [class.is-current]="isActive('/payments/deposit-receipts')"
+        [attr.aria-current]="isActive('/payments/deposit-receipts') ? 'page' : null" (click)="closeMenu()">Phiếu thu cọc</a>
+      }
+
       @if (auth.role() === "TENANT") {
       <a class="rp-header__desktop-link" routerLink="/tenant" [class.is-current]="isActive('/tenant')"
         [attr.aria-current]="isActive('/tenant') ? 'page' : null" (click)="closeMenu()">
@@ -100,6 +106,10 @@
           <a routerLink="/owner/contracts" (click)="closeMenu()">
             Quản lý hợp đồng
           </a>
+          }
+
+          @if (auth.role() === "OWNER" || auth.role() === "STAFF") {
+          <a routerLink="/payments/deposit-receipts" (click)="closeMenu()">Phiếu thu cọc</a>
           }
 
           @if (auth.role() === "TENANT") {

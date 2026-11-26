@@ -1,3 +1,4 @@
+import { paymentGuard } from "./features/payment/payment.guard";
 
 import { Routes } from "@angular/router";
 
@@ -36,6 +37,12 @@ export const routes: Routes = [
     path: "notifications",
     component: NotificationsComponent,
     canActivate: [authGuard],
+  },
+
+  {
+    path: "payments/deposit-receipts",
+    canActivate: [paymentGuard],
+    loadComponent: () => import("./features/payment/deposit-receipts.component").then(m => m.DepositReceiptsComponent),
   },
 
   // OWNER DASHBOARD
