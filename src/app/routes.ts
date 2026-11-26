@@ -1,3 +1,4 @@
+
 import { Routes } from "@angular/router";
 
 import { LoginComponent } from "./features/auth/login/login.component";
@@ -16,18 +17,28 @@ import {
 } from "./core/auth/auth.guard";
 
 export const routes: Routes = [
-  { path: "", redirectTo: "login", pathMatch: "full" },
+  {
+    path: "",
+    redirectTo: "login",
+    pathMatch: "full",
+  },
   {
     path: "login",
     component: LoginComponent,
     canActivate: [guestGuard],
   },
-  { path: "profile", component: ProfileComponent, canActivate: [authGuard] },
+  {
+    path: "profile",
+    component: ProfileComponent,
+    canActivate: [authGuard],
+  },
   {
     path: "notifications",
     component: NotificationsComponent,
     canActivate: [authGuard],
   },
+
+  // OWNER DASHBOARD
   {
     path: "owner",
     canActivate: [ownerGuard],
@@ -36,6 +47,8 @@ export const routes: Routes = [
         (module) => module.OwnerDashboardComponent,
       ),
   },
+
+  // QUẢN LÝ TÀI KHOẢN
   {
     path: "owner/users",
     canActivate: [ownerGuard],
@@ -44,6 +57,8 @@ export const routes: Routes = [
         (module) => module.UserManagementComponent,
       ),
   },
+
+  // PROPERTY AND ROOM MANAGEMENT – Thiện
   {
     path: "owner/properties",
     canActivate: [ownerGuard],
@@ -60,6 +75,39 @@ export const routes: Routes = [
         (module) => module.RoomManagementComponent,
       ),
   },
+
+  // DANH SÁCH HỢP ĐỒNG
+  {
+    path: "owner/contracts",
+    canActivate: [ownerGuard],
+    loadComponent: () =>
+      import("./features/rental/contract-list/contract-list").then(
+        (module) => module.ContractList,
+      ),
+  },
+
+  // TẠO HỢP ĐỒNG MỚI
+  // Phải đứng trước route :id
+  {
+    path: "owner/contracts/new",
+    canActivate: [ownerGuard],
+    loadComponent: () =>
+      import("./features/rental/contract-create/contract-create").then(
+        (module) => module.ContractCreate,
+      ),
+  },
+
+  // CHI TIẾT HỢP ĐỒNG
+  {
+    path: "owner/contracts/:id",
+    canActivate: [ownerGuard],
+    loadComponent: () =>
+      import("./features/rental/contract-detail/contract-detail").then(
+        (module) => module.ContractDetail,
+      ),
+  },
+
+  // TENANT DASHBOARD
   {
     path: "tenant",
     canActivate: [tenantGuard],
@@ -68,6 +116,8 @@ export const routes: Routes = [
         (module) => module.TenantDashboardComponent,
       ),
   },
+
+  // AUTH
   {
     path: "register",
     component: RegisterComponent,
@@ -88,5 +138,10 @@ export const routes: Routes = [
     component: ChangePasswordComponent,
     canActivate: [authGuard],
   },
-  { path: "**", redirectTo: "login" },
+
+  // ROUTE KHÔNG TỒN TẠI
+  {
+    path: "**",
+    redirectTo: "login",
+  },
 ];

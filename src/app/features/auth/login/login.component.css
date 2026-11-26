@@ -895,3 +895,10 @@
   font-size: 13px;
   line-height: 1.55;
 }
+
+.google-login-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  min-height: 44px;
+}

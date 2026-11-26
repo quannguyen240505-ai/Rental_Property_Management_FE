@@ -19,6 +19,7 @@ const account: UserProfile = {
   status: "ACTIVE",
   createdAt: "2026-11-20T10:00:00Z",
   updatedAt: "2026-11-21T10:00:00Z",
+  googleLinked: false,
 };
 
 describe("ProfileComponent", () => {

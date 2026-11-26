@@ -1,0 +1,79 @@
+<section class="contract-create-page">
+    <header class="page-header">
+        <div>
+            <h1>Tạo hợp đồng thuê</h1>
+            <p>Nhập thông tin để tạo hợp đồng thuê mới ở trạng thái DRAFT.</p>
+        </div>
+
+        <a routerLink="/owner/contracts" class="back-btn">
+            Quay lại danh sách
+        </a>
+    </header>
+
+    <form class="create-card" (submit)="$event.preventDefault(); createContract()">
+        <h2>Thông tin hợp đồng</h2>
+
+        <div class="form-grid">
+            <div class="form-field">
+                <label for="roomId">Mã phòng <span>*</span></label>
+                <input id="roomId" type="text" required placeholder="Nhập UUID phòng" [value]="roomId()"
+                    (input)="roomId.set($any($event.target).value)" />
+            </div>
+
+            <div class="form-field">
+                <label for="tenantProfileId">
+                    Mã hồ sơ người thuê <span>*</span>
+                </label>
+                <input id="tenantProfileId" type="text" required placeholder="Nhập UUID hồ sơ người thuê"
+                    [value]="tenantProfileId()" (input)="tenantProfileId.set($any($event.target).value)" />
+            </div>
+
+            <div class="form-field">
+                <label for="startDate">Ngày bắt đầu <span>*</span></label>
+                <input id="startDate" type="date" required [value]="startDate()"
+                    (input)="startDate.set($any($event.target).value)" />
+            </div>
+
+            <div class="form-field">
+                <label for="endDate">Ngày kết thúc <span>*</span></label>
+                <input id="endDate" type="date" required [min]="startDate()" [value]="endDate()"
+                    (input)="endDate.set($any($event.target).value)" />
+            </div>
+
+            <div class="form-field">
+                <label for="rentAmount">Tiền thuê (VNĐ) <span>*</span></label>
+                <input id="rentAmount" type="number" required min="0" step="1" placeholder="Ví dụ: 3500000"
+                    [value]="rentAmount() ?? ''" (input)="updateAmount('rent', $any($event.target).value)" />
+            </div>
+
+            <div class="form-field">
+                <label for="depositRequired">
+                    Tiền cọc yêu cầu (VNĐ) <span>*</span>
+                </label>
+                <input id="depositRequired" type="number" required min="0" step="1" placeholder="Ví dụ: 7000000"
+                    [value]="depositRequired() ?? ''" (input)="updateAmount('deposit', $any($event.target).value)" />
+            </div>
+        </div>
+
+        <p class="form-note">
+            Các trường có dấu * là bắt buộc. Mã phòng và mã hồ sơ
+            người thuê phải tồn tại trong hệ thống.
+        </p>
+
+        @if (errorMessage()) {
+        <div class="error-message" role="alert">
+            {{ errorMessage() }}
+        </div>
+        }
+
+        <div class="form-actions">
+            <a routerLink="/owner/contracts" class="cancel-btn">
+                Hủy
+            </a>
+
+            <button type="submit" class="save-btn" [disabled]="saving()">
+                {{ saving() ? "Đang tạo..." : "Tạo hợp đồng" }}
+            </button>
+        </div>
+    </form>
+</section>
