@@ -54,7 +54,7 @@ export const routes: Routes = [
       ),
   },
 
-  // QUáº¢N LÃ TÃ€I KHOáº¢N
+  // QUẢN LÝ TÀI KHOẢN
   {
     path: "owner/users",
     canActivate: [ownerGuard],
@@ -64,7 +64,7 @@ export const routes: Routes = [
       ),
   },
 
-  // PROPERTY AND ROOM MANAGEMENT â€“ Thiá»‡n
+  // PROPERTY AND ROOM MANAGEMENT – Thiện
   {
     path: "owner/properties",
     canActivate: [ownerGuard],
@@ -82,7 +82,7 @@ export const routes: Routes = [
       ),
   },
 
-  // DANH SÃCH Há»¢P Äá»’NG
+  // DANH SÁCH HỢP ĐỒNG
   {
     path: "owner/contracts",
     canActivate: [ownerGuard],
@@ -92,8 +92,8 @@ export const routes: Routes = [
       ),
   },
 
-  // Táº O Há»¢P Äá»’NG Má»šI
-  // Pháº£i Ä‘á»©ng trÆ°á»›c route :id
+  // TẠO HỢP ĐỒNG MỚI
+  // Phải đứng trước route :id
   {
     path: "owner/contracts/new",
     canActivate: [ownerGuard],
@@ -103,7 +103,7 @@ export const routes: Routes = [
       ),
   },
 
-  // CHI TIáº¾T Há»¢P Äá»’NG
+  // CHI TIẾT HỢP ĐỒNG
   {
     path: "owner/contracts/:id",
     canActivate: [ownerGuard],
@@ -145,10 +145,9 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
 
-  // ROUTE KHÃ”NG Tá»’N Táº I
+  // ROUTE KHÔNG TỒN TẠI
   {
     path: "**",
     redirectTo: "login",
   },
 ];
-
