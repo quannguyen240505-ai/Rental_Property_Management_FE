@@ -18,8 +18,14 @@ import {
 
 export const routes: Routes = [
   {
+    path: "rooms",
+    loadComponent: () =>
+      import("./features/public-rooms/public-rooms.component")
+        .then(m => m.PublicRoomsComponent),
+  },
+  {
     path: "",
-    redirectTo: "login",
+    redirectTo: "rooms",
     pathMatch: "full",
   },
   {

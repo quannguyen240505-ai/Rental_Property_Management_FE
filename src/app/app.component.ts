@@ -12,7 +12,7 @@ import { NotificationService } from "./features/notifications/notification.servi
   standalone: true,
   imports: [RouterOutlet, AppHeaderComponent],
   template: `
-    @if (!isLoginPage()) {
+    @if (!isLoginPage() && !isPublicPage()) {
       <app-header (logoutRequested)="logout()" />
     }
     <main
@@ -73,7 +73,13 @@ export class AppComponent {
   }
 
   /** Expanded layout is shared by every private dashboard and notifications. */
+  isPublicPage(): boolean {
+    const path = this.currentUrl().split('?')[0].split('#')[0];
+    return path === '/rooms' || path.startsWith('/rooms/');
+  }
+
   isFullWidthPage(): boolean {
+    if (this.isPublicPage()) return true;
     const path = this.currentUrl().split("?")[0];
     return ["/owner", "/tenant", "/notifications"].some(
       (prefix) => path === prefix || path.startsWith(`${prefix}/`),
