@@ -1,0 +1,169 @@
+<div class="property-page">
+  <div class="property-shell">
+    <section class="property-hero" aria-labelledby="property-title">
+      <div>
+        <p class="property-eyebrow">KHÔNG GIAN QUẢN LÝ</p>
+        <h1 id="property-title">Danh sách <span>khu trọ</span></h1>
+        <p class="property-hero-caption">Quản lý thông tin các khu trọ. Dữ liệu được tải trực tiếp từ Property Service.</p>
+      </div>
+      <div class="property-hero-action">
+        <ui-button (pressed)="openCreate()">+ Thêm khu trọ</ui-button>
+      </div>
+    </section>
+
+    <section class="property-summary" aria-label="Thống kê khu trọ">
+      <ui-card variant="outlined" padding="md">
+        <span class="property-stat-label">Tổng số khu trọ</span>
+        <strong class="property-stat-value">{{ loaded() ? properties().length : '—' }}</strong>
+        <span class="property-stat-note">Được trả về từ Property Service</span>
+      </ui-card>
+      <ui-card variant="outlined" padding="md">
+        <span class="property-stat-label">Kết quả tìm kiếm</span>
+        <strong class="property-stat-value">{{ loaded() ? filteredProperties().length : '—' }}</strong>
+        <span class="property-stat-note">Theo tên, địa chỉ và liên hệ</span>
+      </ui-card>
+      <ui-card variant="outlined" padding="md">
+        <span class="property-stat-label">Cập nhật gần nhất</span>
+        <strong class="property-stat-date">{{ loaded() && lastUpdated() ? (lastUpdated() | date:'dd/MM/yyyy') : '—' }}</strong>
+        <span class="property-stat-note">Từ thời gian cập nhật trong dữ liệu</span>
+      </ui-card>
+    </section>
+
+    <section class="property-list-section" aria-labelledby="list-heading">
+      <div class="property-section-heading">
+        <div>
+          <p class="property-eyebrow property-eyebrow--dark">QUẢN LÝ DỮ LIỆU</p>
+          <h2 id="list-heading">Các khu trọ</h2>
+        </div>
+        <div class="property-list-actions">
+          <ui-search-input
+            controlId="property-search"
+            placeholder="Tìm tên, địa chỉ, liên hệ..."
+            ariaLabel="Tìm kiếm khu trọ"
+            [value]="query()"
+            [disabled]="loading()"
+            (valueChange)="setQuery($event)"
+          />
+          <ui-button variant="secondary" size="sm" [loading]="loading()" (pressed)="load()">Làm mới</ui-button>
+        </div>
+      </div>
+
+      @if (notice()) {
+        <p class="property-message property-message--success" role="status">{{ notice() }}</p>
+      }
+      @if (error()) {
+        <div class="property-message property-message--error" role="alert">
+          <span>{{ error() }}</span>
+          <ui-button variant="secondary" size="sm" (pressed)="load()">Thử lại</ui-button>
+        </div>
+      }
+      @if (loading()) {
+        <p class="property-empty" role="status">Đang tải danh sách khu trọ...</p>
+      } @else if (loaded() && filteredProperties().length === 0) {
+        <div class="property-empty">
+          @if (query()) {
+            <h3>Không tìm thấy khu trọ phù hợp</h3>
+            <p>Thử một tên hoặc địa chỉ khác.</p>
+          } @else {
+            <h3>Chưa có khu trọ nào</h3>
+            <p>Chọn “Thêm khu trọ” để tạo dữ liệu đầu tiên.</p>
+          }
+        </div>
+      } @else if (loaded()) {
+        <div class="property-grid">
+          @for (item of pageItems(); track item.id) {
+            <article class="property-card">
+              <div class="property-card-top">
+                <span class="property-card-mark" aria-hidden="true">⌂</span>
+                <span class="property-card-tag">Khu trọ</span>
+              </div>
+              <h3>{{ item.name }}</h3>
+              <p class="property-card-address">{{ item.address }}</p>
+              <p class="property-card-desc">{{ item.description || 'Chưa có mô tả' }}</p>
+              <div class="property-card-bottom">
+                <div class="property-contact">
+                  <small>Liên hệ</small>
+                  <strong>{{ item.contactPhone || 'Chưa cập nhật' }}</strong>
+                </div>
+                <ui-button variant="secondary" size="sm" (pressed)="openDetail(item)">Xem chi tiết</ui-button>
+              </div>
+            </article>
+          }
+        </div>
+        <div class="property-pagination">
+          <ui-pagination
+            [page]="page()"
+            [pageSize]="pageSize"
+            [totalItems]="filteredProperties().length"
+            itemLabel="khu trọ"
+            (pageChange)="setPage($event)"
+          />
+        </div>
+      }
+    </section>
+  </div>
+</div>
+
+@if (panel()) {
+  <div class="property-overlay">
+    <div class="property-backdrop" aria-hidden="true" (click)="closePanel()"></div>
+    <section
+      class="property-dialog"
+      role="dialog"
+      aria-modal="true"
+      [attr.aria-labelledby]="panel() === 'create' ? 'property-create-title' : 'property-detail-title'"
+    >
+      <div class="property-dialog-header">
+        <div>
+          <p class="property-eyebrow property-eyebrow--dark">PROPERTY SERVICE</p>
+          @if (panel() === 'create') {
+            <h2 id="property-create-title">Thêm khu trọ</h2>
+          } @else {
+            <h2 id="property-detail-title">Chi tiết khu trọ</h2>
+          }
+        </div>
+        <button class="property-close" type="button" aria-label="Đóng cửa sổ" [disabled]="saving()" (click)="closePanel()">×</button>
+      </div>
+
+      @if (panel() === 'create') {
+        <form (ngSubmit)="submitCreate()" class="property-form">
+          <label for="property-name">Tên khu trọ <span>*</span></label>
+          <input id="property-name" name="name" [(ngModel)]="form.name" required maxlength="150" placeholder="Ví dụ: Khu trọ An Phú" />
+
+          <label for="property-address">Địa chỉ <span>*</span></label>
+          <input id="property-address" name="address" [(ngModel)]="form.address" required maxlength="255" placeholder="Số nhà, đường, phường, thành phố" />
+
+          <label for="property-contact-phone">Số điện thoại liên hệ</label>
+          <input id="property-contact-phone" name="contactPhone" [(ngModel)]="form.contactPhone" maxlength="20" placeholder="Ví dụ: 0901234567" />
+
+          <label for="property-description">Mô tả</label>
+          <textarea id="property-description" name="description" [(ngModel)]="form.description" rows="4" placeholder="Thông tin thêm về khu trọ"></textarea>
+
+          @if (formError()) { <p class="property-message property-message--error" role="alert">{{ formError() }}</p> }
+          <div class="property-dialog-actions">
+            <ui-button variant="secondary" [disabled]="saving()" (pressed)="closePanel()">Hủy</ui-button>
+            <ui-button type="submit" [loading]="saving()">Tạo khu trọ</ui-button>
+          </div>
+        </form>
+      } @else {
+        @if (detailLoading()) { <p class="property-empty">Đang tải chi tiết...</p> }
+        @if (detailError()) { <p class="property-message property-message--error" role="alert">{{ detailError() }}</p> }
+        @if (!detailLoading() && !detailError()) {
+          @if (selected(); as item) {
+            <dl class="property-details">
+              <div><dt>Tên khu trọ</dt><dd>{{ item.name }}</dd></div>
+              <div><dt>Địa chỉ</dt><dd>{{ item.address }}</dd></div>
+              <div><dt>Số liên hệ</dt><dd>{{ item.contactPhone || 'Chưa cập nhật' }}</dd></div>
+              <div><dt>Mô tả</dt><dd class="property-description">{{ item.description || 'Chưa cập nhật' }}</dd></div>
+              <div><dt>Ngày tạo</dt><dd>{{ item.createdAt | date:'dd/MM/yyyy HH:mm' }}</dd></div>
+              <div><dt>Cập nhật</dt><dd>{{ item.updatedAt | date:'dd/MM/yyyy HH:mm' }}</dd></div>
+            </dl>
+          }
+        }
+        <div class="property-dialog-actions">
+          <ui-button variant="secondary" (pressed)="closePanel()">Đóng</ui-button>
+        </div>
+      }
+    </section>
+  </div>
+}
