@@ -18,8 +18,14 @@ import {
 
 export const routes: Routes = [
   {
+    path: "rooms",
+    loadComponent: () =>
+      import("./features/public-rooms/public-rooms.component")
+        .then(m => m.PublicRoomsComponent),
+  },
+  {
     path: "",
-    redirectTo: "login",
+    redirectTo: "rooms",
     pathMatch: "full",
   },
   {
@@ -48,7 +54,7 @@ export const routes: Routes = [
       ),
   },
 
-  // QUẢN LÝ TÀI KHOẢN
+  // QUáº¢N LÃ TÃ€I KHOáº¢N
   {
     path: "owner/users",
     canActivate: [ownerGuard],
@@ -58,7 +64,7 @@ export const routes: Routes = [
       ),
   },
 
-  // PROPERTY AND ROOM MANAGEMENT – Thiện
+  // PROPERTY AND ROOM MANAGEMENT â€“ Thiá»‡n
   {
     path: "owner/properties",
     canActivate: [ownerGuard],
@@ -76,7 +82,7 @@ export const routes: Routes = [
       ),
   },
 
-  // DANH SÁCH HỢP ĐỒNG
+  // DANH SÃCH Há»¢P Äá»’NG
   {
     path: "owner/contracts",
     canActivate: [ownerGuard],
@@ -86,8 +92,8 @@ export const routes: Routes = [
       ),
   },
 
-  // TẠO HỢP ĐỒNG MỚI
-  // Phải đứng trước route :id
+  // Táº O Há»¢P Äá»’NG Má»šI
+  // Pháº£i Ä‘á»©ng trÆ°á»›c route :id
   {
     path: "owner/contracts/new",
     canActivate: [ownerGuard],
@@ -97,7 +103,7 @@ export const routes: Routes = [
       ),
   },
 
-  // CHI TIẾT HỢP ĐỒNG
+  // CHI TIáº¾T Há»¢P Äá»’NG
   {
     path: "owner/contracts/:id",
     canActivate: [ownerGuard],
@@ -139,9 +145,10 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
 
-  // ROUTE KHÔNG TỒN TẠI
+  // ROUTE KHÃ”NG Tá»’N Táº I
   {
     path: "**",
     redirectTo: "login",
   },
 ];
+
