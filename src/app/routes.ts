@@ -45,6 +45,12 @@ export const routes: Routes = [
     loadComponent: () => import("./features/payment/deposit-receipts.component").then(m => m.DepositReceiptsComponent),
   },
 
+  {
+    path: "owner/billing",
+    canActivate: [ownerGuard],
+    loadComponent: () => import("./features/billing/billing.component").then(m => m.BillingComponent),
+  },
+
   // OWNER DASHBOARD
   {
     path: "owner",
