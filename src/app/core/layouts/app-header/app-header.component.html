@@ -29,6 +29,9 @@
         Quản lý tài khoản
       </a>
 
+      <a class="rp-header__desktop-link" routerLink="/owner/billing" [class.is-current]="isActive('/owner/billing')"
+        [attr.aria-current]="isActive('/owner/billing') ? 'page' : null" (click)="closeMenu()">Hóa đơn &amp; điện nước</a>
+
       <a class="rp-header__desktop-link" routerLink="/owner/contracts" [class.is-current]="isActive('/owner/contracts')"
         [attr.aria-current]="isActive('/owner/contracts') ? 'page' : null" (click)="closeMenu()">
         Quản lý hợp đồng
@@ -102,6 +105,8 @@
           <a routerLink="/owner/users" (click)="closeMenu()">
             Quản lý tài khoản
           </a>
+
+          <a routerLink="/owner/billing" (click)="closeMenu()">Hóa đơn &amp; điện nước</a>
 
           <a routerLink="/owner/contracts" (click)="closeMenu()">
             Quản lý hợp đồng

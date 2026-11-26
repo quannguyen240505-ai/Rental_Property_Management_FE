@@ -1,0 +1,69 @@
+<main class="billing">
+  <header><p class="eyebrow">QUẢN LÝ TÀI CHÍNH</p><h1>Hóa đơn &amp; điện nước</h1><p>Ghi chỉ số, lập hóa đơn và theo dõi công nợ theo kỳ.</p></header>
+  <nav class="tabs" aria-label="Chức năng Billing">
+    <button type="button" [class.active]="tab === 'meter'" [disabled]="busy()" (click)="selectTab('meter')">Chỉ số điện nước</button>
+    <button type="button" [class.active]="tab === 'invoice'" [disabled]="busy()" (click)="selectTab('invoice')">Hóa đơn</button>
+  </nav>
+  @if (error()) { <p role="alert" class="error">{{error()}}</p> }
+  @if (success()) { <p role="status" class="success">{{success()}}</p> }
+  @if (busy()) { <p role="status">Đang xử lý...</p> }
+  @if (tab === 'meter') {
+    <section class="panel"><h2>Ghi chỉ số</h2>
+      <form #meterForm="ngForm" (ngSubmit)="saveMeter()">
+        <fieldset [disabled]="busy()" class="fields">
+          <label>Mã khu trọ (UUID)<input name="property" [(ngModel)]="meter.propertyId" required [pattern]="uuidPattern"></label>
+          <label>Mã phòng (UUID)<input name="room" [(ngModel)]="meter.roomId" required [pattern]="uuidPattern"></label>
+          <label>Kỳ ghi chỉ số<input type="month" name="period" [(ngModel)]="meter.billingPeriod" required></label>
+          <label>Loại chỉ số<select name="type" [(ngModel)]="meter.utilityType"><option value="ELECTRICITY">Điện</option><option value="WATER">Nước</option></select></label>
+          <label>Chỉ số cũ<input name="old" type="number" min="0" step="1" required [(ngModel)]="meter.previousReading"></label>
+          <label>Chỉ số mới<input name="current" type="number" min="0" step="1" required [(ngModel)]="meter.currentReading"></label>
+          <label class="check"><input name="replaced" type="checkbox" [(ngModel)]="meter.meterReplaced"> Thay công tơ</label>
+          @if (meter.meterReplaced) { <label>Lý do thay công tơ<input name="reason" maxlength="500" required [(ngModel)]="meter.meterReplacementReason"></label> }
+          <label>Link minh chứng (không bắt buộc)<input name="evidence" maxlength="500" [(ngModel)]="meter.evidenceUrl"></label>
+          <div class="actions"><button type="submit" class="primary" [disabled]="meterForm.invalid || busy()">Lưu chỉ số</button><button type="button" (click)="searchMeters()">Tra cứu phòng và kỳ</button></div>
+        </fieldset>
+      </form>
+    </section>
+    <section class="panel"><h2>Kết quả chỉ số</h2>
+      @if (readings().length) {
+      <div class="scroll"><table><thead><tr><th>Loại</th><th>Kỳ</th><th>Cũ</th><th>Mới</th><th>Tiêu thụ</th><th></th></tr></thead><tbody>
+        @for (r of readings(); track r.id) { <tr><td>{{labels[r.utilityType]}}</td><td>{{r.billingPeriod}}</td><td>{{r.previousReading | number}}</td><td>{{r.currentReading | number}}</td><td>{{r.consumption | number}}</td><td><button type="button" [disabled]="busy()" (click)="useReading(r)">Đưa vào hóa đơn</button></td></tr> }
+      </tbody></table></div>
+      } @else { <p>{{queried() ? 'Không có chỉ số trong kỳ này.' : 'Nhập mã phòng và kỳ để tra cứu.'}}</p> }
+    </section>
+  } @else {
+    <section class="panel"><h2>Tạo hóa đơn nháp</h2><p>Nhập mã từ hợp đồng và phòng thực tế. Backend quyết định tổng tiền chính thức.</p>
+      <form #invoiceForm="ngForm" (ngSubmit)="createInvoice()"><fieldset [disabled]="busy()">
+        <div class="fields">
+          <label>Mã khu trọ (UUID)<input name="property" [(ngModel)]="draft.propertyId" required [pattern]="uuidPattern"></label>
+          <label>Mã phòng (UUID)<input name="room" [(ngModel)]="draft.roomId" required [pattern]="uuidPattern"></label>
+          <label>Mã hợp đồng (UUID)<input name="contract" [(ngModel)]="draft.contractId" required [pattern]="uuidPattern"></label>
+          <label>Mã người thuê (UUID)<input name="tenant" [(ngModel)]="draft.tenantUserId" required [pattern]="uuidPattern"></label>
+          <label>Kỳ hóa đơn<input type="month" name="period" [(ngModel)]="draft.billingPeriod" required></label>
+          <label>Hạn thanh toán<input type="date" name="due" [(ngModel)]="draft.dueDate" required></label>
+        </div>
+        <h3>Khoản thu</h3>
+        @for (line of draft.lines; track line; let i = $index) {
+          <div class="line">
+            <label>Loại<select [name]="'type'+i" [(ngModel)]="line.lineType"><option value="RENT">Tiền thuê</option><option value="ELECTRICITY">Điện</option><option value="WATER">Nước</option><option value="SERVICE_FEE">Phí dịch vụ</option><option value="OTHER">Khác</option></select></label>
+            <label>Nội dung<input [name]="'desc'+i" [(ngModel)]="line.description" maxlength="255" required></label>
+            <label>Số lượng<input type="number" min="0" step="0.001" [name]="'quantity'+i" [(ngModel)]="line.quantity" required></label>
+            <label>Đơn giá (đ)<input type="number" min="0" step="1" [name]="'price'+i" [(ngModel)]="line.unitPrice" required></label>
+            <button type="button" [disabled]="draft.lines.length === 1" (click)="removeLine(i)">Xóa</button>
+          </div>
+        }
+        <div class="actions"><button type="button" [disabled]="draft.lines.length >= 100" (click)="addLine()">+ Thêm khoản thu</button><strong>Tạm tính: {{previewTotal() | number:'1.0-3'}} đ</strong><button class="primary" type="submit" [disabled]="invoiceForm.invalid || busy()">Tạo hóa đơn nháp</button></div>
+      </fieldset></form>
+    </section>
+    <section class="panel"><h2>Tra cứu hóa đơn</h2><form class="lookup" (ngSubmit)="lookupInvoice()"><label>Mã hóa đơn (UUID)<input name="invoiceId" [(ngModel)]="invoiceId" required [disabled]="busy()"></label><button type="submit" [disabled]="busy()">Tra cứu</button></form>
+      @if (invoice(); as inv) {
+        <div class="invoice-meta"><span>Trạng thái: <strong>{{labels[inv.status] || inv.status}}</strong></span><span>Kỳ: {{inv.billingPeriod}}</span><span>Hạn: {{inv.dueDate}}</span><span>Mã: {{inv.id}}</span></div>
+        <div class="totals"><div>Tổng tiền<strong>{{inv.totalAmount | number}} đ</strong></div><div>Đã thanh toán<strong>{{inv.paidAmount | number}} đ</strong></div><div>Còn phải trả<strong>{{inv.outstandingAmount | number}} đ</strong></div></div>
+        <div class="scroll"><table><thead><tr><th>Khoản thu</th><th>Số lượng</th><th>Đơn giá</th><th>Thành tiền</th></tr></thead><tbody>
+          @for (line of inv.lines; track line.id) { <tr><td>{{line.description}}</td><td>{{line.quantity | number:'1.0-3'}}</td><td>{{line.unitPrice | number}} đ</td><td>{{line.amount | number}} đ</td></tr> }
+        </tbody></table></div>
+        @if (inv.status === 'DRAFT') { <div class="actions"><label class="check"><input type="checkbox" [(ngModel)]="confirmIssue" [disabled]="busy()"> Xác nhận phát hành hóa đơn này</label><button class="primary" type="button" [disabled]="!confirmIssue || busy()" (click)="issueInvoice()">Phát hành</button></div> }
+      }
+    </section>
+  }
+</main>
